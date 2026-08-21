@@ -501,7 +501,7 @@ Use native nesting for readability, but keep `&` explicit when joining selectors
 }
 ```
 
-Validation: MDN documents that CSS nesting is parsed by the browser, unlike Sass-style preprocessing. Can I use shows broad modern support but not universal support, so verify your floor. [MDN CSS nesting][ref-nesting], [Can I use CSS nesting][ref-caniuse-nesting]
+Validation: MDN documents that CSS nesting is parsed by the browser, unlike Sass-style preprocessing. Nesting became Baseline Newly available in August 2023 and crossed the 30-month mark in February 2026, so it is now Baseline Widely available and needs no guard on evergreen targets. [MDN CSS nesting][ref-nesting], [Can I use CSS nesting][ref-caniuse-nesting], [web.dev Baseline][ref-webdev-baseline]
 
 ### Cascade layers with `@layer`
 
@@ -602,7 +602,7 @@ h2,
 }
 ```
 
-Validation: MDN marks `text-wrap` Baseline 2024 Newly available. `balance` balances line lengths, while `pretty` aims for better typography such as avoiding orphans. MDN cautions that `balance` can be computationally expensive and is best for short blocks/headings. [MDN text-wrap][ref-text-wrap]
+Validation: MDN marks `text-wrap` Baseline 2024 Newly available. `balance` balances line lengths, while `pretty` aims for better typography such as avoiding orphans. MDN cautions that `balance` can be computationally expensive and is best for short blocks/headings. The shorthand status hides per-value differences: MDN flags that some parts of the feature have varying support, and `pretty` lands later and less evenly than `balance`, so treat `pretty` as an enhancement even where `balance` is safe. [MDN text-wrap][ref-text-wrap]
 
 ### `light-dark()`
 
@@ -617,7 +617,7 @@ body {
 }
 ```
 
-Validation: MDN marks `light-dark()` Baseline 2024 Newly available. It returns one of two colors based on active color scheme, and it requires `color-scheme: light dark` or equivalent opt-in. [MDN light-dark()][ref-light-dark]
+Validation: MDN marks `light-dark()` Baseline 2024 Newly available, since May 2024. It returns one of two colors based on active color scheme, and it requires `color-scheme: light dark` or equivalent opt-in. It crosses the 30-month Widely available threshold around November 2026, so this entry moves buckets then. [MDN light-dark()][ref-light-dark], [web.dev Baseline][ref-webdev-baseline]
 
 ### `@scope`
 
@@ -665,7 +665,7 @@ Validation: MDN marks `@starting-style` Baseline 2024 Newly available and define
 }
 ```
 
-Validation: MDN marks `anchor-name`, `position-area`, and `position-try-fallbacks` Baseline 2026 Newly available. Use `@supports` and a non-anchored fallback for older browsers. [MDN anchor positioning][ref-anchor-module], [MDN anchor-name][ref-anchor-name], [MDN position-area][ref-position-area], [MDN position-try-fallbacks][ref-position-try-fallbacks]
+Validation: MDN marks `anchor-name`, `position-area`, and `position-try-fallbacks` Baseline 2026 Newly available, completed by Firefox 147 in January 2026. Newly available is not the same as bug-free here: web-features maintainers debated this feature's entry because of broken fixed-position anchors in Safari, `position-try` edge cases, and popover placement gaps. Use `@supports`, keep a non-anchored fallback, and test the real placements you ship. [MDN anchor positioning][ref-anchor-module], [MDN anchor-name][ref-anchor-name], [MDN position-area][ref-position-area], [MDN position-try-fallbacks][ref-position-try-fallbacks]
 
 ### `contrast-color()`
 
@@ -693,7 +693,7 @@ input {
 }
 ```
 
-Validation: MDN marks `field-sizing` Baseline 2026 Newly available and defines it as enabling form controls to fit their content. Keep min/max sizes and a fallback for older browser floors. [MDN field-sizing][ref-field-sizing]
+Validation: MDN marks `field-sizing` Baseline 2026 Newly available, since June 2026, and defines it as enabling form controls to fit their content. Early Firefox builds implemented it partially and Firefox 152 beta notes describe filling in full support, so keep min/max sizes and a working fallback rather than assuming identical sizing behavior across the Baseline set. [MDN field-sizing][ref-field-sizing], [web.dev platform update, May 2026][ref-webdev-0526]
 
 ### Container style queries
 
@@ -793,7 +793,7 @@ Validation: MDN marks `accent-color` Limited availability. It sets the accent co
 }
 ```
 
-Validation: MDN’s scroll-driven animation module documents scroll progress and view progress timelines; `animation-timeline` is marked Limited availability. Provide static content by default and honor reduced motion. [MDN scroll-driven animations][ref-scroll-driven], [MDN animation-timeline][ref-animation-timeline]
+Validation: MDN’s scroll-driven animation module documents scroll progress and view progress timelines; `animation-timeline` is marked Limited availability. Support is wider than it used to be: Safari 26 shipped scroll-driven animations, leaving Firefox as the remaining holdout, and the feature is an Interop 2026 focus area. It is still not Baseline, so provide static content by default and honor reduced motion. [MDN scroll-driven animations][ref-scroll-driven], [MDN animation-timeline][ref-animation-timeline], [WebKit scroll-driven animations][ref-webkit-sda], [Interop 2026 CSS focus areas][ref-interop-2026]
 
 ### `interpolate-size` and `calc-size()`
 
@@ -1070,7 +1070,22 @@ Validation: MDN marks `overscroll-behavior` as Limited availability and defines 
 }
 ```
 
-Validation: MDN marks `oklch()` as Baseline Widely available, with some support caveats, and defines it as the cylindrical form of Oklab using lightness, chroma, and hue coordinates. MDN documents relative color syntax as defining a color relative to another color, enabling programmatic lighter, darker, saturated, semi-transparent, or inverted variants. [MDN oklch()][ref-oklch], [MDN relative colors][ref-relative-colors]
+Validation: the two halves of this pattern do not share a status. MDN marks `oklch()` Baseline Widely available and defines it as the cylindrical form of Oklab using lightness, chroma, and hue coordinates. Relative color syntax, the `from` keyword that derives one color from another, is the newer half and reached Baseline later, so it should be treated as the part that needs a floor check. Write literal fallback tokens first when your floor is unclear:
+
+```css
+:root {
+  --brand: oklch(62% 0.18 265);
+  --brand-hover: oklch(55% 0.18 265);
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --brand-hover: oklch(from var(--brand) calc(l - 0.07) c h);
+  }
+}
+```
+
+[MDN oklch()][ref-oklch], [MDN relative colors][ref-relative-colors]
 
 ## 38. Quarantine vendor CSS with `@import ... layer()`
 
@@ -1433,21 +1448,21 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 | `pointer-events: none` does not prevent keyboard focus | Validated | [MDN pointer-events][ref-pointer-events] |
 | `:has()` is Baseline Widely available | Validated | [MDN :has][ref-has] |
 | Container queries are Baseline Widely available | Validated | [MDN container queries][ref-container-queries] |
-| Native CSS nesting is browser parsed; support should be checked | Validated | [MDN CSS nesting][ref-nesting], [Can I use CSS nesting][ref-caniuse-nesting] |
+| Native CSS nesting is browser parsed and Baseline Widely available since February 2026 (Newly available August 2023) | Updated | [MDN CSS nesting][ref-nesting], [web.dev Baseline][ref-webdev-baseline] |
 | `@layer` layer order can outrank selector specificity | Validated | [MDN @layer][ref-layer] |
 | `subgrid` is Baseline Widely available | Validated | [MDN subgrid][ref-subgrid] |
 | `color-mix()` is Baseline Widely available | Validated | [MDN color-mix()][ref-color-mix] |
 | Logical properties map to writing mode/direction | Validated | [MDN logical properties][ref-logical] |
 | `clamp()` sets min/preferred/max | Validated | [MDN clamp()][ref-clamp] |
 | `@supports` is feature-query CSS | Validated | [MDN @supports][ref-supports] |
-| `text-wrap` is Baseline 2024 Newly available | Validated | [MDN text-wrap][ref-text-wrap] |
+| `text-wrap` is Baseline 2024 Newly available, with varying support per value | Updated | [MDN text-wrap][ref-text-wrap] |
 | `light-dark()` is Baseline 2024 Newly available | Validated | [MDN light-dark()][ref-light-dark] |
 | `@scope` is Baseline 2026 Newly available (since March 2026) | Corrected from 2025 | [MDN @scope][ref-scope] |
 | `@starting-style` is Baseline 2024 Newly available | Validated | [MDN @starting-style][ref-starting-style] |
 | Core anchor positioning properties are Baseline 2026 Newly available | Updated from uploaded skill | [MDN anchor-name][ref-anchor-name], [MDN position-area][ref-position-area], [MDN position-try-fallbacks][ref-position-try-fallbacks] |
 | `contrast-color()` is Baseline 2026 Newly available and returns black/white | Validated | [MDN contrast-color()][ref-contrast-color] |
 | `accent-color` is Limited availability | Validated | [MDN accent-color][ref-accent-color] |
-| Scroll-driven `animation-timeline` is Limited availability | Validated | [MDN animation-timeline][ref-animation-timeline] |
+| Scroll-driven `animation-timeline` is Limited availability; Safari 26 ships it and Firefox does not | Updated | [MDN animation-timeline][ref-animation-timeline], [WebKit scroll-driven animations][ref-webkit-sda] |
 | `field-sizing` is Baseline 2026 Newly available | Updated from uploaded skill | [MDN field-sizing][ref-field-sizing] |
 | Container style queries are Baseline Newly available since May 2026 and can only test custom properties | Added | [MDN container queries][ref-container-queries], [web.dev platform update, May 2026][ref-webdev-0526] |
 | Name-only `@container` queries are Baseline Newly available since May 2026 | Added | [MDN @container][ref-container-at], [web.dev platform update, May 2026][ref-webdev-0526] |
@@ -1467,7 +1482,7 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 | `content-visibility` is Baseline 2024 Newly available; `contain-intrinsic-size` is Baseline Widely available | Added | [MDN content-visibility][ref-content-visibility], [MDN contain-intrinsic-size][ref-contain-intrinsic-size] |
 | `scroll-margin-top` is Baseline Widely available | Added | [MDN scroll-margin-top][ref-scroll-margin-top] |
 | `overscroll-behavior` is Limited availability | Added | [MDN overscroll-behavior][ref-overscroll-behavior] |
-| `oklch()` is Baseline Widely available; relative color syntax derives colors from another color | Added | [MDN oklch()][ref-oklch], [MDN relative colors][ref-relative-colors] |
+| `oklch()` is Baseline Widely available; relative color syntax is newer and carries its own status | Updated | [MDN oklch()][ref-oklch], [MDN relative colors][ref-relative-colors] |
 | `@import ... layer()` imports styles into cascade layers and must appear before normal declarations | Added | [MDN @import][ref-import] |
 | `:dir()` is Baseline Widely available | Added | [MDN :dir()][ref-dir] |
 | `:defined` is Baseline Widely available | Added | [MDN :defined][ref-defined] |
@@ -1546,6 +1561,8 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 [ref-text-box-trim]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-trim
 [ref-text-box-edge]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-edge
 [ref-attr]: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
+[ref-webdev-baseline]: https://web.dev/baseline
+[ref-webkit-sda]: https://webkit.org/blog/17101/a-guide-to-scroll-driven-animations-with-just-css
 [ref-webdev-0526]: https://web.dev/blog/web-platform-05-2026
 [ref-interop-2026]: https://css-tricks.com/interop-2026
 [ref-interpolate-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
