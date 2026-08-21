@@ -1,27 +1,27 @@
 <p align="center">
-  <img src="./assets/banner.svg" alt="CSS Pro-Tips: validated, Baseline-aware CSS guidance for AI coding agents" width="100%">
+  <img src="./assets/banner.svg" alt="CSS Pro-Tips: Baseline-aware CSS guidance for AI coding agents" width="100%">
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/css-pro-tips"><img alt="npm version" src="https://img.shields.io/npm/v/css-pro-tips?style=for-the-badge&color=14b8a6&labelColor=0f172a"></a>
-  <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-f59e0b?style=for-the-badge&labelColor=0f172a"></a>
-  <a href="https://web.dev/baseline"><img alt="Baseline aware" src="https://img.shields.io/badge/Baseline-aware-84cc16?style=for-the-badge&labelColor=0f172a"></a>
-  <a href="./SKILL.md"><img alt="SKILL.md format" src="https://img.shields.io/badge/format-SKILL.md-38bdf8?style=for-the-badge&labelColor=0f172a"></a>
-  <a href="https://github.com/elkaix"><img alt="Maintained by elkaix" src="https://img.shields.io/badge/maintainer-elkaix-ec4899?style=for-the-badge&labelColor=0f172a"></a>
-  <a href="https://github.com/Pythoughts-labs"><img alt="Pythoughts Labs organization" src="https://img.shields.io/badge/org-Pythoughts--labs-22c55e?style=for-the-badge&labelColor=0f172a"></a>
+  <a href="https://www.npmjs.com/package/css-pro-tips"><img alt="npm version" src="https://img.shields.io/npm/v/css-pro-tips?style=flat&color=14b8a6&labelColor=0f172a"></a>
+  <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-f59e0b?style=flat&labelColor=0f172a"></a>
+  <a href="https://web.dev/baseline"><img alt="Baseline aware" src="https://img.shields.io/badge/Baseline-aware-84cc16?style=flat&labelColor=0f172a"></a>
+  <a href="./SKILL.md"><img alt="SKILL.md format" src="https://img.shields.io/badge/format-SKILL.md-38bdf8?style=flat&labelColor=0f172a"></a>
+  <a href="https://github.com/elkaix"><img alt="Maintained by elkaix" src="https://img.shields.io/badge/maintainer-elkaix-ec4899?style=flat&labelColor=0f172a"></a>
+  <a href="https://github.com/PyModel"><img alt="PyModel organization" src="https://img.shields.io/badge/org-PyModel-22c55e?style=flat&labelColor=0f172a"></a>
 </p>
 
 <h1 align="center">CSS Pro-Tips</h1>
 
 <p align="center">
-  <strong>A source-validated modern CSS skill for AI coding agents.</strong><br>
-  Give Claude Code, Codex, Cursor, Pi, OpenCode, Kiro, or any <code>SKILL.md</code>-compatible agent a better CSS compass: current browser support, safer fallbacks, and practical patterns that replace old hacks with native CSS.
+  <strong>A source-checked modern CSS skill for AI coding agents.</strong><br>
+  Drop one file into Claude Code, Codex, Cursor, Pi, OpenCode, Kiro, or anything else that reads <code>SKILL.md</code>, and the agent writes CSS against what browsers actually support today instead of what was true in 2018.
 </p>
 
 <p align="center">
-  <a href="#quick-install">Quick install</a> |
+  <a href="#install">Install</a> |
   <a href="#whats-inside">What's inside</a> |
-  <a href="#agent-install-paths">Agent install paths</a> |
+  <a href="#where-the-file-goes">Where the file goes</a> |
   <a href="#verification">Verification</a>
 </p>
 
@@ -29,91 +29,62 @@
 
 ## Why it exists
 
-AI agents often mix timeless CSS patterns with outdated advice: float clearfixes, padding-ratio boxes, `100vh` mobile bugs, blanket resets, pointer-only interactions, and unguarded experimental features.
+Ask an agent for CSS and you often get a mix of good habits and museum pieces: float clearfixes, padding-hack aspect ratios, `100vh` that breaks on mobile Safari, blanket resets, hover-only interactions, and experimental properties used with no fallback.
 
-`css-pro-tips` gives an agent one curated CSS reference that is:
-
-- **Baseline-aware:** modern CSS is bucketed by MDN Baseline status and support risk.
-- **Fallback-first:** limited or audience-dependent features ship behind `@supports`.
-- **Practical:** reset, layout, selector, focus, media, token, and modernization patterns are written as usable guidance.
-- **Source-bound:** compatibility claims link back to MDN, web.dev Baseline, Can I use, or the relevant web-platform reference.
+This package gives the agent one reference to check against. Every compatibility claim in it is bucketed by MDN Baseline status and links back to MDN, web.dev, Can I use, or the spec. Features with limited support are wrapped in `@supports` rather than assumed.
 
 ## What's inside
 
-A single self-contained skill: [`SKILL.md`](./SKILL.md).
+One file: [`SKILL.md`](./SKILL.md).
 
 | Layer | What the agent gets | Examples |
 |---|---|---|
 | Evergreen CSS | Patterns that still hold up | `box-sizing`, `:not()`, `:is()`, `:where()`, `aspect-ratio`, `gap`, logical properties |
 | Baseline widely available | Normal production CSS for evergreen targets | `:has()`, container queries, native nesting, `@layer`, `subgrid`, `color-mix()`, `clamp()` |
-| Baseline newly available | Useful features that still need audience checks | `text-wrap`, `light-dark()`, `@scope`, `@starting-style`, anchor positioning, `field-sizing` |
-| Limited availability | Enhancement-only features | `accent-color`, scroll-driven animations, `interpolate-size`, `calc-size()`, discrete transitions |
-| Modern additions | Current CSS tricks with caveats | `@property`, container units, popovers, `scrollbar-gutter`, `content-visibility`, View Transitions, custom highlights |
-| Modernization guide | Replacements for older tips | padding-ratio boxes, `max-height` disclosure, global owl selectors, strict `local()` fonts |
+| Baseline newly available | Useful, but check your audience first | `text-wrap`, `light-dark()`, `@scope`, `@starting-style`, anchor positioning, `field-sizing` |
+| Limited availability | Enhancement only, never load-bearing | `accent-color`, scroll-driven animations, `interpolate-size`, `calc-size()`, discrete transitions |
+| Modern additions | Newer tricks with their caveats attached | `@property`, container units, popovers, `scrollbar-gutter`, `content-visibility`, View Transitions, custom highlights |
+| Modernization guide | What replaced the old advice | padding-ratio boxes, `max-height` disclosure, global owl selectors, strict `local()` fonts |
 
-## Quick install
+## Install
 
 ```bash
 npm install css-pro-tips
 ```
 
-Then copy `SKILL.md` into your agent's skill directory:
-
-```bash
-mkdir -p ~/.codex/skills/css-protips
-cp node_modules/css-pro-tips/SKILL.md ~/.codex/skills/css-protips/
-```
-
-No npm? Download [`SKILL.md`](./SKILL.md) directly and place it in the same destination.
-
-## Agent install paths
-
-### Claude Code
+Then copy `SKILL.md` into your agent's skill directory. For Claude Code:
 
 ```bash
 mkdir -p ~/.claude/skills/css-protips
 cp node_modules/css-pro-tips/SKILL.md ~/.claude/skills/css-protips/
 ```
 
-For project-scoped use, place it at `.claude/skills/css-protips/SKILL.md`.
+If you would rather not use npm, download [`SKILL.md`](./SKILL.md) and copy it to the same place.
 
-### OpenAI Codex CLI
-
-```bash
-mkdir -p ~/.codex/skills/css-protips
-cp node_modules/css-pro-tips/SKILL.md ~/.codex/skills/css-protips/
-```
-
-For a team repo, check it into `.agents/skills/css-protips/SKILL.md`. Codex recognizes any directory containing a file named exactly `SKILL.md`.
-
-### OpenCode
+To update later, run `npm update css-pro-tips` and copy the file again. On macOS or Linux you can symlink it once and skip the copying:
 
 ```bash
-mkdir -p .opencode/skills/css-protips
-cp node_modules/css-pro-tips/SKILL.md .opencode/skills/css-protips/
+ln -sf "$(pwd)/node_modules/css-pro-tips/SKILL.md" ~/.claude/skills/css-protips/SKILL.md
 ```
 
-OpenCode also reads `.claude/skills/` and `.agents/skills/`, so a repo-local Claude or Codex install can be reused.
+## Where the file goes
 
-### Pi (`@earendil-works/pi-coding-agent`)
+| Agent | Destination |
+|---|---|
+| Claude Code | `~/.claude/skills/css-protips/SKILL.md`, or `.claude/skills/...` for one project |
+| Codex CLI | `~/.codex/skills/css-protips/SKILL.md`, or `.agents/skills/...` to commit it to a repo |
+| OpenCode | `.opencode/skills/css-protips/SKILL.md`, and it also reads `.claude/skills/` and `.agents/skills/` |
+| Pi | `~/.pi/skills/css-protips/SKILL.md`, then call `/skill:css-protips` in a session |
+| Kiro | `.kiro/steering/css-protips.md`, or `~/.kiro/steering/` for a global install |
 
-```bash
-mkdir -p ~/.pi/skills/css-protips
-cp node_modules/css-pro-tips/SKILL.md ~/.pi/skills/css-protips/
-```
-
-Invoke it in a session with `/skill:css-protips`.
-
-### Cursor
-
-Cursor uses rules (`.mdc`) instead of `SKILL.md`. Copy the skill into a rule file:
+Cursor is the odd one out, since it uses `.mdc` rules rather than `SKILL.md`:
 
 ```bash
 mkdir -p .cursor/rules
 cp node_modules/css-pro-tips/SKILL.md .cursor/rules/css-protips.mdc
 ```
 
-Add this frontmatter to `.cursor/rules/css-protips.mdc`:
+Then add frontmatter at the top of that file:
 
 ```mdc
 ---
@@ -123,51 +94,27 @@ alwaysApply: false
 ---
 ```
 
-### Kiro
-
-Kiro uses steering files:
-
-```bash
-mkdir -p .kiro/steering
-cp node_modules/css-pro-tips/SKILL.md .kiro/steering/css-protips.md
-```
-
-Use `~/.kiro/steering/` for a global install.
-
-## Updating
-
-```bash
-npm update css-pro-tips
-# then re-copy SKILL.md into your agent's skills dir
-```
-
-To track this repo directly on macOS or Linux:
-
-```bash
-ln -sf "$(pwd)/node_modules/css-pro-tips/SKILL.md" ~/.codex/skills/css-protips/SKILL.md
-```
-
 ## Verification
 
-- Current package version: [`1.1.1`](./package.json)
-- Last documented validation window: July 2026
+- Package version: [`1.1.1`](./package.json)
+- Last validation window: July 2026
 - Compatibility model: [MDN Baseline](https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility)
 - Change history: [`CHANGELOG.md`](./CHANGELOG.md)
 
-Baseline is a browser-compatibility signal. It does not replace accessibility, keyboard, contrast, motion, performance, or project-specific browser testing.
+Baseline tells you whether browsers support a feature. It says nothing about whether your CSS is accessible, keyboard-usable, readable at your contrast ratio, or fast on the devices your users own. Test for those separately.
 
 ## Contributing
 
-Pull requests are welcome. When adding or changing a modern CSS claim:
+Pull requests are welcome. If you add or change a compatibility claim:
 
-1. Cite the Baseline status or compatibility source.
-2. Keep fallbacks for limited or audience-dependent features.
-3. Put superseded tricks in the modernization section instead of deleting useful history.
-4. Keep examples small enough for an agent to reuse without cargo-culting a whole component.
+1. Cite the Baseline status or the compatibility source.
+2. Keep the `@supports` fallback for anything with limited or audience-dependent support.
+3. Move superseded tricks into the modernization section rather than deleting them, since knowing why an old pattern existed is useful.
+4. Keep examples small. An agent should be able to reuse a snippet without pasting an entire component.
 
 ## Maintainer
 
-Created and maintained by **Mohamed Elkholy** ([elkaix](https://github.com/elkaix)) under the [Pythoughts Labs](https://github.com/Pythoughts-labs) organization.
+Built and maintained by Mohamed Elkholy ([elkaix](https://github.com/elkaix)) under the [PyModel](https://github.com/PyModel) organization.
 
 ## License
 
