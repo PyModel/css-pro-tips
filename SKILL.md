@@ -1627,6 +1627,27 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 
 ---
 
+# Tailwind v4 mapping
+
+Tailwind v4 compiles to native CSS features rather than emulating them, so everything in this skill applies directly inside a Tailwind project. The mapping that matters:
+
+| Tailwind v4 | Native CSS it emits or relies on | Notes |
+|---|---|---|
+| `@theme { --color-brand: oklch(62% 0.18 265); }` | Custom properties, `oklch()` | Theme variables are real custom properties, so relative color syntax and `color-mix()` work on them at runtime |
+| `@import "tailwindcss"` | `@layer theme, base, components, utilities` | Tailwind's layers are native cascade layers, so `@layer` ordering rules from this skill apply |
+| `@utility` and `@variant` | Plain selectors and at-rules | Custom utilities are ordinary CSS; write them with the patterns here |
+| `@custom-variant dark (&:where(.dark, .dark *))` | `:where()` zero specificity | Keeps variants from winning specificity fights |
+| Nested rules in `.css` files | Native CSS nesting | Parsed by the browser, Baseline Widely available since February 2026 |
+| `@container` and `@container/name` variants | Container queries | Named containers, size queries, and style queries behave exactly as documented above |
+
+Two rules for agents working in Tailwind:
+
+1. Utilities do not change the compatibility question. A `field-sizing-content` or `text-balance` utility emits the same property with the same support story, so the `@supports` guidance in this skill still applies. Write the guard in a CSS file rather than trying to express it as a utility.
+2. Prefer a theme variable over an arbitrary value when a value repeats. `bg-[oklch(62%_0.18_265)]` scattered across a codebase is the token problem this skill's `oklch()` pattern exists to avoid.
+
+Validation: Tailwind v4's documentation describes the CSS-first configuration (`@theme`, `@utility`, `@variant`) and states that v4 is built on native cascade layers, registered custom properties, and `color-mix()`. [Tailwind theme variables][ref-tw-theme], [Tailwind functions and directives][ref-tw-directives]
+
+
 # Validation matrix
 
 | Claim / pattern | Status | Reference |
@@ -1713,6 +1734,8 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 # Reference index
 
 [ref-baseline]: https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
+[ref-tw-theme]: https://tailwindcss.com/docs/theme
+[ref-tw-directives]: https://tailwindcss.com/docs/functions-and-directives
 [ref-supports]: https://developer.mozilla.org/en-US/docs/Web/CSS/@supports
 [ref-box-sizing]: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing
 [ref-all]: https://developer.mozilla.org/en-US/docs/Web/CSS/all
