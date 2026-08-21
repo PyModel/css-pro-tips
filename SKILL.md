@@ -1464,6 +1464,103 @@ Also on the watchlist, shipping in one engine or newly landed as of August 2026:
 Validation: MDN marks `if()`, `@function`, `sibling-index()`, `sibling-count()`, and `overflow-clip-margin` as Limited availability. `overflow` itself is Baseline Widely available, but `overflow-clip-margin` is not; gate the extra clip-edge polish behind `@supports`. The items in the list above are single-engine or freshly shipped, so treat them the same way: build the working version first, then layer these on. [MDN if()][ref-if], [MDN @function][ref-function], [MDN sibling-index()][ref-sibling-index], [MDN sibling-count()][ref-sibling-count], [MDN overflow][ref-overflow], [MDN overflow-clip-margin][ref-overflow-clip-margin], [web.dev platform update, January 2026][ref-webdev-0126], [web.dev platform update, May 2026][ref-webdev-0526]
 
 
+# Respect user preferences
+
+Baseline tells you what a browser can parse. It says nothing about whether the result works for the person looking at it. These four media features are the highest-leverage accessibility defaults an agent can apply, and all of them are Baseline Widely available.
+
+## 50. Treat reduced motion as the default for large movement
+
+```css
+.panel {
+  transition: translate 0.25s ease, opacity 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition-duration: 1ms;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+Reduce motion, do not delete feedback. A state change that only animation communicated needs another cue, such as an opacity change or a text label. Vestibular triggers are large translations, parallax, scale changes, and spin, not fades.
+
+Validation: MDN documents `prefers-reduced-motion` as detecting a user request for reduced motion, and marks it Baseline Widely available. [MDN prefers-reduced-motion][ref-reduced-motion]
+
+## 51. Adapt to `prefers-contrast` instead of hard-coding one contrast level
+
+```css
+.button {
+  background: oklch(62% 0.18 265);
+  color: white;
+  border: 1px solid transparent;
+}
+
+@media (prefers-contrast: more) {
+  .button {
+    background: #10214a;
+    border-color: currentColor;
+  }
+}
+
+@media (prefers-contrast: less) {
+  .button {
+    background: oklch(72% 0.09 265);
+  }
+}
+```
+
+Validation: MDN documents `prefers-contrast` with `no-preference`, `more`, `less`, and `custom` values, and marks it Baseline Widely available. Meet WCAG contrast in the default rules; use `more` to strengthen borders and separators that were carrying meaning through subtle color alone. [MDN prefers-contrast][ref-prefers-contrast]
+
+## 52. Survive forced colors with system color keywords
+
+```css
+.badge {
+  background: var(--brand);
+  color: white;
+  border: 1px solid transparent;
+}
+
+@media (forced-colors: active) {
+  .badge {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+```
+
+In forced-colors mode the browser replaces your palette with the user's. Backgrounds on images, box-shadow outlines, and color-only state indicators disappear. Re-express those with borders, underlines, or text. Reach for `forced-color-adjust: none` only on an element whose colors you have deliberately rebuilt from system keywords.
+
+Validation: MDN documents `forced-colors` as detecting an active forced color palette and lists the system color keywords (`Canvas`, `CanvasText`, `LinkText`, `ButtonFace`, `ButtonText`, `AccentColor`, `Highlight`) that map into it. Both are Baseline Widely available. [MDN forced-colors][ref-forced-colors], [MDN forced-color-adjust][ref-forced-color-adjust], [MDN system colors][ref-system-colors]
+
+## 53. Drop decorative transparency when it is not wanted
+
+```css
+.overlay {
+  background: rgb(20 24 31 / 0.72);
+  backdrop-filter: blur(12px);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .overlay {
+    background: rgb(20 24 31);
+    backdrop-filter: none;
+  }
+}
+```
+
+Validation: MDN documents `prefers-reduced-transparency` as detecting a request to minimize transparent or translucent effects. Blur behind text is the usual offender, since it lowers effective contrast in a way a static contrast check will not catch. [MDN prefers-reduced-transparency][ref-reduced-transparency]
+
+
 # Retire or modernize older tips
 
 ## Replace padding-hack ratio boxes with `aspect-ratio`
@@ -1601,6 +1698,10 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 | `view-transition-name` and `::view-transition-old()` are Baseline 2025 Newly available; cross-document `@view-transition` is Limited availability | Added | [MDN view-transition-name][ref-view-transition-name], [MDN ::view-transition-old()][ref-view-transition-old], [MDN @view-transition][ref-view-transition-at] |
 | `::highlight()` is Baseline 2026 Newly available and supports only a limited text-oriented property set | Added | [MDN ::highlight()][ref-highlight] |
 | `scripting` media feature is Baseline 2023 Newly available | Added | [MDN scripting][ref-scripting] |
+| `prefers-reduced-motion` is Baseline Widely available | Added | [MDN prefers-reduced-motion][ref-reduced-motion] |
+| `prefers-contrast` is Baseline Widely available with `more`, `less`, and `custom` values | Added | [MDN prefers-contrast][ref-prefers-contrast] |
+| `forced-colors` and system color keywords are Baseline Widely available | Added | [MDN forced-colors][ref-forced-colors], [MDN forced-color-adjust][ref-forced-color-adjust], [MDN system colors][ref-system-colors] |
+| `prefers-reduced-transparency` detects a request to reduce translucent effects | Added | [MDN prefers-reduced-transparency][ref-reduced-transparency] |
 | Container scroll-state queries are documented for `scrollable`, `scrolled`, `snapped`, and `stuck` states | Added | [MDN scroll-state queries][ref-scroll-state-queries] |
 | `round()` is Baseline 2024 Newly available | Added | [MDN round()][ref-round] |
 | `line-clamp` is Limited availability; legacy `-webkit-line-clamp` behavior is fully specified | Added | [MDN line-clamp][ref-line-clamp] |
@@ -1719,6 +1820,11 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 [ref-env]: https://developer.mozilla.org/en-US/docs/Web/CSS/env
 [ref-scripting]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting
 [ref-reduced-motion]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
+[ref-prefers-contrast]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast
+[ref-forced-colors]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+[ref-forced-color-adjust]: https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust
+[ref-system-colors]: https://developer.mozilla.org/en-US/docs/Web/CSS/system-color
+[ref-reduced-transparency]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency
 [ref-round]: https://developer.mozilla.org/en-US/docs/Web/CSS/round
 [ref-if]: https://developer.mozilla.org/en-US/docs/Web/CSS/if
 [ref-function]: https://developer.mozilla.org/en-US/docs/Web/CSS/@function
