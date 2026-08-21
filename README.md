@@ -41,9 +41,11 @@ One file: [`SKILL.md`](./SKILL.md).
 |---|---|---|
 | Evergreen CSS | Patterns that still hold up | `box-sizing`, `:not()`, `:is()`, `:where()`, `aspect-ratio`, `gap`, logical properties |
 | Baseline widely available | Normal production CSS for evergreen targets | `:has()`, container queries, native nesting, `@layer`, `subgrid`, `color-mix()`, `clamp()` |
-| Baseline newly available | Useful, but check your audience first | `text-wrap`, `light-dark()`, `@scope`, `@starting-style`, anchor positioning, `field-sizing` |
-| Limited availability | Enhancement only, never load-bearing | `accent-color`, scroll-driven animations, `interpolate-size`, `calc-size()`, discrete transitions |
+| Baseline newly available | Useful, but check your audience first | `text-wrap`, `light-dark()`, `@scope`, `@starting-style`, anchor positioning, `field-sizing`, container style queries, `:open`, `text-box-trim` |
+| Limited availability | Enhancement only, never load-bearing | `accent-color`, scroll-driven animations, `interpolate-size`, `calc-size()`, typed `attr()`, customizable `<select>`, `shape()` |
 | Modern additions | Newer tricks with their caveats attached | `@property`, container units, popovers, `scrollbar-gutter`, `content-visibility`, View Transitions, custom highlights |
+| User preferences | Accessibility defaults the agent should apply | `prefers-reduced-motion`, `prefers-contrast`, `forced-colors`, `prefers-reduced-transparency` |
+| Tailwind v4 | How the patterns map onto v4's CSS-first config | `@theme`, `@utility`, `@custom-variant`, native layers |
 | Modernization guide | What replaced the old advice | padding-ratio boxes, `max-height` disclosure, global owl selectors, strict `local()` fonts |
 
 ## Install
@@ -96,8 +98,8 @@ alwaysApply: false
 
 ## Verification
 
-- Package version: [`1.1.1`](./package.json)
-- Last validation window: July 2026
+- Package version: [`1.2.0`](./package.json)
+- Last validation window: August 2026
 - Compatibility model: [MDN Baseline](https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility)
 - Change history: [`CHANGELOG.md`](./CHANGELOG.md)
 

@@ -1,6 +1,6 @@
 {
   "name": "css-pro-tips",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A validated, Baseline-aware modern CSS design-system skill for AI coding agents (Claude Code, Codex, Cursor, Pi, OpenCode, Kiro, and any SKILL.md-compatible agent).",
   "keywords": [
     "css",
