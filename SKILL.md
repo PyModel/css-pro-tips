@@ -629,7 +629,7 @@ Validation: MDN marks `light-dark()` Baseline 2024 Newly available. It returns o
 }
 ```
 
-Validation: MDN marks `@scope` Baseline 2025 Newly available and describes it as limiting selectors to specific DOM subtrees without requiring over-specific selectors. [MDN @scope][ref-scope]
+Validation: MDN marks `@scope` Baseline 2026 Newly available, since March 2026, and describes it as limiting selectors to specific DOM subtrees without requiring over-specific selectors. [MDN @scope][ref-scope]
 
 ### `@starting-style`
 
@@ -1366,7 +1366,7 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 | `@supports` is feature-query CSS | Validated | [MDN @supports][ref-supports] |
 | `text-wrap` is Baseline 2024 Newly available | Validated | [MDN text-wrap][ref-text-wrap] |
 | `light-dark()` is Baseline 2024 Newly available | Validated | [MDN light-dark()][ref-light-dark] |
-| `@scope` is Baseline 2025 Newly available | Validated | [MDN @scope][ref-scope] |
+| `@scope` is Baseline 2026 Newly available (since March 2026) | Corrected from 2025 | [MDN @scope][ref-scope] |
 | `@starting-style` is Baseline 2024 Newly available | Validated | [MDN @starting-style][ref-starting-style] |
 | Core anchor positioning properties are Baseline 2026 Newly available | Updated from uploaded skill | [MDN anchor-name][ref-anchor-name], [MDN position-area][ref-position-area], [MDN position-try-fallbacks][ref-position-try-fallbacks] |
 | `contrast-color()` is Baseline 2026 Newly available and returns black/white | Validated | [MDN contrast-color()][ref-contrast-color] |
