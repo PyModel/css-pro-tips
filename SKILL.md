@@ -20,6 +20,23 @@ Use this skill when writing, reviewing, or modernizing CSS. Prefer the “Valida
 
 References: [MDN Baseline][ref-baseline], [MDN @supports][ref-supports].
 
+## Validation window and status review dates
+
+Statuses in this file were verified against live MDN Baseline banners, MDN browser-compat-data, and web.dev platform updates in **August 2026**.
+
+Several statuses flip on known dates. Check these lines first when revalidating:
+
+| Feature | Current status | Next expected change |
+|---|---|---|
+| `light-dark()` | Baseline Newly available, May 2024 | Widely available around November 2026 |
+| `transition-behavior` | Baseline Newly available, August 2024 | Widely available around February 2027 |
+| `@scope` | Baseline Newly available, March 2026 | Widely available around September 2028 |
+| Anchor positioning | Baseline Newly available, January 2026 | Widely available around July 2028 |
+| `field-sizing` | Baseline Newly available, June 2026 | Widely available around December 2028 |
+| Container style queries, name-only container queries, `:open` | Baseline Newly available, May 2026 | Widely available around November 2028 |
+| Scroll-driven animations | Limited, Firefox pending | Baseline whenever Firefox ships |
+| `text-box-trim` | Chrome 133+, Safari 18.2+, Firefox 154+ | Baseline once the Firefox release is counted |
+
 ---
 
 # Key corrections from the uploaded skill
@@ -30,11 +47,11 @@ References: [MDN Baseline][ref-baseline], [MDN @supports][ref-supports].
 | Anchor positioning | Update from “Limited availability” to **Baseline 2026 Newly available** for core properties such as `anchor-name`, `position-area`, and `position-try-fallbacks`; still verify support floor and keep fallbacks for older audiences. | MDN now marks key anchor-positioning properties as Baseline 2026 Newly available. [MDN anchor-name][ref-anchor-name], [MDN position-area][ref-position-area], [MDN position-try-fallbacks][ref-position-try-fallbacks] |
 | `field-sizing` | Update from “Limited availability” to **Baseline 2026 Newly available**; still use a fallback if your browser floor includes older browsers. | MDN marks `field-sizing` as Baseline 2026 Newly available. [MDN field-sizing][ref-field-sizing] |
 | `accent-color` | Keep as **Limited availability**. Use as a progressive enhancement, not as the only brand-control styling mechanism. | MDN marks `accent-color` Limited availability. [MDN accent-color][ref-accent-color] |
-| Scroll-driven animations | Keep as **progressive enhancement**. `animation-timeline` remains Limited availability. | MDN marks `animation-timeline` Limited availability. [MDN animation-timeline][ref-animation-timeline] |
+| Scroll-driven animations | Keep as **progressive enhancement**. `animation-timeline` remains Limited availability, though Safari 26 now ships it and only Firefox is missing. | MDN marks `animation-timeline` Limited availability. [MDN animation-timeline][ref-animation-timeline], [WebKit scroll-driven animations][ref-webkit-sda] |
 | `interpolate-size` / `calc-size()` | Keep as progressive enhancement. Do not treat native `height: auto` interpolation as Baseline. | MDN marks `interpolate-size` and `calc-size()` Limited availability/experimental. [MDN interpolate-size][ref-interpolate-size], [MDN calc-size][ref-calc-size] |
 | `transition-behavior` | Use it for discrete transitions such as `display`; it does **not** by itself interpolate `height: 0` to `height: auto`. | MDN defines `transition-behavior` as enabling transitions for discrete animation properties. [MDN transition-behavior][ref-transition-behavior] |
 | Generated-content commas/empty-link URLs | Keep only with accessibility/copy-paste caveats. Generated text from `content` may not behave like real DOM text. | MDN documents generated/replaced content and the `attr()` function, including accessibility-oriented alt text syntax. [MDN content][ref-content] |
-| Native CSS nesting | Keep for modern evergreen projects after checking support floor. Can I use shows broad but not universal support; MDN confirms browser-native parsing, not preprocessor compilation. | [Can I use CSS nesting][ref-caniuse-nesting], [MDN CSS nesting][ref-nesting] |
+| Native CSS nesting | Use it as normal production CSS. It reached Baseline Newly available in August 2023 and Widely available in February 2026; MDN confirms browser-native parsing, not preprocessor compilation. | [web.dev Baseline][ref-webdev-baseline], [MDN CSS nesting][ref-nesting] |
 
 ---
 
@@ -1834,13 +1851,11 @@ Validation: Tailwind v4's documentation describes the CSS-first configuration (`
 [ref-dir]: https://developer.mozilla.org/en-US/docs/Web/CSS/:dir
 [ref-defined]: https://developer.mozilla.org/en-US/docs/Web/CSS/:defined
 [ref-state]: https://developer.mozilla.org/en-US/docs/Web/CSS/:state
-[ref-view-transitions]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_view_transitions
 [ref-view-transition-name]: https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-name
 [ref-view-transition-old]: https://developer.mozilla.org/en-US/docs/Web/CSS/::view-transition-old
 [ref-view-transition-at]: https://developer.mozilla.org/en-US/docs/Web/CSS/@view-transition
 [ref-oklch]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch
 [ref-relative-colors]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors
-[ref-env]: https://developer.mozilla.org/en-US/docs/Web/CSS/env
 [ref-scripting]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting
 [ref-reduced-motion]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
 [ref-prefers-contrast]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast
