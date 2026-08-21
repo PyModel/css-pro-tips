@@ -846,6 +846,84 @@ Validation: MDN marks `transition-behavior` Baseline 2024 Newly available and de
 
 Validation: `attr()` outside the `content` property is not Baseline. The typed form reads an attribute as a real CSS type with a fallback value, and it currently ships in Chromium while remaining an Interop 2026 focus area. Declare the plain value first and gate the typed version. [MDN attr()][ref-attr], [Interop 2026 CSS focus areas][ref-interop-2026]
 
+### Customizable `<select>`
+
+```css
+/* Native select stays intact for every browser that ignores these rules. */
+select {
+  font: inherit;
+}
+
+@supports (appearance: base-select) {
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+
+  ::picker(select) {
+    border: 1px solid CanvasText;
+    border-radius: 0.5rem;
+  }
+}
+```
+
+Validation: `appearance: base-select` and the `::picker(select)` pseudo-element opt a select into a stylable rendering while keeping native semantics and keyboard behavior. It ships in Chromium from Chrome 135, with listbox support following in Chrome 145, and is not Baseline. Never rebuild a select out of divs to get the styling; gate the opt-in and let other browsers keep the platform control. [MDN appearance][ref-appearance], [MDN ::picker()][ref-picker]
+
+### `shape()` for `clip-path`
+
+```css
+.blob {
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+}
+
+@supports (clip-path: shape(from 0 0, line to 100% 0)) {
+  .blob {
+    clip-path: shape(
+      from 0 0,
+      line to 100% 0,
+      curve to 100% 80% with 60% 40%,
+      line to 0 100%,
+      close
+    );
+  }
+}
+```
+
+Validation: `shape()` describes a clip path with a path-like command list that accepts CSS units, `calc()`, and custom properties, which `path()` does not. It is an Interop 2026 focus area and is not Baseline, so keep a `polygon()` fallback. [MDN shape()][ref-shape], [Interop 2026 CSS focus areas][ref-interop-2026]
+
+### `corner-shape`
+
+```css
+.card {
+  border-radius: 1.5rem;
+}
+
+@supports (corner-shape: squircle) {
+  .card {
+    corner-shape: squircle;
+  }
+}
+```
+
+Validation: `corner-shape` changes how `border-radius` corners are drawn, including superellipse and squircle curves. It shipped in Chrome 139 and is not Baseline. Corners fall back to normal rounding, so this is a safe enhancement. [MDN corner-shape][ref-corner-shape]
+
+### Media state pseudo-classes
+
+```css
+video:paused::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.35);
+}
+
+video:buffering {
+  cursor: progress;
+}
+```
+
+Validation: `:playing`, `:paused`, `:muted`, `:volume-locked`, `:buffering`, `:seeking`, and `:stalled` match media element state without a JavaScript event listener. They are an Interop 2026 focus area rather than Baseline, so drive any state your UI depends on from script and use these for polish. [MDN :playing][ref-playing], [MDN :buffering][ref-buffering], [Interop 2026 CSS focus areas][ref-interop-2026]
+
 ---
 
 
@@ -1187,7 +1265,27 @@ For same-document transitions, a stable `view-transition-name` lets an element a
 }
 ```
 
-Validation: MDN marks `view-transition-name` and `::view-transition-old()` as Baseline 2025 Newly available and says `view-transition-name` specifies the snapshot an element participates in so it can animate separately from the default cross-fade. Cross-document `@view-transition` is still Limited availability, so keep that opt-in progressive. [MDN view-transition-name][ref-view-transition-name], [MDN ::view-transition-old()][ref-view-transition-old], [MDN @view-transition][ref-view-transition-at], [MDN prefers-reduced-motion][ref-reduced-motion]
+Two additions make larger transitions manageable. `view-transition-class` groups snapshots so one rule styles many named elements, and transition types let a single page describe different animations for different navigations.
+
+```css
+.product-card__image {
+  view-transition-class: card-media;
+}
+
+/* One rule for every snapshot in the group. */
+::view-transition-group(.card-media) {
+  animation-timing-function: ease-out;
+}
+
+/* Only when the transition was started with the "forward" type. */
+html:active-view-transition-type(forward) {
+  &::view-transition-old(root) {
+    animation-name: slide-out-left;
+  }
+}
+```
+
+Validation: MDN marks `view-transition-name` and `::view-transition-old()` as Baseline 2025 Newly available and says `view-transition-name` specifies the snapshot an element participates in so it can animate separately from the default cross-fade. Firefox 147 added same-document view-transition types in January 2026, and `view-transition-class` styles a group of snapshots at once. Cross-document `@view-transition` is still Limited availability, so keep that opt-in progressive. [MDN view-transition-name][ref-view-transition-name], [MDN ::view-transition-old()][ref-view-transition-old], [MDN view-transition-class][ref-view-transition-class], [MDN :active-view-transition-type()][ref-active-vt-type], [MDN @view-transition][ref-view-transition-at], [MDN prefers-reduced-motion][ref-reduced-motion], [web.dev platform update, January 2026][ref-webdev-0126]
 
 ## 43. Style search and editor ranges with `::highlight()`
 
@@ -1355,7 +1453,15 @@ These are genuinely cool, but not baseline-safe. Keep them in experiments, demos
 }
 ```
 
-Validation: MDN marks `if()`, `@function`, `sibling-index()`, `sibling-count()`, and `overflow-clip-margin` as Limited availability. `overflow` itself is Baseline Widely available, but `overflow-clip-margin` is not; gate the extra clip-edge polish behind `@supports`. [MDN if()][ref-if], [MDN @function][ref-function], [MDN sibling-index()][ref-sibling-index], [MDN sibling-count()][ref-sibling-count], [MDN overflow][ref-overflow], [MDN overflow-clip-margin][ref-overflow-clip-margin]
+Also on the watchlist, shipping in one engine or newly landed as of August 2026:
+
+- Interest invokers (`interesttarget`) for hover and focus triggered popovers, which remove a common JavaScript hover-card implementation.
+- `::search-text` for styling find-in-page matches, and `caret-shape` for block or underscore carets, both from Chrome 144.
+- Gap decorations (`column-rule` and `row-rule` on grid and flex containers) and `shape-outside` accepting `path()`, `rect()`, and `xywh()`, from Chrome 149.
+- Multi-column `column-wrap` and `column-height` for wrapping column layouts.
+- Standardized `zoom`, carried through Interop 2025 into 2026.
+
+Validation: MDN marks `if()`, `@function`, `sibling-index()`, `sibling-count()`, and `overflow-clip-margin` as Limited availability. `overflow` itself is Baseline Widely available, but `overflow-clip-margin` is not; gate the extra clip-edge polish behind `@supports`. The items in the list above are single-engine or freshly shipped, so treat them the same way: build the working version first, then layer these on. [MDN if()][ref-if], [MDN @function][ref-function], [MDN sibling-index()][ref-sibling-index], [MDN sibling-count()][ref-sibling-count], [MDN overflow][ref-overflow], [MDN overflow-clip-margin][ref-overflow-clip-margin], [web.dev platform update, January 2026][ref-webdev-0126], [web.dev platform update, May 2026][ref-webdev-0526]
 
 
 # Retire or modernize older tips
@@ -1469,6 +1575,11 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 | `:open` is Baseline Newly available since May 2026 | Added | [MDN :open][ref-open], [web.dev platform update, May 2026][ref-webdev-0526] |
 | `text-box-trim` / `text-box-edge` ship in Chrome 133+, Safari 18.2+, Firefox 154+ | Added | [MDN text-box][ref-text-box], [MDN text-box-trim][ref-text-box-trim], [MDN text-box-edge][ref-text-box-edge] |
 | Typed `attr()` is not Baseline, ships in Chromium, and is an Interop 2026 focus area | Added | [MDN attr()][ref-attr], [Interop 2026 CSS focus areas][ref-interop-2026] |
+| `appearance: base-select` and `::picker(select)` are Chromium-only and not Baseline | Added | [MDN appearance][ref-appearance], [MDN ::picker()][ref-picker] |
+| `shape()` for `clip-path` is not Baseline and is an Interop 2026 focus area | Added | [MDN shape()][ref-shape], [Interop 2026 CSS focus areas][ref-interop-2026] |
+| `corner-shape` shipped in Chrome 139 and is not Baseline | Added | [MDN corner-shape][ref-corner-shape] |
+| Media state pseudo-classes such as `:paused` and `:buffering` are not Baseline | Added | [MDN :playing][ref-playing], [MDN :buffering][ref-buffering] |
+| `view-transition-class` groups snapshots; same-document view-transition types landed in Firefox 147 | Added | [MDN view-transition-class][ref-view-transition-class], [MDN :active-view-transition-type()][ref-active-vt-type], [web.dev platform update, January 2026][ref-webdev-0126] |
 | `interpolate-size` / `calc-size()` are not Baseline | Validated | [MDN interpolate-size][ref-interpolate-size], [MDN calc-size][ref-calc-size] |
 | `transition-behavior` is for discrete transitions | Validated | [MDN transition-behavior][ref-transition-behavior] |
 | `mask` supports CSS masking for icons | Validated | [MDN mask][ref-mask] |
@@ -1563,6 +1674,15 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 [ref-attr]: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
 [ref-webdev-baseline]: https://web.dev/baseline
 [ref-webkit-sda]: https://webkit.org/blog/17101/a-guide-to-scroll-driven-animations-with-just-css
+[ref-appearance]: https://developer.mozilla.org/en-US/docs/Web/CSS/appearance
+[ref-picker]: https://developer.mozilla.org/en-US/docs/Web/CSS/::picker
+[ref-shape]: https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/shape
+[ref-corner-shape]: https://developer.mozilla.org/en-US/docs/Web/CSS/corner-shape
+[ref-playing]: https://developer.mozilla.org/en-US/docs/Web/CSS/:playing
+[ref-buffering]: https://developer.mozilla.org/en-US/docs/Web/CSS/:buffering
+[ref-view-transition-class]: https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-class
+[ref-active-vt-type]: https://developer.mozilla.org/en-US/docs/Web/CSS/:active-view-transition-type
+[ref-webdev-0126]: https://web.dev/blog/web-platform-01-2026
 [ref-webdev-0526]: https://web.dev/blog/web-platform-05-2026
 [ref-interop-2026]: https://css-tricks.com/interop-2026
 [ref-interpolate-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
