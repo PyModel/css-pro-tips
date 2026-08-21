@@ -19,13 +19,13 @@
   ],
   "author": "Mohamed Elkholy",
   "license": "MIT",
-  "homepage": "https://github.com/Pythoughts-labs/css-pro-tips#readme",
+  "homepage": "https://github.com/PyModel/css-pro-tips#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pythoughts-labs/css-pro-tips.git"
+    "url": "git+https://github.com/PyModel/css-pro-tips.git"
   },
   "bugs": {
-    "url": "https://github.com/Pythoughts-labs/css-pro-tips/issues"
+    "url": "https://github.com/PyModel/css-pro-tips/issues"
   },
   "files": [
     "assets/banner.svg",

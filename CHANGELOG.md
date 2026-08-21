@@ -14,7 +14,7 @@ All notable changes to this project are documented here. Format follows
 
 ### Changed
 
-- Standardized maintainer branding under Pythoughts (README badge + author/maintainer line).
+- Standardized maintainer branding (README badge + author/maintainer line).
   No changes to `SKILL.md` content.
 
 ## [1.0.0] — 2026-06-20
