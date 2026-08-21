@@ -695,6 +695,66 @@ input {
 
 Validation: MDN marks `field-sizing` Baseline 2026 Newly available and defines it as enabling form controls to fit their content. Keep min/max sizes and a fallback for older browser floors. [MDN field-sizing][ref-field-sizing]
 
+### Container style queries
+
+```css
+.theme-scope {
+  container-name: --theme;
+}
+
+@container style(--theme: dark) {
+  .card {
+    background: #14181f;
+    color: #e8ecf2;
+  }
+}
+```
+
+Validation: style queries against a custom property became Baseline Newly available in May 2026 when Firefox 151 completed the set. Only custom properties can be queried; `style()` cannot test arbitrary declared values. [MDN container queries][ref-container-queries], [MDN @container][ref-container-at], [web.dev platform update, May 2026][ref-webdev-0526]
+
+### Name-only container queries
+
+```css
+#sidebar {
+  container-name: --sidebar;
+  container-type: inline-size;
+}
+
+/* Match the named container without also writing a size condition. */
+@container --sidebar {
+  .content {
+    padding: 2rem;
+  }
+}
+```
+
+Validation: querying a container by name with no size or style condition became Baseline Newly available in May 2026 with Chrome 148. The rule applies whenever a matching named container exists in the ancestor chain. [MDN @container][ref-container-at], [web.dev platform update, May 2026][ref-webdev-0526]
+
+### `:open`
+
+```css
+details:open > summary {
+  font-weight: 600;
+}
+
+dialog:open {
+  border-color: color-mix(in oklab, currentColor 30%, transparent);
+}
+```
+
+Validation: `:open` became Baseline Newly available in May 2026 with Safari 26.5. It matches elements in an open state, including `details`, `dialog`, and `select` with an open picker, which makes the `[open]` attribute selector unnecessary for those cases. Attribute selectors still work as a fallback below your floor. [MDN :open][ref-open], [web.dev platform update, May 2026][ref-webdev-0526]
+
+### `text-box-trim` and the `text-box` shorthand
+
+```css
+h1 {
+  /* Trim the space above cap height and below the alphabetic baseline. */
+  text-box: trim-both cap alphabetic;
+}
+```
+
+Validation: MDN browser-compat-data records `text-box-edge` and `text-box-trim` in Chrome 133+, Safari 18.2+, and Firefox 154+. Leading trim removes the half-leading that makes headings look mis-centered inside their box. Browsers without support keep normal leading, so the fallback is the old spacing rather than a broken layout. Check your floor before relying on trimmed metrics for tight vertical rhythm. [MDN text-box][ref-text-box], [MDN text-box-trim][ref-text-box-trim], [MDN text-box-edge][ref-text-box-edge]
+
 ---
 
 ## Limited availability / progressive enhancement only
@@ -769,6 +829,22 @@ Validation: MDN marks `interpolate-size` and `calc-size()` Limited availability/
 ```
 
 Validation: MDN marks `transition-behavior` Baseline 2024 Newly available and defines `allow-discrete` as starting transitions for discrete animation-type properties. It is not a replacement for `interpolate-size` when the problem is animating to/from intrinsic sizes. [MDN transition-behavior][ref-transition-behavior]
+
+### Typed `attr()`
+
+```css
+.columns {
+  column-count: 2;
+}
+
+@supports (column-count: attr(data-cols type(<number>), 2)) {
+  .columns {
+    column-count: attr(data-cols type(<number>), 2);
+  }
+}
+```
+
+Validation: `attr()` outside the `content` property is not Baseline. The typed form reads an attribute as a real CSS type with a fallback value, and it currently ships in Chromium while remaining an Interop 2026 focus area. Declare the plain value first and gate the typed version. [MDN attr()][ref-attr], [Interop 2026 CSS focus areas][ref-interop-2026]
 
 ---
 
@@ -1373,6 +1449,11 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 | `accent-color` is Limited availability | Validated | [MDN accent-color][ref-accent-color] |
 | Scroll-driven `animation-timeline` is Limited availability | Validated | [MDN animation-timeline][ref-animation-timeline] |
 | `field-sizing` is Baseline 2026 Newly available | Updated from uploaded skill | [MDN field-sizing][ref-field-sizing] |
+| Container style queries are Baseline Newly available since May 2026 and can only test custom properties | Added | [MDN container queries][ref-container-queries], [web.dev platform update, May 2026][ref-webdev-0526] |
+| Name-only `@container` queries are Baseline Newly available since May 2026 | Added | [MDN @container][ref-container-at], [web.dev platform update, May 2026][ref-webdev-0526] |
+| `:open` is Baseline Newly available since May 2026 | Added | [MDN :open][ref-open], [web.dev platform update, May 2026][ref-webdev-0526] |
+| `text-box-trim` / `text-box-edge` ship in Chrome 133+, Safari 18.2+, Firefox 154+ | Added | [MDN text-box][ref-text-box], [MDN text-box-trim][ref-text-box-trim], [MDN text-box-edge][ref-text-box-edge] |
+| Typed `attr()` is not Baseline, ships in Chromium, and is an Interop 2026 focus area | Added | [MDN attr()][ref-attr], [Interop 2026 CSS focus areas][ref-interop-2026] |
 | `interpolate-size` / `calc-size()` are not Baseline | Validated | [MDN interpolate-size][ref-interpolate-size], [MDN calc-size][ref-calc-size] |
 | `transition-behavior` is for discrete transitions | Validated | [MDN transition-behavior][ref-transition-behavior] |
 | `mask` supports CSS masking for icons | Validated | [MDN mask][ref-mask] |
@@ -1459,6 +1540,14 @@ Why: zero specificity makes component overrides straightforward. [MDN :where][re
 [ref-scroll-driven]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations
 [ref-animation-timeline]: https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline
 [ref-field-sizing]: https://developer.mozilla.org/en-US/docs/Web/CSS/field-sizing
+[ref-container-at]: https://developer.mozilla.org/en-US/docs/Web/CSS/@container
+[ref-open]: https://developer.mozilla.org/en-US/docs/Web/CSS/:open
+[ref-text-box]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box
+[ref-text-box-trim]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-trim
+[ref-text-box-edge]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-edge
+[ref-attr]: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
+[ref-webdev-0526]: https://web.dev/blog/web-platform-05-2026
+[ref-interop-2026]: https://css-tricks.com/interop-2026
 [ref-interpolate-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
 [ref-calc-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size
 [ref-chrome-interpolate]: https://developer.chrome.com/docs/css-ui/animate-to-height-auto
