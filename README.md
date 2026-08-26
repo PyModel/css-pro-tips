@@ -7,8 +7,6 @@
   <a href="https://www.npmjs.com/package/css-pro-tips"><img alt="npm downloads" src="https://img.shields.io/npm/dt/css-pro-tips?style=flat-square"></a>
   <a href="https://github.com/PyModel/css-pro-tips"><img alt="visitors" src="https://komarev.com/ghpvc/?username=PyModel-css-pro-tips&label=visitors&color=4f46e5&style=flat-square"></a>
   <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-f59e0b?style=flat&labelColor=0f172a"></a>
-  <a href="https://web.dev/baseline"><img alt="Baseline aware" src="https://img.shields.io/badge/Baseline-aware-84cc16?style=flat&labelColor=0f172a"></a>
-  <a href="./SKILL.md"><img alt="SKILL.md format" src="https://img.shields.io/badge/format-SKILL.md-38bdf8?style=flat&labelColor=0f172a"></a>
 </p>
 
 <h1 align="center">CSS Pro-Tips</h1>
