@@ -119,6 +119,7 @@ Pull requests are welcome. If you add or change a compatibility claim:
 2. Keep the `@supports` fallback for anything with limited or audience-dependent support.
 3. Move superseded tricks into the modernization section rather than deleting them, since knowing why an old pattern existed is useful.
 4. Keep examples small. An agent should be able to reuse a snippet without pasting an entire component.
+5. Run `npm test` to validate frontmatter, references, release metadata, stable capabilities, and package contents.
 
 ## Maintainer
 

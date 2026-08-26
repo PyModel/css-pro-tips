@@ -27,11 +27,19 @@
   "bugs": {
     "url": "https://github.com/PyModel/css-pro-tips/issues"
   },
+  "scripts": {
+    "test": "node --test scripts/validate-skill.test.mjs && npm run validate",
+    "validate": "node scripts/validate-skill.mjs",
+    "pack:check": "node scripts/validate-skill.mjs --only=tarball"
+  },
   "files": [
     "assets/banner.svg",
     "SKILL.md",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
-  ]
+  ],
+  "devDependencies": {
+    "yaml": "^2.9.0"
+  }
 }

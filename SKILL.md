@@ -1807,7 +1807,6 @@ Validation: Tailwind v4's documentation describes the CSS-first configuration (`
 [ref-scroll-driven]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations
 [ref-animation-timeline]: https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline
 [ref-field-sizing]: https://developer.mozilla.org/en-US/docs/Web/CSS/field-sizing
-[ref-container-at]: https://developer.mozilla.org/en-US/docs/Web/CSS/@container
 [ref-open]: https://developer.mozilla.org/en-US/docs/Web/CSS/:open
 [ref-text-box]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box
 [ref-text-box-trim]: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-trim
