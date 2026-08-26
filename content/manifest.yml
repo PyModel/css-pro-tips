@@ -1,0 +1,35 @@
+schema_version: 1
+skill:
+  name: css-protips
+  description: "Use when writing, reviewing, refactoring, or modernizing CSS/Tailwind. Apply a policy-first approach: semantic tokens, explicit cascade order, static CSS, intrinsic component layouts, accessible state, measured performance, and progressive enhancement backed by current sources."
+  validation_window: August 2026
+  reviewed_at: "2026-08-26"
+  compatibility_model: MDN Baseline
+  package_contract: SKILL.md is the sole agent-facing file shipped in the npm package.
+artifacts:
+  skill: SKILL.md
+  compatibility_summary: docs/compatibility-summary.md
+  evidence_index: docs/evidence-index.md
+modules:
+  - id: operating-policy
+    path: modules/00-operating-policy.md
+  - id: architecture
+    path: modules/01-architecture.md
+  - id: layout-containers
+    path: modules/02-layout-containers.md
+  - id: typography-fonts
+    path: modules/03-typography-fonts.md
+  - id: color-theming
+    path: modules/04-color-theming.md
+  - id: state-forms-interaction
+    path: modules/05-state-forms-interaction.md
+  - id: motion-transitions
+    path: modules/06-motion-transitions.md
+  - id: accessibility-preferences
+    path: modules/07-accessibility-preferences.md
+  - id: performance
+    path: modules/08-performance.md
+  - id: tooling
+    path: modules/09-tooling.md
+  - id: experimental-watchlist
+    path: modules/10-experimental-watchlist.md

@@ -3,6 +3,7 @@ import { lstatSync, readFileSync } from "node:fs";
 import { dirname, isAbsolute, join, posix, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseDocument } from "yaml";
+import { loadCanonicalContent, renderArtifacts } from "./build-skill.mjs";
 
 const MAX_TEXT_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_FRONTMATTER_BYTES = 64 * 1024;
@@ -10,7 +11,7 @@ const MAX_ERRORS = 100;
 const PACK_TIMEOUT_MS = 30_000;
 const PACK_MAX_BUFFER_BYTES = 1024 * 1024;
 
-const APPROVED_PACKAGE_FILES = Object.freeze([
+export const APPROVED_PACKAGE_FILES = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
   "README.md",
@@ -19,7 +20,8 @@ const APPROVED_PACKAGE_FILES = Object.freeze([
   "package.json",
 ]);
 
-const EXPECTED_SCRIPTS = Object.freeze({
+export const EXPECTED_SCRIPTS = Object.freeze({
+  build: "node scripts/build-skill.mjs",
   test: "node --test scripts/validate-skill.test.mjs && npm run validate",
   validate: "node scripts/validate-skill.mjs",
   "pack:check": "node scripts/validate-skill.mjs --only=tarball",
@@ -325,6 +327,345 @@ function validateStableCapabilities(markdown, errors) {
         `SKILL.md is missing the stable capability "${capability.name}": ${missing.join(
           ", ",
         )}.`,
+      );
+    }
+  }
+}
+
+const CANONICAL_ARTIFACT_PATHS = Object.freeze({
+  compatibility_summary: "docs/compatibility-summary.md",
+  evidence_index: "docs/evidence-index.md",
+  skill: "SKILL.md",
+});
+
+const CANONICAL_POLICY_FIELDS = Object.freeze([
+  "id",
+  "strength",
+  "rule",
+  "applies_when",
+  "exceptions",
+  "verification",
+]);
+
+const CANONICAL_CAPABILITY_FIELDS = Object.freeze([
+  "id",
+  "concept",
+  "recommendation",
+  "use_when",
+  "avoid_when",
+  "fallback",
+]);
+
+const CLAIM_STATUSES = new Set(["widely", "newly", "limited", "watchlist"]);
+const SOURCE_REFERENCE_PATTERN = /\[(ref-[a-z0-9]+(?:-[a-z0-9]+)*)\]/g;
+
+function isRecord(value) {
+  return value !== null && !Array.isArray(value) && typeof value === "object";
+}
+
+function validateString(value, label, errors) {
+  if (typeof value !== "string" || value.trim() === "") {
+    addError(errors, `${label} must be a non-empty string.`);
+    return false;
+  }
+
+  return true;
+}
+
+function validateStringArray(value, label, errors) {
+  if (!Array.isArray(value) || value.some((entry) => typeof entry !== "string" || entry === "")) {
+    addError(errors, `${label} must be an array of non-empty strings.`);
+    return false;
+  }
+
+  return true;
+}
+
+function collectCanonicalModuleReferences(markdown) {
+  const references = new Set();
+  let match;
+
+  while ((match = SOURCE_REFERENCE_PATTERN.exec(markdown)) !== null) {
+    references.add(match[1]);
+  }
+
+  SOURCE_REFERENCE_PATTERN.lastIndex = 0;
+  return references;
+}
+
+function validateCanonicalContent(rootDir, errors) {
+  let content;
+
+  try {
+    content = loadCanonicalContent(rootDir);
+  } catch (error) {
+    addError(errors, `Canonical content could not be loaded: ${error.message}`);
+    return;
+  }
+
+  const { manifest, policies, capabilities, evidence, migration, modules, sources } = content;
+
+  for (const [label, document] of Object.entries({
+    manifest,
+    policies,
+    capabilities,
+    evidence,
+    migration,
+  })) {
+    if (!isRecord(document) || document.schema_version !== 1) {
+      addError(errors, `content/${label}.yml must declare schema_version: 1.`);
+    }
+  }
+
+  if (!isRecord(manifest.skill)) {
+    addError(errors, "content/manifest.yml requires a skill mapping.");
+  } else {
+    validateString(manifest.skill.name, "content/manifest.yml skill.name", errors);
+    validateString(manifest.skill.description, "content/manifest.yml skill.description", errors);
+    validateString(manifest.skill.validation_window, "content/manifest.yml skill.validation_window", errors);
+  }
+
+  if (!isRecord(manifest.artifacts)) {
+    addError(errors, "content/manifest.yml requires an artifacts mapping.");
+  } else {
+    for (const [name, expectedPath] of Object.entries(CANONICAL_ARTIFACT_PATHS)) {
+      if (manifest.artifacts[name] !== expectedPath) {
+        addError(
+          errors,
+          `content/manifest.yml artifact ${name} must remain ${expectedPath} to preserve the package contract.`,
+        );
+      }
+    }
+  }
+
+  const moduleIds = new Set();
+
+  for (const module of modules) {
+    if (!validateString(module.id, `content/manifest.yml module id`, errors)) {
+      continue;
+    }
+
+    if (moduleIds.has(module.id)) {
+      addError(errors, `content/manifest.yml duplicates module id ${module.id}.`);
+    }
+
+    moduleIds.add(module.id);
+
+    if (!isRecord(module.metadata)) {
+      addError(errors, `${module.relativePath} frontmatter must be a mapping.`);
+      continue;
+    }
+
+    if (module.metadata.id !== module.id) {
+      addError(
+        errors,
+        `${module.relativePath} frontmatter id must match manifest module id ${module.id}.`,
+      );
+    }
+
+    if (!["policy", "concept"].includes(module.metadata.type)) {
+      addError(errors, `${module.relativePath} frontmatter type must be policy or concept.`);
+    }
+
+    validateString(module.metadata.title, `${module.relativePath} frontmatter title`, errors);
+    validateStringArray(module.metadata.policy_ids, `${module.relativePath} policy_ids`, errors);
+    validateStringArray(module.metadata.capability_ids, `${module.relativePath} capability_ids`, errors);
+
+    if (module.body.trim() === "") {
+      addError(errors, `${module.relativePath} must contain Markdown guidance.`);
+    }
+  }
+
+  const policyIds = new Set();
+  const policyEntries = Array.isArray(policies.policies) ? policies.policies : [];
+
+  if (!Array.isArray(policies.policies)) {
+    addError(errors, "content/policies.yml policies must be an array.");
+  }
+
+  for (const policy of policyEntries) {
+    if (!isRecord(policy)) {
+      addError(errors, "content/policies.yml contains a non-mapping policy.");
+      continue;
+    }
+
+    for (const field of CANONICAL_POLICY_FIELDS) {
+      validateString(policy[field], `Policy ${policy.id || "<unknown>"}.${field}`, errors);
+    }
+
+    if (policyIds.has(policy.id)) {
+      addError(errors, `content/policies.yml duplicates policy id ${policy.id}.`);
+    }
+
+    policyIds.add(policy.id);
+  }
+
+  const capabilityIds = new Set();
+  const capabilityEntries = Array.isArray(capabilities.capabilities)
+    ? capabilities.capabilities
+    : [];
+
+  if (!Array.isArray(capabilities.capabilities)) {
+    addError(errors, "content/capabilities.yml capabilities must be an array.");
+  }
+
+  for (const capability of capabilityEntries) {
+    if (!isRecord(capability)) {
+      addError(errors, "content/capabilities.yml contains a non-mapping capability.");
+      continue;
+    }
+
+    for (const field of CANONICAL_CAPABILITY_FIELDS) {
+      validateString(
+        capability[field],
+        `Capability ${capability.id || "<unknown>"}.${field}`,
+        errors,
+      );
+    }
+
+    if (!moduleIds.has(capability.concept)) {
+      addError(
+        errors,
+        `Capability ${capability.id || "<unknown>"} has unknown concept ${capability.concept}.`,
+      );
+    }
+
+    if (capabilityIds.has(capability.id)) {
+      addError(errors, `content/capabilities.yml duplicates capability id ${capability.id}.`);
+    }
+
+    capabilityIds.add(capability.id);
+  }
+
+  const sourceIds = new Set(sources.keys());
+  const sourceUsage = new Set();
+  const claimIds = new Set();
+  const claimEntries = Array.isArray(evidence.claims) ? evidence.claims : [];
+
+  if (!Array.isArray(evidence.claims)) {
+    addError(errors, "content/evidence.yml claims must be an array.");
+  }
+
+  for (const claim of claimEntries) {
+    if (!isRecord(claim)) {
+      addError(errors, "content/evidence.yml contains a non-mapping claim.");
+      continue;
+    }
+
+    validateString(claim.id, "Compatibility claim id", errors);
+    validateString(claim.capability_id, `Claim ${claim.id || "<unknown>"}.capability_id`, errors);
+    validateString(claim.reviewed_at, `Claim ${claim.id || "<unknown>"}.reviewed_at`, errors);
+    validateString(claim.fallback, `Claim ${claim.id || "<unknown>"}.fallback`, errors);
+    validateStringArray(claim.source_ids, `Claim ${claim.id || "<unknown>"}.source_ids`, errors);
+
+    if (!CLAIM_STATUSES.has(claim.status)) {
+      addError(errors, `Claim ${claim.id || "<unknown>"} has invalid status ${claim.status}.`);
+    }
+
+    if (!capabilityIds.has(claim.capability_id)) {
+      addError(
+        errors,
+        `Claim ${claim.id || "<unknown>"} references unknown capability ${claim.capability_id}.`,
+      );
+    }
+
+    if (claimIds.has(claim.id)) {
+      addError(errors, `content/evidence.yml duplicates claim id ${claim.id}.`);
+    }
+
+    claimIds.add(claim.id);
+
+    for (const sourceId of claim.source_ids || []) {
+      if (!sourceIds.has(sourceId)) {
+        addError(errors, `Claim ${claim.id || "<unknown>"} references unknown source ${sourceId}.`);
+      } else {
+        sourceUsage.add(sourceId);
+      }
+    }
+  }
+
+  for (const module of modules) {
+    for (const policyId of module.metadata?.policy_ids || []) {
+      if (!policyIds.has(policyId)) {
+        addError(errors, `${module.relativePath} references unknown policy ${policyId}.`);
+      }
+    }
+
+    for (const capabilityId of module.metadata?.capability_ids || []) {
+      if (!capabilityIds.has(capabilityId)) {
+        addError(errors, `${module.relativePath} references unknown capability ${capabilityId}.`);
+      }
+    }
+
+    for (const sourceId of collectCanonicalModuleReferences(module.body)) {
+      if (!sourceIds.has(sourceId)) {
+        addError(errors, `${module.relativePath} references unknown source ${sourceId}.`);
+      } else {
+        sourceUsage.add(sourceId);
+      }
+    }
+  }
+
+  for (const sourceId of sourceIds) {
+    if (!sourceUsage.has(sourceId)) {
+      addError(errors, `content/evidence.yml source ${sourceId} is not used by a claim or module.`);
+    }
+  }
+
+  const legacyEntries = Array.isArray(migration.legacy_entries) ? migration.legacy_entries : [];
+
+  if (!Array.isArray(migration.legacy_entries)) {
+    addError(errors, "content/migration.yml legacy_entries must be an array.");
+  }
+
+  if (migration.legacy_entry_count !== legacyEntries.length) {
+    addError(
+      errors,
+      "content/migration.yml legacy_entry_count must equal the number of legacy_entries.",
+    );
+  }
+
+  const legacyIds = new Set();
+
+  for (const legacyEntry of legacyEntries) {
+    if (!isRecord(legacyEntry)) {
+      addError(errors, "content/migration.yml contains a non-mapping legacy entry.");
+      continue;
+    }
+
+    validateString(legacyEntry.id, "Legacy entry id", errors);
+    validateString(legacyEntry.destination, `Legacy entry ${legacyEntry.id || "<unknown>"}.destination`, errors);
+
+    if (legacyIds.has(legacyEntry.id)) {
+      addError(errors, `content/migration.yml duplicates legacy entry ${legacyEntry.id}.`);
+    }
+
+    legacyIds.add(legacyEntry.id);
+
+    if (!moduleIds.has(legacyEntry.destination)) {
+      addError(
+        errors,
+        `Legacy entry ${legacyEntry.id || "<unknown>"} has unknown destination ${legacyEntry.destination}.`,
+      );
+    }
+  }
+
+  let artifacts;
+
+  try {
+    artifacts = renderArtifacts(rootDir);
+  } catch (error) {
+    addError(errors, `Canonical artifacts could not be rendered: ${error.message}`);
+    return;
+  }
+
+  for (const [relativePath, expected] of Object.entries(artifacts)) {
+    const actual = readTextFile(rootDir, relativePath, errors);
+
+    if (actual !== null && actual !== expected) {
+      addError(
+        errors,
+        `${relativePath} is stale. Edit content/ and run npm run build instead of editing generated output.`,
       );
     }
   }
@@ -642,6 +983,7 @@ export function validateRepository(
   }
 
   if (!onlyTarball) {
+    validateCanonicalContent(resolvedRoot, errors);
     const skill = readTextFile(resolvedRoot, "SKILL.md", errors);
     const readme = readTextFile(resolvedRoot, "README.md", errors);
     const changelog = readTextFile(resolvedRoot, "CHANGELOG.md", errors);

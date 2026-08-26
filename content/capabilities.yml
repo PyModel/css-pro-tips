@@ -1,0 +1,353 @@
+schema_version: 1
+capabilities:
+  - id: design-tokens
+    concept: architecture
+    recommendation: Use platform-neutral tokens when multiple clients share a system, then expose semantic CSS custom properties on the web.
+    use_when: A value carries color, spacing, typography, radius, motion, or elevation intent.
+    avoid_when: A token would merely rename a one-off local calculation.
+    fallback: Use a semantic custom-property default; do not make a component depend directly on a primitive palette name.
+    accessibility_checks: [contrast, forced-colors]
+    performance_notes: Custom properties avoid duplicated literal values and support static themes.
+    tooling: [css-modules, tailwind-v4]
+  - id: cascade-layers
+    concept: architecture
+    recommendation: Declare layer order before rules and place third-party CSS in a lower-priority layer.
+    use_when: Multiple style sources can compete.
+    avoid_when: Never use layers to paper over a broken ownership boundary.
+    fallback: Source order remains a viable baseline for older engines.
+    accessibility_checks: []
+    performance_notes: None direct.
+    tooling: [postcss, tailwind-v4]
+  - id: component-scope
+    concept: architecture
+    recommendation: Scope component styles through CSS Modules or a documented class/state contract; use native @scope only after checking the browser floor.
+    use_when: Components are reused or owned by different teams.
+    avoid_when: Global selectors that can leak into CMS, embeds, or vendor widgets.
+    fallback: CSS Modules/classes provide the baseline for @scope.
+    accessibility_checks: []
+    performance_notes: Narrow scope reduces unintended invalidation and overrides.
+    tooling: [css-modules, tailwind-v4]
+  - id: css-modules
+    concept: architecture
+    recommendation: Use CSS Modules as the component-local default when authoring traditional CSS.
+    use_when: Component files own their markup and styles.
+    avoid_when: Do not treat generated class names as a design-token system.
+    fallback: Documented BEM-like local naming is acceptable where Modules are unavailable.
+    accessibility_checks: []
+    performance_notes: Static extraction keeps styles cacheable.
+    tooling: [css-modules]
+  - id: utility-css
+    concept: architecture
+    recommendation: Use Tailwind v4 when the team prefers utility composition and its token/layer model is the shared convention.
+    use_when: Application UI is composed close to templates and team fluency is high.
+    avoid_when: Do not mix competing utility conventions without an ownership boundary.
+    fallback: Semantic component classes can consume the same tokens.
+    accessibility_checks: [focus, contrast, motion]
+    performance_notes: Build only the utilities the product actually uses.
+    tooling: [tailwind-v4]
+  - id: static-css
+    concept: architecture
+    recommendation: Emit static CSS and express dynamic values through custom properties, attributes, or classes first.
+    use_when: Styling depends on known variants or state.
+    avoid_when: Runtime CSS-in-JS without a demonstrated runtime-only need.
+    fallback: Static class variants are the baseline.
+    accessibility_checks: []
+    performance_notes: Avoids runtime injection and enables normal caching/minification.
+    tooling: [css-modules, tailwind-v4]
+  - id: grid-layout
+    concept: layout-containers
+    recommendation: Use Grid for two-dimensional composition and repeated responsive tracks.
+    use_when: Rows and columns must align together.
+    avoid_when: One-dimensional distribution is clearer with Flexbox.
+    fallback: A single-column flow is usually viable.
+    accessibility_checks: [zoom-reflow]
+    performance_notes: Prefer readable tracks over layout JavaScript.
+    tooling: []
+  - id: flex-layout
+    concept: layout-containers
+    recommendation: Use Flexbox for one-dimensional alignment, distribution, and compact control groups.
+    use_when: The main problem is a row or column, not cross-row alignment.
+    avoid_when: Do not simulate a grid with margin hacks.
+    fallback: Block flow remains the baseline.
+    accessibility_checks: [zoom-reflow]
+    performance_notes: None direct.
+    tooling: []
+  - id: intrinsic-layout
+    concept: layout-containers
+    recommendation: Start with minmax(), auto-fit, aspect-ratio, logical sizes, and content-driven tracks.
+    use_when: Components must work in unknown hosts or translations.
+    avoid_when: Fixed heights that clip content or bind a component to one viewport.
+    fallback: Single-column flow with normal document layout.
+    accessibility_checks: [zoom-reflow]
+    performance_notes: Removes layout scripts and brittle breakpoint branches.
+    tooling: []
+  - id: container-queries
+    concept: layout-containers
+    recommendation: Query the component container when a component changes because of available parent width.
+    use_when: A reusable component has different widths in different page regions.
+    avoid_when: Page-wide conditions that genuinely belong to the viewport.
+    fallback: Intrinsic one-column or wrapping layout before the query.
+    accessibility_checks: [zoom-reflow]
+    performance_notes: Establish intentional container boundaries; avoid using them as a universal replacement for layout design.
+    tooling: [tailwind-v4]
+  - id: container-units
+    concept: layout-containers
+    recommendation: Use cqi/cqb units for component-local fluid values after a named sizing context exists.
+    use_when: Component typography or spacing should scale with its container.
+    avoid_when: Do not use container units without a sensible non-container fallback.
+    fallback: rem- and clamp()-based values.
+    accessibility_checks: [zoom-reflow]
+    performance_notes: None direct.
+    tooling: [tailwind-v4]
+  - id: style-queries
+    concept: layout-containers
+    recommendation: Use style queries for a deliberate component variant signal, not incidental computed styles.
+    use_when: A container custom property represents an explicit composition choice.
+    avoid_when: Do not encode application logic in cascading implementation details.
+    fallback: A normal variant class or data attribute.
+    accessibility_checks: []
+    performance_notes: Keep the decision local to the component boundary.
+    tooling: []
+  - id: fluid-type
+    concept: typography-fonts
+    recommendation: Use rem-based clamp() for bounded fluid type and spacing.
+    use_when: Type needs to scale between known readable limits.
+    avoid_when: Unbounded viewport math or px-only type that ignores user zoom.
+    fallback: The minimum value is already a readable baseline.
+    accessibility_checks: [zoom-reflow]
+    performance_notes: None direct.
+    tooling: [tailwind-v4]
+  - id: font-loading
+    concept: typography-fonts
+    recommendation: Subset fonts, use font-display intentionally, and preload only the critical face actually used above the fold.
+    use_when: A custom font materially affects branded or high-traffic UI.
+    avoid_when: Broad preload lists or strict local() use for brand fonts.
+    fallback: A metrically compatible system stack.
+    accessibility_checks: [readability]
+    performance_notes: Fonts affect LCP, CLS, and render blocking.
+    tooling: [postcss]
+  - id: font-metrics
+    concept: typography-fonts
+    recommendation: Use size-adjust and metric overrides to reduce fallback-to-webfont layout shift.
+    use_when: A fallback stack differs visibly from the delivered webfont.
+    avoid_when: Do not tune metrics without measuring real text and fallback behavior.
+    fallback: A normal fallback font stack.
+    accessibility_checks: [readability]
+    performance_notes: Reduces CLS when a font swaps.
+    tooling: []
+  - id: text-wrapping
+    concept: typography-fonts
+    recommendation: "Use text-wrap: balance or pretty only as a progressive typography enhancement."
+    use_when: Short headings or high-value text blocks benefit from better line breaks.
+    avoid_when: Do not assume every text-wrap value has the same support.
+    fallback: Normal wrapping.
+    accessibility_checks: [readability]
+    performance_notes: Apply to small, targeted text blocks.
+    tooling: []
+  - id: text-box
+    concept: typography-fonts
+    recommendation: Use text-box trimming for optical alignment only after the untrimmed layout works.
+    use_when: Cap-height alignment materially improves a controlled component.
+    avoid_when: Do not make content visibility depend on trimming.
+    fallback: Normal line box metrics.
+    accessibility_checks: [readability]
+    performance_notes: None direct.
+    tooling: []
+  - id: semantic-colors
+    concept: color-theming
+    recommendation: Map primitive palettes to semantic color tokens, then let components consume semantic roles.
+    use_when: Supporting themes, brands, states, or user preferences.
+    avoid_when: Component references to --blue-600 or repeated literal colors.
+    fallback: A complete default theme in custom properties.
+    accessibility_checks: [contrast, forced-colors]
+    performance_notes: Static custom properties make theme changes cheap.
+    tooling: [tailwind-v4]
+  - id: modern-colors
+    concept: color-theming
+    recommendation: Prefer oklch() for authored perceptual palettes and color-mix() for derived semantic colors.
+    use_when: Creating or deriving design-system colors.
+    avoid_when: Relative color syntax without a fallback for the browser floor.
+    fallback: Precomputed semantic token values.
+    accessibility_checks: [contrast, forced-colors]
+    performance_notes: Precompute repeated complex color math in tokens.
+    tooling: []
+  - id: focus-visible
+    concept: state-forms-interaction
+    recommendation: Preserve a high-contrast :focus-visible indicator with space from the control.
+    use_when: Any keyboard-focusable element is styled.
+    avoid_when: Removing outlines without an equivalent visible replacement.
+    fallback: :focus remains a viable conservative baseline.
+    accessibility_checks: [focus, forced-colors]
+    performance_notes: None direct.
+    tooling: []
+  - id: relational-state
+    concept: state-forms-interaction
+    recommendation: Use :has() for local relational state and native pseudo-classes before JavaScript class toggles.
+    use_when: A component appearance depends on one of its descendants or native state.
+    avoid_when: Broad document-root :has() selectors without measuring invalidation.
+    fallback: A real data/state class set by the owning behavior.
+    accessibility_checks: []
+    performance_notes: Scope relational selectors to the smallest owning component.
+    tooling: []
+  - id: form-state
+    concept: state-forms-interaction
+    recommendation: Use native validation and :user-valid/:user-invalid after interaction; style ARIA state only when the semantics already exist.
+    use_when: Forms and validation messages are semantic controls.
+    avoid_when: CSS-only validation logic or ARIA attributes added solely for visual styling.
+    fallback: Native validity UI and explicit server/client messages.
+    accessibility_checks: [forms, focus]
+    performance_notes: None direct.
+    tooling: []
+  - id: native-disclosures
+    concept: state-forms-interaction
+    recommendation: Prefer details, dialog, and the :open state where their semantics match the interaction.
+    use_when: Content expands, a dialog opens, or a native control exposes state.
+    avoid_when: Div-based widgets that recreate native keyboard and accessibility behavior.
+    fallback: A semantic always-visible content flow or established accessible control.
+    accessibility_checks: [keyboard, focus]
+    performance_notes: Native state avoids synchronization code.
+    tooling: []
+  - id: popover
+    concept: state-forms-interaction
+    recommendation: Use the Popover API for transient top-layer UI when native popover behavior fits.
+    use_when: A non-modal contextual surface needs light-dismiss and top-layer handling.
+    avoid_when: Do not replace a dialog with a popover when modality is required.
+    fallback: Inline content or an established accessible dialog path.
+    accessibility_checks: [keyboard, focus]
+    performance_notes: Native top-layer state avoids manual stacking code.
+    tooling: []
+  - id: customizable-select
+    concept: state-forms-interaction
+    recommendation: Treat customizable select as an enhancement; preserve a real select and its keyboard behavior.
+    use_when: The browser floor supports the required appearance/picker features.
+    avoid_when: Replacing native select semantics just to match a visual design.
+    fallback: Native select styling with accent-color as an optional enhancement.
+    accessibility_checks: [forms, keyboard]
+    performance_notes: None direct.
+    tooling: []
+  - id: ordinary-transitions
+    concept: motion-transitions
+    recommendation: Transition only deliberate visual properties and respect motion preferences.
+    use_when: A state change benefits from subtle feedback.
+    avoid_when: "transition: all, decorative motion without a reduced-motion path, or layout-dependent animation by default."
+    fallback: An immediate state change.
+    accessibility_checks: [reduced-motion]
+    performance_notes: Prefer compositor-friendly properties when practical, then profile.
+    tooling: []
+  - id: disclosure-motion
+    concept: motion-transitions
+    recommendation: Use a grid-row disclosure baseline; enhance intrinsic-size animation only where supported.
+    use_when: Content with unknown height expands and collapses.
+    avoid_when: max-height guesses that clip or make duration depend on unknown content.
+    fallback: Open/close without interpolation.
+    accessibility_checks: [reduced-motion, keyboard]
+    performance_notes: Keep the animated subtree small.
+    tooling: []
+  - id: scroll-driven-animation
+    concept: motion-transitions
+    recommendation: Treat scroll-driven animations as enhancement-only while support remains incomplete.
+    use_when: The visual effect is optional and has no interaction or comprehension requirement.
+    avoid_when: Progress, navigation, or required content visibility.
+    fallback: Static state or ordinary interaction-driven motion.
+    accessibility_checks: [reduced-motion]
+    performance_notes: Profile real scroll behavior on target devices.
+    tooling: []
+  - id: view-transitions
+    concept: motion-transitions
+    recommendation: Use same-document View Transitions as a progressive enhancement over a complete non-animated navigation/state change.
+    use_when: Shared visual continuity adds value but is not required.
+    avoid_when: Cross-document assumptions where the browser floor is incomplete.
+    fallback: Normal navigation or state update.
+    accessibility_checks: [reduced-motion]
+    performance_notes: Avoid excessive named elements and expensive pseudo-element effects.
+    tooling: []
+  - id: forced-colors
+    concept: accessibility-preferences
+    recommendation: Test forced-colors and use system colors where author colors must remain meaningful.
+    use_when: Controls, focus rings, borders, and status colors are custom styled.
+    avoid_when: "forced-color-adjust: none except when the result remains demonstrably usable."
+    fallback: Allow the user agent color mapping to work.
+    accessibility_checks: [forced-colors, contrast]
+    performance_notes: None direct.
+    tooling: []
+  - id: preference-media
+    concept: accessibility-preferences
+    recommendation: Honor reduced motion, contrast, transparency, and color scheme without making preferences a hidden source of essential content.
+    use_when: Animation, translucent surfaces, contrast, or themes change the UI.
+    avoid_when: Making a preference query the only way to reach needed information.
+    fallback: A readable, low-motion default.
+    accessibility_checks: [reduced-motion, contrast, forced-colors]
+    performance_notes: None direct.
+    tooling: []
+  - id: css-delivery
+    concept: performance
+    recommendation: Minify, compress, fingerprint/cache, and split CSS by actual route/use boundaries.
+    use_when: Shipping production CSS.
+    avoid_when: Combining or splitting files solely because of HTTP-era folklore.
+    fallback: A single cacheable stylesheet is acceptable for a small application.
+    accessibility_checks: []
+    performance_notes: Measure bytes, waterfall, LCP, CLS, and unused CSS.
+    tooling: [postcss]
+  - id: critical-css
+    concept: performance
+    recommendation: Inline only genuinely critical, stable above-the-fold CSS after measuring a delivery problem.
+    use_when: Render blocking CSS materially delays LCP and a bounded route-specific extraction exists.
+    avoid_when: Large duplicated inline styles that reduce caching or complicate CSP.
+    fallback: Normal cacheable stylesheet delivery.
+    accessibility_checks: []
+    performance_notes: Evaluate LCP and cache trade-offs per route.
+    tooling: [bundler]
+  - id: content-visibility
+    concept: performance
+    recommendation: "Use content-visibility: auto for large, offscreen, self-contained sections with an intrinsic-size estimate."
+    use_when: Long feeds, documentation, or dashboards have expensive offscreen subtrees.
+    avoid_when: Content needed for find-in-page, anchor navigation, or immediate measurement without testing behavior.
+    fallback: Normal rendering.
+    accessibility_checks: [find-in-page]
+    performance_notes: Can reduce offscreen layout/paint work; validate actual interaction behavior.
+    tooling: []
+  - id: tailwind-v4
+    concept: tooling
+    recommendation: Treat Tailwind v4 as a static CSS compiler around tokens, utilities, variants, and native CSS layers.
+    use_when: Utility composition is the project convention.
+    avoid_when: Using arbitrary utilities as an escape hatch for unowned values.
+    fallback: Component CSS can consume the same custom properties.
+    accessibility_checks: [focus, contrast, motion]
+    performance_notes: Keep generated output in the normal CSS optimization pipeline.
+    tooling: [tailwind-v4]
+  - id: sass
+    concept: tooling
+    recommendation: Keep Sass for mature codebases or genuine compile-time loops/functions; do not add it by reflex to new CSS.
+    use_when: Existing code or compilation needs justify it.
+    avoid_when: Reimplementing runtime theming or native nesting with Sass.
+    fallback: Native custom properties, nesting, calc(), min(), max(), and clamp().
+    accessibility_checks: []
+    performance_notes: Compile output still needs normal delivery optimization.
+    tooling: [sass]
+  - id: postcss-autoprefixer
+    concept: tooling
+    recommendation: Use PostCSS/Autoprefixer only with a checked-in Browserslist target that reflects actual support policy.
+    use_when: The project needs compatibility transforms or CSS processing.
+    avoid_when: Prefixing blindly without an audience/browser target.
+    fallback: Native CSS where the browser floor already supports it.
+    accessibility_checks: []
+    performance_notes: Remove obsolete transforms as the target evolves.
+    tooling: [postcss, autoprefixer, browserslist]
+  - id: stylelint
+    concept: tooling
+    recommendation: Run Stylelint in CI for source correctness and the team's policy rules.
+    use_when: Multiple contributors edit CSS or consistency regressions recur.
+    avoid_when: Enforcing stylistic rules that the formatter already handles.
+    fallback: A focused review checklist for small projects.
+    accessibility_checks: []
+    performance_notes: None direct.
+    tooling: [stylelint]
+  - id: experimental-css
+    concept: experimental-watchlist
+    recommendation: Keep limited and experimental capabilities out of load-bearing paths until the product browser floor and a viable fallback are proven.
+    use_when: An optional visual or authoring improvement has clear isolated value.
+    avoid_when: Navigation, semantics, core layout, validation, or required content depends on it.
+    fallback: A complete static/native baseline or owner-managed state.
+    accessibility_checks: [keyboard, reduced-motion, zoom-reflow]
+    performance_notes: Profile actual browser behavior before broad use.
+    tooling: []

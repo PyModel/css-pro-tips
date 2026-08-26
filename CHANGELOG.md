@@ -3,6 +3,22 @@
 All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow [SemVer](https://semver.org/).
 
+## [1.3.0] - 2026-08-26
+
+### Added
+
+- A policy-driven multi-file source model for tokens, cascade control, static CSS,
+  intrinsic layout, accessibility, performance, and progressive enhancement.
+- Generated compatibility and evidence projections from canonical claims and sources.
+- A deterministic builder plus source-contract freshness validation.
+
+### Changed
+
+- `SKILL.md` now leads with operating policy and groups guidance by engineering decision.
+- README now documents the installed one-file interface and the maintainer-side source model.
+- Package identity now names elkaix as maintainer under the PyModel organization.
+- Statuses remain validated against current sources in August 2026.
+
 ## [1.2.0] — 2026-08-21
 
 ### Added

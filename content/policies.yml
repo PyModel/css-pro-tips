@@ -1,0 +1,44 @@
+schema_version: 1
+policies:
+  - id: tokens-first
+    strength: strong-default
+    rule: Start with semantic design tokens; components consume semantic tokens instead of literal palette values.
+    applies_when: Any value conveys reusable design intent across more than one rule or component.
+    exceptions: One-off, truly local geometry may stay local when a token would obscure intent.
+    verification: Search changed component rules for repeated literals and confirm shared values have semantic names.
+  - id: explicit-cascade
+    strength: strong-default
+    rule: Declare cascade layer order once and keep defaults deliberately easy to override.
+    applies_when: A project has vendor CSS, components, utilities, themes, or multiple authors.
+    exceptions: A small isolated stylesheet may use normal source order, but must not rely on accidental import order.
+    verification: Confirm reset, tokens, base, components, utilities, and overrides have an intentional order.
+  - id: static-css-first
+    strength: strong-default
+    rule: Prefer native, statically emitted CSS. Require a concrete runtime-only requirement before choosing runtime CSS-in-JS.
+    applies_when: Writing component styles, theming, layout, states, or responsive behavior.
+    exceptions: Runtime values that cannot be represented by custom properties, attributes, or classes may justify a runtime style boundary.
+    verification: Identify the runtime requirement and prove it cannot be modeled by HTML state plus static CSS.
+  - id: intrinsic-layout-first
+    strength: strong-default
+    rule: Let content and the component's container drive sizing before adding viewport breakpoints.
+    applies_when: Building cards, forms, media, sidebars, or reusable components.
+    exceptions: Page-level navigation and full-viewport composition may legitimately use viewport conditions.
+    verification: Test at narrow, wide, zoomed, and embedded container sizes before adding a viewport query.
+  - id: progressive-enhancement
+    strength: required
+    rule: Build a viable semantic baseline first; add newly available or limited CSS only as an enhancement.
+    applies_when: Browser support is not broad for the project's audience or the feature changes usability/layout.
+    exceptions: None for load-bearing behavior. A documented product browser floor may allow a stronger baseline.
+    verification: Disable the enhancement or emulate an unsupported browser and confirm the task still works.
+  - id: semantic-accessibility
+    strength: required
+    rule: Preserve semantic HTML and real accessibility state. CSS may reflect ARIA/data state but must not invent it.
+    applies_when: Styling controls, validation, disclosure, dialogs, focus, color, or motion.
+    exceptions: None for keyboard reachability, focus visibility, and readable contrast.
+    verification: Keyboard-test the interaction, inspect forced-colors/reduced-motion, and test reflow at 400% zoom.
+  - id: measured-performance
+    strength: strong-default
+    rule: Optimize delivered bytes and user-visible rendering evidence, not selector or file-count folklore.
+    applies_when: Changing CSS delivery, fonts, large lists, relational selectors, or animation.
+    exceptions: A clear production profile may justify a targeted micro-optimization.
+    verification: Compare shipped CSS, waterfall, LCP, CLS, unused CSS, and browser performance traces before and after.

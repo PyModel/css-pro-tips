@@ -1,0 +1,61 @@
+schema_version: 1
+legacy_entry_count: 53
+legacy_entries:
+  - { id: "01-reset", destination: architecture }
+  - { id: "02-box-sizing-inheritance", destination: architecture }
+  - { id: "03-all-unset", destination: architecture }
+  - { id: "04-focus-visible", destination: state-forms-interaction }
+  - { id: "05-line-height", destination: typography-fonts }
+  - { id: "06-centering", destination: layout-containers }
+  - { id: "07-aspect-ratio", destination: layout-containers }
+  - { id: "08-not", destination: state-forms-interaction }
+  - { id: "09-is", destination: state-forms-interaction }
+  - { id: "10-where", destination: architecture }
+  - { id: "11-generated-content", destination: state-forms-interaction }
+  - { id: "12-nth-child", destination: state-forms-interaction }
+  - { id: "13-nth-child-of", destination: state-forms-interaction }
+  - { id: "14-svg-mask", destination: architecture }
+  - { id: "15-flow-spacing", destination: architecture }
+  - { id: "16-max-height-disclosure", destination: motion-transitions }
+  - { id: "17-grid-disclosure", destination: motion-transitions }
+  - { id: "18-table-layout", destination: layout-containers }
+  - { id: "19-auto-fit", destination: layout-containers }
+  - { id: "20-gap", destination: layout-containers }
+  - { id: "21-logical-properties", destination: layout-containers }
+  - { id: "22-empty", destination: state-forms-interaction }
+  - { id: "23-pointer-events", destination: state-forms-interaction }
+  - { id: "24-autoplay-video", destination: accessibility-preferences }
+  - { id: "25-font-local", destination: typography-fonts }
+  - { id: "26-fluid-type", destination: typography-fonts }
+  - { id: "27-supports", destination: operating-policy }
+  - { id: "28-property", destination: motion-transitions }
+  - { id: "29-container-units", destination: layout-containers }
+  - { id: "30-user-valid", destination: state-forms-interaction }
+  - { id: "31-popover-state", destination: state-forms-interaction }
+  - { id: "32-top-layer-entrance", destination: motion-transitions }
+  - { id: "33-scrollbar-gutter", destination: layout-containers }
+  - { id: "34-content-visibility", destination: performance }
+  - { id: "35-scroll-margin", destination: layout-containers }
+  - { id: "36-overscroll", destination: layout-containers }
+  - { id: "37-oklch-relative-colors", destination: color-theming }
+  - { id: "38-import-layer", destination: architecture }
+  - { id: "39-dir", destination: layout-containers }
+  - { id: "40-defined", destination: state-forms-interaction }
+  - { id: "41-state", destination: state-forms-interaction }
+  - { id: "42-view-transitions", destination: motion-transitions }
+  - { id: "43-custom-highlights", destination: experimental-watchlist }
+  - { id: "44-scripting", destination: state-forms-interaction }
+  - { id: "45-scroll-state", destination: experimental-watchlist }
+  - { id: "46-round", destination: experimental-watchlist }
+  - { id: "47-line-clamp", destination: typography-fonts }
+  - { id: "48-size-adjust", destination: typography-fonts }
+  - { id: "49-future-lab", destination: experimental-watchlist }
+  - { id: "50-reduced-motion", destination: accessibility-preferences }
+  - { id: "51-prefers-contrast", destination: accessibility-preferences }
+  - { id: "52-forced-colors", destination: accessibility-preferences }
+  - { id: "53-reduced-transparency", destination: accessibility-preferences }
+legacy_sections:
+  modern-css-support-buckets: generated-compatibility-summary
+  modernization-guide: concept-modules
+  tailwind-v4-mapping: tooling
+  validation-matrix: generated-evidence-index

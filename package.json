@@ -1,7 +1,7 @@
 {
   "name": "css-pro-tips",
-  "version": "1.2.0",
-  "description": "A validated, Baseline-aware modern CSS design-system skill for AI coding agents (Claude Code, Codex, Cursor, Pi, OpenCode, Kiro, and any SKILL.md-compatible agent).",
+  "version": "1.3.0",
+  "description": "A source-validated, policy-driven CSS engineering skill for AI coding agents.",
   "keywords": [
     "css",
     "agent-skill",
@@ -17,7 +17,7 @@
     "css-tips",
     "ai-agents"
   ],
-  "author": "Mohamed Elkholy",
+  "author": "elkaix",
   "license": "MIT",
   "homepage": "https://github.com/PyModel/css-pro-tips#readme",
   "repository": {
@@ -28,6 +28,7 @@
     "url": "https://github.com/PyModel/css-pro-tips/issues"
   },
   "scripts": {
+    "build": "node scripts/build-skill.mjs",
     "test": "node --test scripts/validate-skill.test.mjs && npm run validate",
     "validate": "node scripts/validate-skill.mjs",
     "pack:check": "node scripts/validate-skill.mjs --only=tarball"

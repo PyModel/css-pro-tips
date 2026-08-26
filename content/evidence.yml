@@ -1,0 +1,653 @@
+schema_version: 1
+sources:
+  - id: ref-baseline
+    title: MDN Baseline compatibility
+    url: https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
+  - id: ref-supports
+    title: MDN @supports
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@supports
+  - id: ref-custom-properties
+    title: MDN CSS custom properties
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties
+  - id: ref-layer
+    title: MDN @layer
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
+  - id: ref-import
+    title: MDN @import
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@import
+  - id: ref-scope
+    title: MDN @scope
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@scope
+  - id: ref-nesting
+    title: MDN CSS nesting
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting
+  - id: ref-css-modules
+    title: CSS Modules project
+    url: https://github.com/css-modules/css-modules
+  - id: ref-tailwind-theme
+    title: Tailwind CSS theme variables
+    url: https://tailwindcss.com/docs/theme
+  - id: ref-tailwind-directives
+    title: Tailwind CSS functions and directives
+    url: https://tailwindcss.com/docs/functions-and-directives
+  - id: ref-box-sizing
+    title: MDN box-sizing
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing
+  - id: ref-all
+    title: MDN all
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/all
+  - id: ref-mask
+    title: MDN mask
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/mask
+  - id: ref-grid
+    title: MDN CSS Grid Layout
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout
+  - id: ref-flex-align
+    title: MDN flex alignment
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container
+  - id: ref-repeat
+    title: MDN repeat()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/repeat
+  - id: ref-minmax
+    title: MDN minmax()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/minmax
+  - id: ref-subgrid
+    title: MDN subgrid
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid
+  - id: ref-aspect-ratio
+    title: MDN aspect-ratio
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio
+  - id: ref-object-fit
+    title: MDN object-fit
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
+  - id: ref-logical
+    title: MDN logical properties
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values
+  - id: ref-dir
+    title: MDN :dir()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:dir
+  - id: ref-viewport-units
+    title: MDN viewport length units
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport
+  - id: ref-container-queries
+    title: MDN container queries
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries
+  - id: ref-container-at
+    title: MDN @container
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@container
+  - id: ref-container-query-units
+    title: MDN container query length units
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries#container_query_length_units
+  - id: ref-scrollbar-gutter
+    title: MDN scrollbar-gutter
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter
+  - id: ref-overscroll-behavior
+    title: MDN overscroll-behavior
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior
+  - id: ref-scroll-margin-top
+    title: MDN scroll-margin-top
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-margin-top
+  - id: ref-table-layout
+    title: MDN table-layout
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout
+  - id: ref-line-height
+    title: MDN line-height
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
+  - id: ref-clamp
+    title: MDN clamp()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/clamp
+  - id: ref-text-wrap
+    title: MDN text-wrap
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap
+  - id: ref-text-box
+    title: MDN text-box
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/text-box
+  - id: ref-font-src
+    title: MDN @font-face src
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/src
+  - id: ref-font-display
+    title: MDN font-display
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display
+  - id: ref-size-adjust
+    title: MDN size-adjust
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/size-adjust
+  - id: ref-ascent-override
+    title: MDN ascent-override
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/ascent-override
+  - id: ref-webdev-fonts
+    title: web.dev font best practices
+    url: https://web.dev/articles/font-best-practices
+  - id: ref-oklch
+    title: MDN oklch()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch
+  - id: ref-color-mix
+    title: MDN color-mix()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
+  - id: ref-light-dark
+    title: MDN light-dark()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark
+  - id: ref-relative-colors
+    title: MDN relative colors
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors
+  - id: ref-contrast-color
+    title: MDN contrast-color()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/contrast-color
+  - id: ref-accent-color
+    title: MDN accent-color
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color
+  - id: ref-focus-visible
+    title: MDN :focus-visible
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible
+  - id: ref-has
+    title: MDN :has()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:has
+  - id: ref-is
+    title: MDN :is()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:is
+  - id: ref-where
+    title: MDN :where()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:where
+  - id: ref-not
+    title: MDN :not()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:not
+  - id: ref-nth-child
+    title: MDN :nth-child()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child
+  - id: ref-empty
+    title: MDN :empty
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:empty
+  - id: ref-content
+    title: MDN content
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/content
+  - id: ref-pointer-events
+    title: MDN pointer-events
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
+  - id: ref-user-valid
+    title: MDN :user-valid
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid
+  - id: ref-user-invalid
+    title: MDN :user-invalid
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid
+  - id: ref-open
+    title: MDN :open
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:open
+  - id: ref-popover-open
+    title: MDN :popover-open
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:popover-open
+  - id: ref-defined
+    title: MDN :defined
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:defined
+  - id: ref-state
+    title: MDN :state()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:state
+  - id: ref-scripting
+    title: MDN scripting media feature
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting
+  - id: ref-backdrop
+    title: MDN ::backdrop
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop
+  - id: ref-appearance
+    title: MDN appearance
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/appearance
+  - id: ref-picker
+    title: MDN ::picker
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/::picker
+  - id: ref-property
+    title: MDN @property
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@property
+  - id: ref-starting-style
+    title: MDN @starting-style
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style
+  - id: ref-transition-behavior
+    title: MDN transition-behavior
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior
+  - id: ref-interpolate-size
+    title: MDN interpolate-size
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
+  - id: ref-calc-size
+    title: MDN calc-size()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size
+  - id: ref-scroll-driven
+    title: MDN scroll-driven animations
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations
+  - id: ref-animation-timeline
+    title: MDN animation-timeline
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline
+  - id: ref-webkit-sda
+    title: WebKit guide to scroll-driven animations
+    url: https://webkit.org/blog/17101/a-guide-to-scroll-driven-animations-with-just-css
+  - id: ref-view-transition-name
+    title: MDN view-transition-name
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-name
+  - id: ref-view-transition-class
+    title: MDN view-transition-class
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-class
+  - id: ref-view-transition-at
+    title: MDN @view-transition
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@view-transition
+  - id: ref-reduced-motion
+    title: MDN prefers-reduced-motion
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
+  - id: ref-prefers-contrast
+    title: MDN prefers-contrast
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast
+  - id: ref-forced-colors
+    title: MDN forced-colors
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+  - id: ref-forced-color-adjust
+    title: MDN forced-color-adjust
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust
+  - id: ref-system-colors
+    title: MDN system colors
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/system-color
+  - id: ref-reduced-transparency
+    title: MDN prefers-reduced-transparency
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency
+  - id: ref-content-visibility
+    title: MDN content-visibility
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility
+  - id: ref-contain-intrinsic-size
+    title: MDN contain-intrinsic-size
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/contain-intrinsic-size
+  - id: ref-webdev-css-performance
+    title: web.dev optimize CSS
+    url: https://web.dev/articles/optimize-css
+  - id: ref-wcag-focus
+    title: WCAG 2.2 focus visible understanding
+    url: https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
+  - id: ref-wcag-contrast
+    title: WCAG 2.2 contrast minimum understanding
+    url: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+  - id: ref-wcag-reflow
+    title: WCAG 2.2 reflow understanding
+    url: https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
+  - id: ref-postcss
+    title: PostCSS documentation
+    url: https://postcss.org/
+  - id: ref-autoprefixer
+    title: Autoprefixer
+    url: https://github.com/postcss/autoprefixer
+  - id: ref-browserslist
+    title: Browserslist
+    url: https://browsersl.ist/
+  - id: ref-stylelint
+    title: Stylelint documentation
+    url: https://stylelint.io/
+  - id: ref-sass
+    title: Sass documentation
+    url: https://sass-lang.com/documentation/
+  - id: ref-less
+    title: Less documentation
+    url: https://lesscss.org/
+  - id: ref-field-sizing
+    title: MDN field-sizing
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/field-sizing
+  - id: ref-anchor-module
+    title: MDN CSS anchor positioning
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning
+  - id: ref-attr
+    title: MDN attr()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
+  - id: ref-shape
+    title: MDN shape()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/shape
+  - id: ref-corner-shape
+    title: MDN corner-shape
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/corner-shape
+  - id: ref-playing
+    title: MDN :playing
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/:playing
+  - id: ref-highlight
+    title: MDN ::highlight()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/::highlight
+  - id: ref-scroll-state-queries
+    title: MDN scroll-state container queries
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_conditional_rules/Container_scroll-state_queries
+  - id: ref-line-clamp
+    title: MDN line-clamp
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/line-clamp
+  - id: ref-round
+    title: MDN round()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/round
+  - id: ref-if
+    title: MDN if()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/if
+  - id: ref-function
+    title: MDN @function
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/@function
+  - id: ref-sibling-index
+    title: MDN sibling-index()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/sibling-index
+  - id: ref-sibling-count
+    title: MDN sibling-count()
+    url: https://developer.mozilla.org/en-US/docs/Web/CSS/sibling-count
+  - id: ref-webdev-0526
+    title: web.dev platform updates May 2026
+    url: https://web.dev/blog/web-platform-05-2026
+claims:
+  - id: custom-properties
+    capability_id: design-tokens
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-custom-properties, ref-baseline]
+    fallback: Literal default declarations are available, but semantic custom properties are the preferred interface.
+  - id: cascade-layers
+    capability_id: cascade-layers
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-layer, ref-baseline]
+    fallback: Intentional source order.
+  - id: native-nesting
+    capability_id: cascade-layers
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-nesting, ref-baseline]
+    fallback: Flat selectors or a preprocessor in an existing project.
+  - id: scope
+    capability_id: component-scope
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: September 2028
+    source_ids: [ref-scope, ref-baseline]
+    fallback: CSS Modules or a documented component root class.
+  - id: grid
+    capability_id: grid-layout
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-grid, ref-baseline]
+    fallback: Block flow or Flexbox.
+  - id: subgrid
+    capability_id: grid-layout
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-subgrid, ref-baseline]
+    fallback: Explicit local tracks.
+  - id: flexbox
+    capability_id: flex-layout
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-flex-align, ref-baseline]
+    fallback: Block flow.
+  - id: aspect-ratio
+    capability_id: intrinsic-layout
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-aspect-ratio, ref-baseline]
+    fallback: Explicit dimensions only where content remains usable.
+  - id: logical-properties
+    capability_id: intrinsic-layout
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-logical, ref-baseline]
+    fallback: Physical properties for a constrained legacy direction policy.
+  - id: dynamic-viewport-units
+    capability_id: intrinsic-layout
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-viewport-units, ref-baseline]
+    fallback: min-block-size with normal document flow.
+  - id: container-queries
+    capability_id: container-queries
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-container-queries, ref-baseline]
+    fallback: Intrinsic wrapping or a viewport query for page-level behavior.
+  - id: container-units
+    capability_id: container-units
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-container-query-units, ref-baseline]
+    fallback: rem and clamp values.
+  - id: container-style-queries
+    capability_id: style-queries
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: November 2028
+    source_ids: [ref-container-at, ref-webdev-0526]
+    fallback: Explicit data or variant class.
+  - id: name-only-container-queries
+    capability_id: style-queries
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: November 2028
+    source_ids: [ref-container-at, ref-webdev-0526]
+    fallback: Explicit data or variant class.
+  - id: clamp
+    capability_id: fluid-type
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-clamp, ref-baseline]
+    fallback: The min value.
+  - id: text-wrap
+    capability_id: text-wrapping
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-text-wrap, ref-baseline]
+    fallback: Normal wrapping.
+  - id: text-box
+    capability_id: text-box
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-text-box, ref-baseline]
+    fallback: Normal line box metrics.
+  - id: size-adjust
+    capability_id: font-metrics
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-size-adjust, ref-baseline]
+    fallback: Normal fallback font metrics.
+  - id: ascent-override
+    capability_id: font-metrics
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-ascent-override, ref-baseline]
+    fallback: size-adjust or an ordinary fallback stack.
+  - id: oklch
+    capability_id: modern-colors
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-oklch, ref-baseline]
+    fallback: Precomputed sRGB semantic colors.
+  - id: color-mix
+    capability_id: modern-colors
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-color-mix, ref-baseline]
+    fallback: Precomputed derived color token.
+  - id: light-dark
+    capability_id: semantic-colors
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: November 2026
+    source_ids: [ref-light-dark, ref-baseline]
+    fallback: prefers-color-scheme token overrides.
+  - id: relative-colors
+    capability_id: modern-colors
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-relative-colors, ref-baseline]
+    fallback: Precomputed semantic color token.
+  - id: contrast-color
+    capability_id: modern-colors
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-contrast-color, ref-baseline]
+    fallback: A verified authored foreground token.
+  - id: accent-color
+    capability_id: customizable-select
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-accent-color, ref-baseline]
+    fallback: Native control colors.
+  - id: focus-visible
+    capability_id: focus-visible
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-focus-visible, ref-baseline]
+    fallback: :focus indicator.
+  - id: has
+    capability_id: relational-state
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-has, ref-baseline]
+    fallback: Owner-managed class or data state.
+  - id: user-valid
+    capability_id: form-state
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-user-valid, ref-user-invalid, ref-baseline]
+    fallback: Native validity UI and explicit messages.
+  - id: open
+    capability_id: native-disclosures
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: November 2028
+    source_ids: [ref-open, ref-webdev-0526]
+    fallback: Attribute selector or owner state class.
+  - id: popover
+    capability_id: popover
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-popover-open, ref-baseline]
+    fallback: Inline content or an accessible dialog.
+  - id: customizable-select
+    capability_id: customizable-select
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-appearance, ref-picker, ref-baseline]
+    fallback: Native select.
+  - id: property
+    capability_id: ordinary-transitions
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-property, ref-baseline]
+    fallback: Untyped custom property or ordinary property transition.
+  - id: starting-style
+    capability_id: ordinary-transitions
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-starting-style, ref-baseline]
+    fallback: Enter without a transition.
+  - id: transition-behavior
+    capability_id: ordinary-transitions
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: February 2027
+    source_ids: [ref-transition-behavior, ref-baseline]
+    fallback: Immediate discrete state change.
+  - id: interpolate-size
+    capability_id: disclosure-motion
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-interpolate-size, ref-calc-size, ref-baseline]
+    fallback: Grid-row or immediate disclosure.
+  - id: scroll-driven-animations
+    capability_id: scroll-driven-animation
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-scroll-driven, ref-animation-timeline, ref-webkit-sda]
+    fallback: Static content or ordinary transition.
+  - id: same-document-view-transitions
+    capability_id: view-transitions
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-view-transition-name, ref-view-transition-class, ref-baseline]
+    fallback: Normal state change.
+  - id: reduced-motion
+    capability_id: preference-media
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-reduced-motion, ref-baseline]
+    fallback: Low-motion default.
+  - id: forced-colors
+    capability_id: forced-colors
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-forced-colors, ref-system-colors, ref-baseline]
+    fallback: Permit user-agent color mapping.
+  - id: prefers-contrast
+    capability_id: preference-media
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-prefers-contrast, ref-baseline]
+    fallback: WCAG-conformant normal theme.
+  - id: reduced-transparency
+    capability_id: preference-media
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-reduced-transparency, ref-baseline]
+    fallback: A solid-surface default.
+  - id: content-visibility
+    capability_id: content-visibility
+    status: widely
+    reviewed_at: August 2026
+    source_ids: [ref-content-visibility, ref-contain-intrinsic-size, ref-baseline]
+    fallback: Normal rendering.
+  - id: field-sizing
+    capability_id: intrinsic-layout
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: December 2028
+    source_ids: [ref-field-sizing, ref-baseline]
+    fallback: Explicit logical sizes.
+  - id: anchor-positioning
+    capability_id: native-disclosures
+    status: newly
+    reviewed_at: August 2026
+    next_review_at: July 2028
+    source_ids: [ref-anchor-module, ref-baseline]
+    fallback: Conventional positioned layout or Popover API.
+  - id: typed-attr
+    capability_id: style-queries
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-attr, ref-baseline]
+    fallback: A class, custom property, or ordinary attribute interpreted by the owner.
+  - id: shape
+    capability_id: experimental-css
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-shape, ref-baseline]
+    fallback: polygon(), border radius, or a static asset.
+  - id: corner-shape
+    capability_id: experimental-css
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-corner-shape, ref-baseline]
+    fallback: border-radius.
+  - id: media-state-pseudo-classes
+    capability_id: experimental-css
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-playing, ref-baseline]
+    fallback: Owner-managed state class.
+  - id: custom-highlights
+    capability_id: experimental-css
+    status: newly
+    reviewed_at: August 2026
+    source_ids: [ref-highlight, ref-baseline]
+    fallback: Normal browser selection/find rendering.
+  - id: scroll-state-queries
+    capability_id: experimental-css
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-scroll-state-queries, ref-baseline]
+    fallback: Owner-managed state class or no effect.
+  - id: line-clamp
+    capability_id: text-wrapping
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-line-clamp, ref-baseline]
+    fallback: Show full content or provide an explicit disclosure.
+  - id: round
+    capability_id: fluid-type
+    status: limited
+    reviewed_at: August 2026
+    source_ids: [ref-round, ref-baseline]
+    fallback: Ordinary calc or precomputed value.
+  - id: css-functions
+    capability_id: experimental-css
+    status: watchlist
+    reviewed_at: August 2026
+    source_ids: [ref-if, ref-function, ref-sibling-index, ref-sibling-count]
+    fallback: Custom property values calculated by the build or owner code.
