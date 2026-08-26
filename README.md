@@ -12,8 +12,8 @@
 <h1 align="center">CSS Pro-Tips</h1>
 
 <p align="center">
-  <strong>A source-checked modern CSS skill for AI coding agents.</strong><br>
-  Drop one file into Claude Code, Codex, Cursor, Pi, OpenCode, Kiro, or anything else that reads <code>SKILL.md</code>, and the agent writes CSS against what browsers actually support today instead of what was true in 2018.
+  <strong>A source-checked CSS skill that keeps AI agents from shipping CSS slop.</strong><br>
+  Drop one file into Claude Code, Codex, Cursor, Pi, OpenCode, Kiro, or anything else that reads <code>SKILL.md</code>, and the agent chooses modern, accessible, support-aware CSS instead of stale hacks, brittle resets, or unsupported features.
 </p>
 
 <p align="center">
@@ -27,9 +27,9 @@
 
 ## Why it exists
 
-Ask an agent for CSS and you often get a mix of good habits and museum pieces: float clearfixes, padding-hack aspect ratios, `100vh` that breaks on mobile Safari, blanket resets, hover-only interactions, and experimental properties used with no fallback.
+Ask an agent for CSS and you often get a mix of good habits and CSS slop: float clearfixes, padding-hack aspect ratios, `100vh` that breaks on mobile Safari, blanket resets, hover-only interactions, and experimental properties used with no fallback.
 
-This package gives the agent one reference to check against. Every compatibility claim in it is bucketed by MDN Baseline status and links back to MDN, web.dev, Can I use, or the spec. Features with limited support are wrapped in `@supports` rather than assumed.
+This package is a guardrail against those sloppy or unsupported choices. It gives the agent one reference to check against. Every compatibility claim in it is bucketed by MDN Baseline status and links back to MDN, web.dev, Can I use, or the spec. Features with limited support are wrapped in `@supports` rather than assumed.
 
 ## What's inside
 
@@ -51,6 +51,14 @@ One file: [`SKILL.md`](./SKILL.md).
 ```bash
 npm install css-pro-tips
 ```
+
+Or install it through [skills.sh](https://www.skills.sh/pymodel/css-pro-tips):
+
+```bash
+npx skills add PyModel/css-pro-tips
+```
+
+The CLI installs this repository's root `SKILL.md` directly; no separate marketplace publishing step is required.
 
 Then copy `SKILL.md` into your agent's skill directory. For Claude Code:
 
