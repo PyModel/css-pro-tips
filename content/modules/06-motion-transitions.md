@@ -59,10 +59,6 @@ This example is entrance-only; the message remains visible without the styleshee
 ```css
 .feedback.animate__animated {
   --animate-duration: var(--motion-feedback-duration, 160ms);
-  --animate-delay: 0s;
-  --animate-repeat: 1;
-  animation-delay: 0s;
-  animation-iteration-count: 1;
 }
 
 @media print, (prefers-reduced-motion: reduce) {
@@ -79,6 +75,8 @@ This example is entrance-only; the message remains visible without the styleshee
 ```
 
 The default v4 classes use the `animate__` prefix. Duration, delay, and repetition helpers use `--animate-duration`, `--animate-delay`, and `--animate-repeat`; setting the latter two variables alone does not apply a delay or repeat without matching helpers/longhands. `animate__infinite` is not bounded by `--animate-repeat`. Upstream v4.1.1 reduces durations to 1ms and iterations to one for reduced motion/print, but its base rule does not clear `animation-delay`. Do not remove upstream preference handling, and do not assume a shortened effect is equivalent to no motion. [Versioned base rules][ref-animate-base]
+
+Without delay/repeat helpers, the entrance uses the CSS defaults: zero delay and one iteration. Do not override delay or repetition variables/longhands in the normal-motion feedback rule; this preserves inherited timing tokens and the library's delay, repeat, and infinite helpers. The stronger no-animation and zero-delay overrides remain scoped to reduced motion and print.
 
 Keep the feedback wrapper free of unrelated transforms. Avoid root-page motion, flashing attention seekers, uncontrolled infinite loops, clipped focus outlines, and layout shifts. Inspect overflow locally; a global `overflow: hidden` workaround can conceal real content. Use tokens for product-specific timing rather than making the example duration a universal requirement.
 

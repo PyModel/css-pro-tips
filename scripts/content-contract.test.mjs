@@ -133,3 +133,42 @@ test("new guidance remains in the generated single-file installation", () => {
   assert.equal(readFileSync(resolve(ROOT, "SKILL.md"), "utf8"), skill);
   assert.deepEqual(renderArtifacts(ROOT), artifacts, "Rendering must be deterministic");
 });
+
+test("target validation separates workspace paths from supplied snippets", () => {
+  const policy = body("operating-policy");
+  const targets = policy.split("\n").find((line) => line.startsWith("| `targets` |"));
+  assert.ok(targets, "Missing targets schema row");
+  assert.match(targets, /Path targets:/);
+  assert.match(targets, /resolve paths and symlinks inside the authorized workspace/);
+  assert.match(targets, /exists or is an explicitly requested new file/);
+  assert.match(targets, /No traversal, unrelated files, or arbitrary remote URLs as paths/);
+  assert.match(targets, /Snippet targets:/);
+  assert.match(targets, /non-empty supplied source/);
+  assert.match(targets, /workspace, symlink, and existence checks do not apply/);
+});
+
+test("review payload and finalization do not require project mutation", () => {
+  const policy = body("operating-policy");
+  const payload = policy.split("\n").find((line) => line.includes("**Execution Payload:**"));
+  assert.ok(payload, "Missing execution payload");
+  assert.match(payload, /For `review`, provide findings and evidence only/);
+  assert.match(payload, /do not change project files or run mutating build\/fix scripts/);
+  assert.match(payload, /For `implement` and `refactor`, provide a scoped file patch/);
+  assert.match(payload, /In edit modes in \*\*this skill repository only\*\*/);
+  const postExecution = policy.split("### Phase 3: Post-Execution Confirmation")[1]
+    .split("## 4. Verification & Acceptance Criteria")[0];
+  assert.match(postExecution, /For review mode, confirm project files match the recorded baseline/);
+  assert.match(postExecution, /do not regenerate output/);
+});
+
+test("normal-motion feedback preserves Animate.css delay and repetition helpers", () => {
+  const css = codeBlocks(body("motion-transitions"), "css").join("\n");
+  const feedbackRule = css.match(/\.feedback\.animate__animated\s*\{([^}]+)\}/)?.[1];
+  assert.ok(feedbackRule, "Missing normal-motion feedback rule");
+  assert.match(feedbackRule, /--animate-duration:/);
+  assert.doesNotMatch(feedbackRule, /--animate-(?:delay|repeat)\s*:/);
+  assert.doesNotMatch(feedbackRule, /animation-(?:delay|iteration-count)\s*:/);
+  assert.match(css, /@media print, \(prefers-reduced-motion: reduce\)/);
+  assert.match(css, /animation: none !important/);
+  assert.match(css, /animation-delay: 0s !important/);
+});

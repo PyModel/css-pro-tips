@@ -23,7 +23,7 @@ These are normalized task inputs, **not a shell API**. Derive known values from 
 | Parameter | Type | Required | Default | Validation Rule / Allowed Values |
 |---|---|---|---|---|
 | `mode` | Enum | No | `review` | `review`, `implement`, `refactor`; only explicit edit requests permit the latter two. Review produces findings without changing project files. |
-| `targets` | Array of paths or supplied snippets | Yes | Discovered requested scope | Non-empty; resolve paths and symlinks inside the authorized workspace. Verify each target exists or is an explicitly requested new file. No traversal, unrelated files, or arbitrary remote URLs as paths. |
+| `targets` | Array of paths or supplied snippets | Yes | Discovered requested scope | Non-empty. Path targets: resolve paths and symlinks inside the authorized workspace; verify each path exists or is an explicitly requested new file. No traversal, unrelated files, or arbitrary remote URLs as paths. Snippet targets: require non-empty supplied source and record its source label; workspace, symlink, and existence checks do not apply. |
 | `browser_targets` | Array of engine/version targets or `unknown` | No | Inspected product configuration | Never invent versions or treat Baseline as the product floor. If unknown, retain a usable fallback and report unverified compatibility. |
 | `motion_strategy` | Enum | No | `auto` | `auto`, `none`, `native`, `animate-css`; auto prefers existing/native CSS. A forced library choice still requires dependency permission. |
 | `allow_dependency_changes` | Boolean | No | `false` | Only literal true/false; true requires explicit authorization. Check lockfile, existing version, license, and import owner before adding or upgrading. |
@@ -44,7 +44,7 @@ These are normalized task inputs, **not a shell API**. Derive known values from 
 ### Phase 2: Core Execution
 
 3. **Review or implement one bounded change.** In review mode, cite the path/symbol, defect, impact, and proposed correction. In edit modes, add a focused failing regression where feasible, apply the smallest patch to the authorized files, and inspect its diff. Keep content and state usable without animation, JavaScript enhancements, or optional CSS features.
-   - **Execution Payload:** A scoped file patch plus a regression case. Run verified project scripts using their actual package manager and arguments, not assumed `npm test`/`lint` commands. In **this skill repository only**, edit `content/`, then run `npm run build`, `npm test`, and `npm run pack:check`; do not hand-edit generated `SKILL.md` or its projections.
+   - **Execution Payload:** For `review`, provide findings and evidence only; do not change project files or run mutating build/fix scripts. For `implement` and `refactor`, provide a scoped file patch plus a regression case where feasible. Run only mode-appropriate, inspected project scripts using their actual package manager and arguments, not assumed `npm test`/`lint` commands. In edit modes in **this skill repository only**, edit `content/`, then run `npm run build`, `npm test`, and `npm run pack:check`; do not hand-edit generated `SKILL.md` or its projections.
    - **Verification Gate:** Record each command, working directory, exit code, and diagnostic. A build exit code is not evidence of visual correctness. Report every confirmed defect encountered; leave unrelated fixes as explicit findings rather than hiding or silently expanding scope.
 
 4. **Check real states.** Exercise normal/reduced motion, keyboard focus, narrow and wide layouts, zoom/reflow, forced colors, long content, and supported engines as applicable. For motion also exercise disabled/missing CSS, delayed effects, cancellation, element removal, rapid repeated actions, and a preference change during playback. Inspect browser console errors and measured CSS/layout cost where relevant.
@@ -52,7 +52,7 @@ These are normalized task inputs, **not a shell API**. Derive known values from 
 
 ### Phase 3: Post-Execution Confirmation
 
-5. Re-read the changed sources, repeat relevant checks, and compare the final diff/status with the recorded baseline. Confirm generated artifacts are non-empty, current, and deterministic. Verify no unexpected dependencies, global overrides, abandoned listeners/timers, or task-created processes remain. Stop only processes this task owns.
+5. For review mode, confirm project files match the recorded baseline and report findings; do not regenerate output. For edit modes, re-read the changed sources, repeat relevant checks, and compare the final diff/status with the recorded baseline; confirm generated artifacts are non-empty, current, and deterministic. Verify no unexpected dependencies, global overrides, abandoned listeners/timers, or task-created processes remain. Stop only processes this task owns.
    - **Final Assertion:** Deliver changed paths, findings, check results, remaining uncertainty, and rollback instructions. A clean tree is required only when an authorized commit workflow requires it; otherwise the intended patch may remain uncommitted. Preserve all pre-existing work.
 
 ## 4. Verification & Acceptance Criteria
@@ -527,10 +527,6 @@ This example is entrance-only; the message remains visible without the styleshee
 ```css
 .feedback.animate__animated {
   --animate-duration: var(--motion-feedback-duration, 160ms);
-  --animate-delay: 0s;
-  --animate-repeat: 1;
-  animation-delay: 0s;
-  animation-iteration-count: 1;
 }
 
 @media print, (prefers-reduced-motion: reduce) {
@@ -547,6 +543,8 @@ This example is entrance-only; the message remains visible without the styleshee
 ```
 
 The default v4 classes use the `animate__` prefix. Duration, delay, and repetition helpers use `--animate-duration`, `--animate-delay`, and `--animate-repeat`; setting the latter two variables alone does not apply a delay or repeat without matching helpers/longhands. `animate__infinite` is not bounded by `--animate-repeat`. Upstream v4.1.1 reduces durations to 1ms and iterations to one for reduced motion/print, but its base rule does not clear `animation-delay`. Do not remove upstream preference handling, and do not assume a shortened effect is equivalent to no motion. [Versioned base rules][ref-animate-base]
+
+Without delay/repeat helpers, the entrance uses the CSS defaults: zero delay and one iteration. Do not override delay or repetition variables/longhands in the normal-motion feedback rule; this preserves inherited timing tokens and the library's delay, repeat, and infinite helpers. The stronger no-animation and zero-delay overrides remain scoped to reduced motion and print.
 
 Keep the feedback wrapper free of unrelated transforms. Avoid root-page motion, flashing attention seekers, uncontrolled infinite loops, clipped focus outlines, and layout shifts. Inspect overflow locally; a global `overflow: hidden` workaround can conceal real content. Use tokens for product-specific timing rather than making the example duration a universal requirement.
 
