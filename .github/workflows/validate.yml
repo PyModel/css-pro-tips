@@ -1,0 +1,44 @@
+name: Validate skill
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm test
+      - run: npm run build
+      - run: git diff --exit-code -- SKILL.md docs/compatibility-summary.md docs/evidence-index.md
+      - run: npm run pack:check
+      - name: Export reproducible review inputs
+        if: always()
+        shell: bash
+        run: |
+          git ls-files -z | tar --null -T - -czf "$RUNNER_TEMP/css-pro-tips-source.tar.gz"
+          if test -d node_modules/yaml; then
+            tar -czf "$RUNNER_TEMP/css-pro-tips-yaml.tar.gz" -C node_modules yaml
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: skill-review-inputs
+          path: ${{ runner.temp }}/css-pro-tips-*.tar.gz
+          if-no-files-found: error
+          retention-days: 1
