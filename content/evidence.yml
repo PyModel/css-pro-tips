@@ -324,6 +324,43 @@ sources:
   - id: ref-webdev-0526
     title: web.dev platform updates May 2026
     url: https://web.dev/blog/web-platform-05-2026
+  - id: ref-animate-docs
+    title: "Animate.css live documentation (reviewed 2026-09-04)"
+    url: https://animate.style/
+  - id: ref-animate-base
+    title: "Animate.css v4.1.1 base rules"
+    url: https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/source/_base.css
+  - id: ref-animate-license
+    title: "Animate.css v4.1.1 license"
+    url: https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/LICENSE
+  - id: ref-animate-package
+    title: "Animate.css v4.1.1 package metadata"
+    url: https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/package.json
+  - id: ref-animation-end
+    title: "MDN animationend event"
+    url: https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event
+  - id: ref-animation-cancel
+    title: "MDN animationcancel event"
+    url: https://developer.mozilla.org/en-US/docs/Web/API/Element/animationcancel_event
+  - id: ref-animation-performance
+    title: "web.dev high-performance CSS animations"
+    url: https://web.dev/articles/animations-guide
+  - id: ref-motion-technique
+    title: "W3C reduced-motion CSS technique C39"
+    url: https://www.w3.org/WAI/WCAG22/Techniques/css/C39
+  - id: ref-wcag-animation
+    title: "WCAG animation from interactions"
+    url: https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html
+  - id: ref-wcag-pause
+    title: "WCAG pause stop hide"
+    url: https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html
+  - id: ref-disclosure-pattern
+    title: "WAI disclosure pattern"
+    url: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
+  - id: ref-inert
+    title: "MDN inert attribute"
+    url: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert
+
 claims:
   - id: custom-properties
     capability_id: design-tokens

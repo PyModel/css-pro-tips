@@ -3,6 +3,23 @@
 All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Five-part execution contract with scoped inputs, review-only defaults, verification gates, explicit result states, and non-destructive recovery.
+- Optional, version-pinned Animate.css reference covering integration, accessibility, cancellation, bundle delivery, license differences, migration, and rollback. No Animate.css dependency or vendored library source.
+- Eleven content regression tests and read-only CI for validation, reproducible generation, and the six-file package contract.
+
+### Fixed
+- Invalid nested vendor `@import` example and incomplete cascade-layer precedence explanation.
+- Global near-zero reduced-motion reset that left delays and override conflicts unaddressed.
+- Disclosure guidance that treated visual collapse as sufficient semantic state.
+- Snippet targets incorrectly subjected to workspace path checks, and review-only payload/finalization instructions that still required edits.
+- Normal-motion feedback defaults overriding Animate.css delay/repeat/infinite helpers and inherited timing variables.
+
+### Evidence
+- New motion references reviewed September 4, 2026. The broader compatibility snapshot remains August 2026; no release version or npm publication is implied.
+
 ## [1.3.0] - 2026-08-26
 
 ### Added

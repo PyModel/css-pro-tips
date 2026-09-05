@@ -67,6 +67,13 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-accent-color | MDN accent-color | https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color |
 | ref-all | MDN all | https://developer.mozilla.org/en-US/docs/Web/CSS/all |
 | ref-anchor-module | MDN CSS anchor positioning | https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning |
+| ref-animate-base | Animate.css v4.1.1 base rules | https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/source/_base.css |
+| ref-animate-docs | Animate.css live documentation (reviewed 2026-09-04) | https://animate.style/ |
+| ref-animate-license | Animate.css v4.1.1 license | https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/LICENSE |
+| ref-animate-package | Animate.css v4.1.1 package metadata | https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/package.json |
+| ref-animation-cancel | MDN animationcancel event | https://developer.mozilla.org/en-US/docs/Web/API/Element/animationcancel_event |
+| ref-animation-end | MDN animationend event | https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event |
+| ref-animation-performance | web.dev high-performance CSS animations | https://web.dev/articles/animations-guide |
 | ref-animation-timeline | MDN animation-timeline | https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline |
 | ref-appearance | MDN appearance | https://developer.mozilla.org/en-US/docs/Web/CSS/appearance |
 | ref-ascent-override | MDN ascent-override | https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/ascent-override |
@@ -92,6 +99,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-custom-properties | MDN CSS custom properties | https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties |
 | ref-defined | MDN :defined | https://developer.mozilla.org/en-US/docs/Web/CSS/:defined |
 | ref-dir | MDN :dir() | https://developer.mozilla.org/en-US/docs/Web/CSS/:dir |
+| ref-disclosure-pattern | WAI disclosure pattern | https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/ |
 | ref-empty | MDN :empty | https://developer.mozilla.org/en-US/docs/Web/CSS/:empty |
 | ref-field-sizing | MDN field-sizing | https://developer.mozilla.org/en-US/docs/Web/CSS/field-sizing |
 | ref-flex-align | MDN flex alignment | https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Aligning_items_in_a_flex_container |
@@ -106,6 +114,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-highlight | MDN ::highlight() | https://developer.mozilla.org/en-US/docs/Web/CSS/::highlight |
 | ref-if | MDN if() | https://developer.mozilla.org/en-US/docs/Web/CSS/if |
 | ref-import | MDN @import | https://developer.mozilla.org/en-US/docs/Web/CSS/@import |
+| ref-inert | MDN inert attribute | https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert |
 | ref-interpolate-size | MDN interpolate-size | https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size |
 | ref-is | MDN :is() | https://developer.mozilla.org/en-US/docs/Web/CSS/:is |
 | ref-layer | MDN @layer | https://developer.mozilla.org/en-US/docs/Web/CSS/@layer |
@@ -116,6 +125,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-logical | MDN logical properties | https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values |
 | ref-mask | MDN mask | https://developer.mozilla.org/en-US/docs/Web/CSS/mask |
 | ref-minmax | MDN minmax() | https://developer.mozilla.org/en-US/docs/Web/CSS/minmax |
+| ref-motion-technique | W3C reduced-motion CSS technique C39 | https://www.w3.org/WAI/WCAG22/Techniques/css/C39 |
 | ref-nesting | MDN CSS nesting | https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting |
 | ref-not | MDN :not() | https://developer.mozilla.org/en-US/docs/Web/CSS/:not |
 | ref-nth-child | MDN :nth-child() | https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child |
@@ -164,8 +174,10 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-view-transition-class | MDN view-transition-class | https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-class |
 | ref-view-transition-name | MDN view-transition-name | https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-name |
 | ref-viewport-units | MDN viewport length units | https://developer.mozilla.org/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport |
+| ref-wcag-animation | WCAG animation from interactions | https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html |
 | ref-wcag-contrast | WCAG 2.2 contrast minimum understanding | https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html |
 | ref-wcag-focus | WCAG 2.2 focus visible understanding | https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html |
+| ref-wcag-pause | WCAG pause stop hide | https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html |
 | ref-wcag-reflow | WCAG 2.2 reflow understanding | https://www.w3.org/WAI/WCAG22/Understanding/reflow.html |
 | ref-webdev-0526 | web.dev platform updates May 2026 | https://web.dev/blog/web-platform-05-2026 |
 | ref-webdev-css-performance | web.dev optimize CSS | https://web.dev/articles/optimize-css |

@@ -32,7 +32,7 @@ These features carry distinct support stories; do not collapse them into a vague
 | Retire | Prefer | Reason |
 |---|---|---|
 | Padding-ratio wrapper | `aspect-ratio` | Native intrinsic media sizing |
-| `max-height` disclosure guess | Grid-row or no-motion disclosure | Unknown height remains correct |
+| `max-height` disclosure guess | Semantic no-motion disclosure; optional grid-row enhancement | Unknown height, focus, and hidden state remain correct |
 | Margin gutters / `space-between` cards | Grid `auto-fit` + `gap` | Natural wrapping and consistent gaps |
 | Global `* + *` | Scoped flow selector | Avoid third-party/component leakage |
 | Strict branded `local()` source | Versioned webfont + fallback metrics | Avoid unknown installed font versions |
