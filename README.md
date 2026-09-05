@@ -47,7 +47,7 @@ ln -sf "$(pwd)/node_modules/css-pro-tips/SKILL.md" ~/.claude/skills/css-protips/
 
 ## What your agent gets
 
-The skill starts with the decisions that shape good CSS, then supplies implementation guidance and compatibility evidence.
+The skill starts with an execution contract: activation and negative triggers, validated inputs, gated execution, acceptance criteria, and failure recovery. Review mode and no dependency changes are the defaults. It then supplies CSS decisions, implementation guidance, and compatibility evidence.
 
 | Decision | Guidance |
 |---|---|
@@ -56,7 +56,7 @@ The skill starts with the decisions that shape good CSS, then supplies implement
 | Typography | Unitless line height, bounded `clamp()` type, `text-wrap`, `text-box`, font loading, subsetting, and fallback metrics |
 | Color | Semantic themes, `oklch()`, `color-mix()`, `light-dark()`, relative-color fallbacks, and forced-colors behavior |
 | State | `:focus-visible`, `:has()`, native form state, `:open`, popovers, customizable select, and real ARIA/data state |
-| Motion | Ordinary transitions, disclosures, `@starting-style`, `allow-discrete`, View Transitions, scroll-driven animation limits, and reduced-motion policy |
+| Motion | Native transitions, semantic disclosures, optional Animate.css presets, cancellation-safe lifecycle guidance, no-motion/print baselines, View Transitions, and scroll-driven animation limits |
 | Accessibility | Focus, contrast, forced colors, reduced transparency, zoom, reflow, keyboard behavior, and semantic HTML |
 | Performance | Static output, CSS delivery, critical CSS, fonts, `content-visibility`, and profiling instead of selector folklore |
 | Tooling | CSS Modules, Tailwind v4, Sass/Less relevance, PostCSS, Autoprefixer, Browserslist, and Stylelint |
@@ -81,6 +81,12 @@ It works with Claude Code, Codex CLI, Cursor, OpenCode, Pi, Kiro, and other tool
 
 Cursor uses `.mdc` rules. Copy the file to `.cursor/rules/css-protips.mdc`, then add Cursor frontmatter for the CSS and component file types you want it to match.
 
+## Animate.css reference
+
+The animation module references [Animate.css](https://animate.style/) without adding it as a package dependency. It covers the v4 class prefix, timing variables, single-owner imports, reduced-motion/print handling, cancellation and missing-CSS paths, production bundle checks, and migration/rollback.
+
+The reference was reviewed on September 4, 2026 against the `v4.1.1` source tag. That tag's license is MIT; the live website states a different license. Check the exact distributed artifact and the project's dependency policy before adopting it. This is a versioned reference, not a claim that `4.1.1` is the latest release.
+
 ## Compatibility and evidence
 
 - Package version: [`1.3.0`](./package.json)
@@ -102,7 +108,9 @@ npm test
 npm run pack:check
 ```
 
-`npm run build` regenerates `SKILL.md` and the two maintainer projections. `npm test` rejects stale generated output, invalid frontmatter, broken references, source-contract drift, release metadata drift, and unexpected package contents. The published npm package still contains only the one-file agent interface plus normal package metadata.
+`npm run build` regenerates `SKILL.md` and the two maintainer projections. `npm test` rejects stale generated output, invalid frontmatter, broken references, source-contract drift, release metadata drift, and unexpected package contents. It also checks the five-part execution contract, optional Animate.css guidance, versioned evidence, reduced-motion safeguards, and top-level vendor imports. GitHub Actions runs these checks with read-only repository permissions. The published npm package still contains only the one-file agent interface plus normal package metadata.
+
+The [September 2026 review](./docs/review-2026-09-04.md) records confirmed findings, verification scope, and remaining limitations. The broader browser-compatibility snapshot above remains August 2026; adding animation references does not revalidate every browser claim.
 
 CSS Pro-Tips is maintained by [elkaix](https://github.com/elkaix) under the [PyModel](https://github.com/PyModel) organization.
 

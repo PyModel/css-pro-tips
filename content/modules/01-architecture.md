@@ -42,10 +42,11 @@ Use platform-neutral token source data when several clients consume the system; 
 
 ## Declare the cascade once
 
-Set layer order before rules. Later layers beat earlier layers regardless of selector specificity, so layer order is an ownership decision rather than an accident of import order. [MDN @layer][ref-layer]
+Set layer order before rules. Within the same origin, normal declarations in later layers beat earlier layers before specificity is considered; normal unlayered declarations beat layered declarations. For `!important` declarations, layer order reverses and layered important rules outrank unlayered important rules. Do not use a later override layer to try to defeat an earlier important vendor rule. [MDN @layer][ref-layer]
 
 ```css
 @layer reset, tokens, base, vendor, components, utilities, overrides;
+@import url("vendor.css") layer(vendor);
 
 @layer reset {
   *,
@@ -55,10 +56,6 @@ Set layer order before rules. Later layers beat earlier layers regardless of sel
   }
 }
 
-@layer vendor {
-  @import url("vendor.css") layer(vendor);
-}
-
 @layer components {
   .button { padding: var(--space-4); }
 }
@@ -66,7 +63,7 @@ Set layer order before rules. Later layers beat earlier layers regardless of sel
 
 Keep user escape hatches intentional: `:where()` makes a default zero-specificity and easy to override; native nesting is normal production CSS, not a reason to create deeply coupled selector trees. [MDN :where()][ref-where] [MDN CSS nesting][ref-nesting]
 
-If vendor CSS must be imported rather than bundled, place it explicitly in the vendor layer. [MDN @import][ref-import]
+If vendor CSS must be imported rather than bundled, use a top-level import into the vendor layer before rule blocks. A layer-order statement may precede it; nesting `@import` inside a layer block is invalid. [MDN @import][ref-import]
 
 ## Scope component ownership
 

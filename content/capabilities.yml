@@ -236,9 +236,9 @@ capabilities:
     tooling: []
   - id: disclosure-motion
     concept: motion-transitions
-    recommendation: Use a grid-row disclosure baseline; enhance intrinsic-size animation only where supported.
+    recommendation: Use a semantic native or correctly managed custom disclosure baseline; add grid-row or intrinsic-size interpolation only as a verified enhancement.
     use_when: Content with unknown height expands and collapses.
-    avoid_when: max-height guesses that clip or make duration depend on unknown content.
+    avoid_when: Height-only hiding that leaves controls focusable, or max-height guesses that clip content.
     fallback: Open/close without interpolation.
     accessibility_checks: [reduced-motion, keyboard]
     performance_notes: Keep the animated subtree small.
@@ -351,3 +351,13 @@ capabilities:
     accessibility_checks: [keyboard, reduced-motion, zoom-reflow]
     performance_notes: Profile actual browser behavior before broad use.
     tooling: []
+
+  - id: animate-css
+    concept: motion-transitions
+    recommendation: Use Animate.css as an optional reference or explicitly approved preset dependency, not an automatic default.
+    use_when: Repeated entrance or emphasis effects justify an existing or authorized dependency.
+    avoid_when: Native CSS suffices, dependency/license approval is absent, or correctness would depend on animation completion.
+    fallback: Immediate semantic state with visible content and working focus, without the library.
+    accessibility_checks: [reduced-motion, keyboard, print, cancellation, missing-css]
+    performance_notes: Measure production CSS and runtime cost; do not assume stylesheet tree shaking or compositor acceleration.
+    tooling: [animate.css]
