@@ -5,6 +5,15 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-09-26
+
+### Changed
+- README install guide leads with `npx skills add` and lists project/global skill paths for 27 coding agents, including Pythinker Code, plus Aider `--read` instructions. Corrected Cursor, Pi, and Kiro paths.
+- Package description and keywords name the supported agents.
+
+### Evidence
+- No compatibility claims changed; statuses remain validated in September 2026.
+
 ## [2.0.0] - 2026-09-26
 
 ### Added
