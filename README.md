@@ -90,7 +90,7 @@ The reference was reviewed on September 4, 2026 against the `v4.1.1` source tag.
 
 ## Compatibility and evidence
 
-- Package version: [`1.3.0`](./package.json)
+- Package version: [`2.0.0`](./package.json)
 - Last validation window: September 2026 (derived from the most recent claim `reviewed_at` in `content/evidence.yml`)
 - Compatibility model: [MDN Baseline](https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility)
 - Generated [compatibility summary](./references/compatibility.md)

@@ -5,13 +5,15 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-09-26
+
 ### Added
 - Five-part execution contract with scoped inputs, review-only defaults, verification gates, explicit result states, and non-destructive recovery.
 - Optional, version-pinned Animate.css reference covering integration, accessibility, cancellation, bundle delivery, license differences, migration, and rollback. No Animate.css dependency or vendored library source.
-- Eleven content regression tests and read-only CI for validation, reproducible generation, and the six-file package contract.
+- Eleven content regression tests and read-only CI for validation, reproducible generation, and the package contract.
 
 ### Changed
-- **Breaking install layout:** `SKILL.md` is now a ~1,600-word router (execution contract + load-on-demand table) and detailed guidance ships as generated `references/*.md`, following the Agent Skills `references/` layout. Per-activation load drops from ~16k to ~3.2k tokens. The input schema, failure-triage table, and escalation JSON moved to `references/execution-contract.md`. Copying `SKILL.md` alone is no longer a complete install; copy `references/` too (next release should be a major version).
+- **Breaking install layout:** `SKILL.md` is now a ~1,600-word router (execution contract + load-on-demand table) and detailed guidance ships as generated `references/*.md`, following the Agent Skills `references/` layout. Per-activation load drops from ~16k to ~3.2k tokens. The input schema, failure-triage table, and escalation JSON moved to `references/execution-contract.md`. Copying `SKILL.md` alone is no longer a complete install; copy `references/` too.
 - Capability guidance is co-located with its concept reference instead of a trailing monolith section; policy commitments and the compatibility summary moved to `references/`.
 - The npm package allowlist is derived from the build output, and a router word/heading ceiling test replaces the 200 KB size check.
 
@@ -26,7 +28,7 @@ All notable changes to this project are documented here. Format follows
 - Normal-motion feedback defaults overriding Animate.css delay/repeat/infinite helpers and inherited timing variables.
 
 ### Evidence
-- Motion references reviewed September 4, 2026; the broader compatibility snapshot was refreshed to September 2026 on September 20, 2026 (Baseline 2026 grads, Interop 2026 focus-area annotations, `popover="hint"` / `<dialog closedby>` guidance). No release version or npm publication is implied.
+- Motion references reviewed September 4, 2026; the broader compatibility snapshot was refreshed to September 2026 on September 20, 2026 (Baseline 2026 grads, Interop 2026 focus-area annotations, `popover="hint"` / `<dialog closedby>` guidance).
 
 ## [1.3.0] - 2026-08-26
 
