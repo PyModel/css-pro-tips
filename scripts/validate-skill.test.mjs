@@ -78,7 +78,6 @@ function canonicalFixture({
 skill:
   name: ${JSON.stringify(skillName)}
   description: ${JSON.stringify(skillDescription)}
-  validation_window: August 2026
 artifacts:
   skill: SKILL.md
   compatibility_summary: references/compatibility.md
@@ -107,7 +106,6 @@ capabilities:
     fallback: Static class variants.
     accessibility_checks: []
     performance_notes: Static output is cacheable.
-    tooling: []
 `,
     "content/evidence.yml": `schema_version: 1
 sources:

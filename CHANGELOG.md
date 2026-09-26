@@ -5,6 +5,10 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Removed
+- Unused maintainer data: the archived v1 migration map, the follow-up review note, unrendered capability `tooling` fields, and unread manifest metadata (`reviewed_at`, `compatibility_model`, `package_contract`). The validation window is derived only from `content/evidence.yml`.
+- Script exports with no external callers.
+
 ## [2.0.1] - 2026-09-26
 
 ### Changed

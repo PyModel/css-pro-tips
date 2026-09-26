@@ -8,7 +8,6 @@ capabilities:
     fallback: Use a semantic custom-property default; do not make a component depend directly on a primitive palette name.
     accessibility_checks: [contrast, forced-colors]
     performance_notes: Custom properties avoid duplicated literal values and support static themes.
-    tooling: [css-modules, tailwind-v4]
   - id: cascade-layers
     concept: architecture
     recommendation: Declare layer order before rules and place third-party CSS in a lower-priority layer.
@@ -17,7 +16,6 @@ capabilities:
     fallback: Source order remains a viable baseline for older engines.
     accessibility_checks: []
     performance_notes: None direct.
-    tooling: [postcss, tailwind-v4]
   - id: component-scope
     concept: architecture
     recommendation: Scope component styles through CSS Modules or a documented class/state contract; use native @scope only after checking the browser floor.
@@ -26,7 +24,6 @@ capabilities:
     fallback: CSS Modules/classes provide the baseline for @scope.
     accessibility_checks: []
     performance_notes: Narrow scope reduces unintended invalidation and overrides.
-    tooling: [css-modules, tailwind-v4]
   - id: css-modules
     concept: architecture
     recommendation: Use CSS Modules as the component-local default when authoring traditional CSS.
@@ -35,7 +32,6 @@ capabilities:
     fallback: Documented BEM-like local naming is acceptable where Modules are unavailable.
     accessibility_checks: []
     performance_notes: Static extraction keeps styles cacheable.
-    tooling: [css-modules]
   - id: utility-css
     concept: architecture
     recommendation: Use Tailwind v4 when the team prefers utility composition and its token/layer model is the shared convention.
@@ -44,7 +40,6 @@ capabilities:
     fallback: Semantic component classes can consume the same tokens.
     accessibility_checks: [focus, contrast, motion]
     performance_notes: Build only the utilities the product actually uses.
-    tooling: [tailwind-v4]
   - id: static-css
     concept: architecture
     recommendation: Emit static CSS and express dynamic values through custom properties, attributes, or classes first.
@@ -53,7 +48,6 @@ capabilities:
     fallback: Static class variants are the baseline.
     accessibility_checks: []
     performance_notes: Avoids runtime injection and enables normal caching/minification.
-    tooling: [css-modules, tailwind-v4]
   - id: grid-layout
     concept: layout-containers
     recommendation: Use Grid for two-dimensional composition and repeated responsive tracks.
@@ -62,7 +56,6 @@ capabilities:
     fallback: A single-column flow is usually viable.
     accessibility_checks: [zoom-reflow]
     performance_notes: Prefer readable tracks over layout JavaScript.
-    tooling: []
   - id: flex-layout
     concept: layout-containers
     recommendation: Use Flexbox for one-dimensional alignment, distribution, and compact control groups.
@@ -71,7 +64,6 @@ capabilities:
     fallback: Block flow remains the baseline.
     accessibility_checks: [zoom-reflow]
     performance_notes: None direct.
-    tooling: []
   - id: intrinsic-layout
     concept: layout-containers
     recommendation: Start with minmax(), auto-fit, aspect-ratio, logical sizes, and content-driven tracks.
@@ -80,7 +72,6 @@ capabilities:
     fallback: Single-column flow with normal document layout.
     accessibility_checks: [zoom-reflow]
     performance_notes: Removes layout scripts and brittle breakpoint branches.
-    tooling: []
   - id: container-queries
     concept: layout-containers
     recommendation: Query the component container when a component changes because of available parent width.
@@ -89,7 +80,6 @@ capabilities:
     fallback: Intrinsic one-column or wrapping layout before the query.
     accessibility_checks: [zoom-reflow]
     performance_notes: Establish intentional container boundaries; avoid using them as a universal replacement for layout design.
-    tooling: [tailwind-v4]
   - id: container-units
     concept: layout-containers
     recommendation: Use cqi/cqb units for component-local fluid values after a named sizing context exists.
@@ -98,7 +88,6 @@ capabilities:
     fallback: rem- and clamp()-based values.
     accessibility_checks: [zoom-reflow]
     performance_notes: None direct.
-    tooling: [tailwind-v4]
   - id: style-queries
     concept: layout-containers
     recommendation: Use style queries for a deliberate component variant signal, not incidental computed styles.
@@ -107,7 +96,6 @@ capabilities:
     fallback: A normal variant class or data attribute.
     accessibility_checks: []
     performance_notes: Keep the decision local to the component boundary.
-    tooling: []
   - id: fluid-type
     concept: typography-fonts
     recommendation: Use rem-based clamp() for bounded fluid type and spacing.
@@ -116,7 +104,6 @@ capabilities:
     fallback: The minimum value is already a readable baseline.
     accessibility_checks: [zoom-reflow]
     performance_notes: None direct.
-    tooling: [tailwind-v4]
   - id: font-loading
     concept: typography-fonts
     recommendation: Subset fonts, use font-display intentionally, and preload only the critical face actually used above the fold.
@@ -125,7 +112,6 @@ capabilities:
     fallback: A metrically compatible system stack.
     accessibility_checks: [readability]
     performance_notes: Fonts affect LCP, CLS, and render blocking.
-    tooling: [postcss]
   - id: font-metrics
     concept: typography-fonts
     recommendation: Use size-adjust and metric overrides to reduce fallback-to-webfont layout shift.
@@ -134,7 +120,6 @@ capabilities:
     fallback: A normal fallback font stack.
     accessibility_checks: [readability]
     performance_notes: Reduces CLS when a font swaps.
-    tooling: []
   - id: text-wrapping
     concept: typography-fonts
     recommendation: "Use text-wrap: balance or pretty only as a progressive typography enhancement."
@@ -143,7 +128,6 @@ capabilities:
     fallback: Normal wrapping.
     accessibility_checks: [readability]
     performance_notes: Apply to small, targeted text blocks.
-    tooling: []
   - id: text-box
     concept: typography-fonts
     recommendation: Use text-box trimming for optical alignment only after the untrimmed layout works.
@@ -152,7 +136,6 @@ capabilities:
     fallback: Normal line box metrics.
     accessibility_checks: [readability]
     performance_notes: None direct.
-    tooling: []
   - id: semantic-colors
     concept: color-theming
     recommendation: Map primitive palettes to semantic color tokens, then let components consume semantic roles.
@@ -161,7 +144,6 @@ capabilities:
     fallback: A complete default theme in custom properties.
     accessibility_checks: [contrast, forced-colors]
     performance_notes: Static custom properties make theme changes cheap.
-    tooling: [tailwind-v4]
   - id: modern-colors
     concept: color-theming
     recommendation: Prefer oklch() for authored perceptual palettes and color-mix() for derived semantic colors.
@@ -170,7 +152,6 @@ capabilities:
     fallback: Precomputed semantic token values.
     accessibility_checks: [contrast, forced-colors]
     performance_notes: Precompute repeated complex color math in tokens.
-    tooling: []
   - id: focus-visible
     concept: state-forms-interaction
     recommendation: Preserve a high-contrast :focus-visible indicator with space from the control.
@@ -179,7 +160,6 @@ capabilities:
     fallback: :focus remains a viable conservative baseline.
     accessibility_checks: [focus, forced-colors]
     performance_notes: None direct.
-    tooling: []
   - id: relational-state
     concept: state-forms-interaction
     recommendation: Use :has() for local relational state and native pseudo-classes before JavaScript class toggles.
@@ -188,7 +168,6 @@ capabilities:
     fallback: A real data/state class set by the owning behavior.
     accessibility_checks: []
     performance_notes: Scope relational selectors to the smallest owning component.
-    tooling: []
   - id: form-state
     concept: state-forms-interaction
     recommendation: Use native validation and :user-valid/:user-invalid after interaction; style ARIA state only when the semantics already exist.
@@ -197,7 +176,6 @@ capabilities:
     fallback: Native validity UI and explicit server/client messages.
     accessibility_checks: [forms, focus]
     performance_notes: None direct.
-    tooling: []
   - id: native-disclosures
     concept: state-forms-interaction
     recommendation: Prefer details, dialog, and the :open state where their semantics match the interaction.
@@ -206,7 +184,6 @@ capabilities:
     fallback: A semantic always-visible content flow or established accessible control.
     accessibility_checks: [keyboard, focus]
     performance_notes: Native state avoids synchronization code.
-    tooling: []
   - id: popover
     concept: state-forms-interaction
     recommendation: Use the Popover API for transient top-layer UI when native popover behavior fits.
@@ -215,7 +192,6 @@ capabilities:
     fallback: Inline content or an established accessible dialog path.
     accessibility_checks: [keyboard, focus]
     performance_notes: Native top-layer state avoids manual stacking code.
-    tooling: []
   - id: customizable-select
     concept: state-forms-interaction
     recommendation: Treat customizable select as an enhancement; preserve a real select and its keyboard behavior.
@@ -224,7 +200,6 @@ capabilities:
     fallback: Native select styling with accent-color as an optional enhancement.
     accessibility_checks: [forms, keyboard]
     performance_notes: None direct.
-    tooling: []
   - id: ordinary-transitions
     concept: motion-transitions
     recommendation: Transition only deliberate visual properties and respect motion preferences.
@@ -233,7 +208,6 @@ capabilities:
     fallback: An immediate state change.
     accessibility_checks: [reduced-motion]
     performance_notes: Prefer compositor-friendly properties when practical, then profile.
-    tooling: []
   - id: disclosure-motion
     concept: motion-transitions
     recommendation: Use a semantic native or correctly managed custom disclosure baseline; add grid-row or intrinsic-size interpolation only as a verified enhancement.
@@ -242,7 +216,6 @@ capabilities:
     fallback: Open/close without interpolation.
     accessibility_checks: [reduced-motion, keyboard]
     performance_notes: Keep the animated subtree small.
-    tooling: []
   - id: scroll-driven-animation
     concept: motion-transitions
     recommendation: Treat scroll-driven animations as enhancement-only while support remains incomplete.
@@ -251,7 +224,6 @@ capabilities:
     fallback: Static state or ordinary interaction-driven motion.
     accessibility_checks: [reduced-motion]
     performance_notes: Profile real scroll behavior on target devices.
-    tooling: []
   - id: view-transitions
     concept: motion-transitions
     recommendation: Use same-document View Transitions as a progressive enhancement over a complete non-animated navigation/state change.
@@ -260,7 +232,6 @@ capabilities:
     fallback: Normal navigation or state update.
     accessibility_checks: [reduced-motion]
     performance_notes: Avoid excessive named elements and expensive pseudo-element effects.
-    tooling: []
   - id: forced-colors
     concept: accessibility-preferences
     recommendation: Test forced-colors and use system colors where author colors must remain meaningful.
@@ -269,7 +240,6 @@ capabilities:
     fallback: Allow the user agent color mapping to work.
     accessibility_checks: [forced-colors, contrast]
     performance_notes: None direct.
-    tooling: []
   - id: preference-media
     concept: accessibility-preferences
     recommendation: Honor reduced motion, contrast, transparency, and color scheme without making preferences a hidden source of essential content.
@@ -278,7 +248,6 @@ capabilities:
     fallback: A readable, low-motion default.
     accessibility_checks: [reduced-motion, contrast, forced-colors]
     performance_notes: None direct.
-    tooling: []
   - id: css-delivery
     concept: performance
     recommendation: Minify, compress, fingerprint/cache, and split CSS by actual route/use boundaries.
@@ -287,7 +256,6 @@ capabilities:
     fallback: A single cacheable stylesheet is acceptable for a small application.
     accessibility_checks: []
     performance_notes: Measure bytes, waterfall, LCP, CLS, and unused CSS.
-    tooling: [postcss]
   - id: critical-css
     concept: performance
     recommendation: Inline only genuinely critical, stable above-the-fold CSS after measuring a delivery problem.
@@ -296,7 +264,6 @@ capabilities:
     fallback: Normal cacheable stylesheet delivery.
     accessibility_checks: []
     performance_notes: Evaluate LCP and cache trade-offs per route.
-    tooling: [bundler]
   - id: content-visibility
     concept: performance
     recommendation: "Use content-visibility: auto for large, offscreen, self-contained sections with an intrinsic-size estimate."
@@ -305,7 +272,6 @@ capabilities:
     fallback: Normal rendering.
     accessibility_checks: [find-in-page]
     performance_notes: Can reduce offscreen layout/paint work; validate actual interaction behavior.
-    tooling: []
   - id: tailwind-v4
     concept: tooling
     recommendation: Treat Tailwind v4 as a static CSS compiler around tokens, utilities, variants, and native CSS layers.
@@ -314,7 +280,6 @@ capabilities:
     fallback: Component CSS can consume the same custom properties.
     accessibility_checks: [focus, contrast, motion]
     performance_notes: Keep generated output in the normal CSS optimization pipeline.
-    tooling: [tailwind-v4]
   - id: sass
     concept: tooling
     recommendation: Keep Sass for mature codebases or genuine compile-time loops/functions; do not add it by reflex to new CSS.
@@ -323,7 +288,6 @@ capabilities:
     fallback: Native custom properties, nesting, calc(), min(), max(), and clamp().
     accessibility_checks: []
     performance_notes: Compile output still needs normal delivery optimization.
-    tooling: [sass]
   - id: postcss-autoprefixer
     concept: tooling
     recommendation: Use PostCSS/Autoprefixer only with a checked-in Browserslist target that reflects actual support policy.
@@ -332,7 +296,6 @@ capabilities:
     fallback: Native CSS where the browser floor already supports it.
     accessibility_checks: []
     performance_notes: Remove obsolete transforms as the target evolves.
-    tooling: [postcss, autoprefixer, browserslist]
   - id: stylelint
     concept: tooling
     recommendation: Run Stylelint in CI for source correctness and the team's policy rules.
@@ -341,7 +304,6 @@ capabilities:
     fallback: A focused review checklist for small projects.
     accessibility_checks: []
     performance_notes: None direct.
-    tooling: [stylelint]
   - id: experimental-css
     concept: experimental-watchlist
     recommendation: Keep limited and experimental capabilities out of load-bearing paths until the product browser floor and a viable fallback are proven.
@@ -350,7 +312,6 @@ capabilities:
     fallback: A complete static/native baseline or owner-managed state.
     accessibility_checks: [keyboard, reduced-motion, zoom-reflow]
     performance_notes: Profile actual browser behavior before broad use.
-    tooling: []
 
   - id: animate-css
     concept: motion-transitions
@@ -360,4 +321,3 @@ capabilities:
     fallback: Immediate semantic state with visible content and working focus, without the library.
     accessibility_checks: [reduced-motion, keyboard, print, cancellation, missing-css]
     performance_notes: Measure production CSS and runtime cost; do not assume stylesheet tree shaking or compositor acceleration.
-    tooling: [animate.css]

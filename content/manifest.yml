@@ -2,9 +2,6 @@ schema_version: 1
 skill:
   name: css-protips
   description: "Use when writing, reviewing, refactoring, or modernizing CSS/Tailwind. Apply a policy-first approach: semantic tokens, explicit cascade order, static CSS, intrinsic component layouts, accessible state, measured performance, and progressive enhancement backed by current sources."
-  reviewed_at: "2026-09-20"
-  compatibility_model: MDN Baseline
-  package_contract: SKILL.md is the always-loaded router; references/*.md are loaded on demand. Both ship in the npm package.
 artifacts:
   skill: SKILL.md
   compatibility_summary: references/compatibility.md

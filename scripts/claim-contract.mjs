@@ -4,9 +4,9 @@ import assert from "node:assert/strict";
 // validation-window derivation. build-skill.mjs and validate-skill.mjs both
 // import from here; neither may redefine these facts locally.
 
-export const CLAIM_STATUSES = Object.freeze(["widely", "newly", "limited", "watchlist"]);
+const CLAIM_STATUSES = Object.freeze(["widely", "newly", "limited", "watchlist"]);
 
-export const STATUS_LABELS = Object.freeze({
+const STATUS_LABELS = Object.freeze({
   widely: "Widely available",
   newly: "Newly available — verify floor",
   limited: "Limited availability — enhancement only",
@@ -45,7 +45,7 @@ export function statusLabel(status) {
   return label;
 }
 
-export function monthYearRank(value) {
+function monthYearRank(value) {
   const match =
     typeof value === "string" ? value.trim().match(/^([A-Z][a-z]+)\s+(\d{4})$/) : null;
 

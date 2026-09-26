@@ -18,7 +18,7 @@ const PACK_MAX_BUFFER_BYTES = 1024 * 1024;
 
 // Non-generated files in the npm tarball. Agent-facing files (SKILL.md, references/*.md)
 // are derived from renderArtifacts so the allowlist cannot drift from the build.
-export const STATIC_PACKAGE_FILES = Object.freeze([
+const STATIC_PACKAGE_FILES = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
   "README.md",
@@ -28,7 +28,7 @@ export const STATIC_PACKAGE_FILES = Object.freeze([
 
 // Exact package.json "files" entries. "references" is the only directory entry;
 // the tarball check still pins every file inside it.
-export const PACKAGE_FILES_ALLOWLIST = Object.freeze([
+const PACKAGE_FILES_ALLOWLIST = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
   "README.md",
@@ -38,7 +38,7 @@ export const PACKAGE_FILES_ALLOWLIST = Object.freeze([
 ]);
 const PACKAGE_DIRECTORIES = Object.freeze(["references"]);
 
-export const EXPECTED_SCRIPTS = Object.freeze({
+const EXPECTED_SCRIPTS = Object.freeze({
   build: "node scripts/build-skill.mjs",
   test: "node --test scripts/validate-skill.test.mjs && npm run validate",
   validate: "node scripts/validate-skill.mjs",
@@ -354,7 +354,7 @@ const CANONICAL_ARTIFACT_PATHS = Object.freeze({
   skill: "SKILL.md",
 });
 
-export function isAgentFacing(relativePath) {
+function isAgentFacing(relativePath) {
   return relativePath === "SKILL.md" || relativePath.startsWith("references/");
 }
 

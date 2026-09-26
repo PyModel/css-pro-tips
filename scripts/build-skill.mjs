@@ -301,7 +301,7 @@ function renderCompatibilitySummary(content) {
 const GENERATED_NOTICE = "<!-- Generated from content/. Edit canonical files and run npm run build. -->";
 const REFERENCE_DIR = "references";
 
-export function referencePath(moduleId) {
+function referencePath(moduleId) {
   return `${REFERENCE_DIR}/${moduleId}.md`;
 }
 
