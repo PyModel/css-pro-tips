@@ -6,59 +6,59 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 
 | Claim | Status | Reviewed | Next review | Fallback | Sources |
 |---|---|---|---|---|---|
-| accent-color | Limited availability — enhancement only | August 2026 | — | Native control colors. | [MDN accent-color][ref-accent-color] [MDN Baseline compatibility][ref-baseline] |
-| anchor-positioning | Newly available — verify floor | August 2026 | July 2028 | Conventional positioned layout or Popover API. | [MDN CSS anchor positioning][ref-anchor-module] [MDN Baseline compatibility][ref-baseline] |
-| ascent-override | Limited availability — enhancement only | August 2026 | — | size-adjust or an ordinary fallback stack. | [MDN ascent-override][ref-ascent-override] [MDN Baseline compatibility][ref-baseline] |
-| aspect-ratio | Widely available | August 2026 | — | Explicit dimensions only where content remains usable. | [MDN aspect-ratio][ref-aspect-ratio] [MDN Baseline compatibility][ref-baseline] |
-| cascade-layers | Widely available | August 2026 | — | Intentional source order. | [MDN @layer][ref-layer] [MDN Baseline compatibility][ref-baseline] |
-| clamp | Widely available | August 2026 | — | The min value. | [MDN clamp()][ref-clamp] [MDN Baseline compatibility][ref-baseline] |
-| color-mix | Widely available | August 2026 | — | Precomputed derived color token. | [MDN color-mix()][ref-color-mix] [MDN Baseline compatibility][ref-baseline] |
-| container-queries | Widely available | August 2026 | — | Intrinsic wrapping or a viewport query for page-level behavior. | [MDN container queries][ref-container-queries] [MDN Baseline compatibility][ref-baseline] |
-| container-style-queries | Newly available — verify floor | August 2026 | November 2028 | Explicit data or variant class. | [MDN @container][ref-container-at] [web.dev platform updates May 2026][ref-webdev-0526] |
-| container-units | Widely available | August 2026 | — | rem and clamp values. | [MDN container query length units][ref-container-query-units] [MDN Baseline compatibility][ref-baseline] |
-| content-visibility | Widely available | August 2026 | — | Normal rendering. | [MDN content-visibility][ref-content-visibility] [MDN contain-intrinsic-size][ref-contain-intrinsic-size] [MDN Baseline compatibility][ref-baseline] |
-| contrast-color | Newly available — verify floor | August 2026 | — | A verified authored foreground token. | [MDN contrast-color()][ref-contrast-color] [MDN Baseline compatibility][ref-baseline] |
-| corner-shape | Limited availability — enhancement only | August 2026 | — | border-radius. | [MDN corner-shape][ref-corner-shape] [MDN Baseline compatibility][ref-baseline] |
-| css-functions | Experimental / watchlist | August 2026 | — | Custom property values calculated by the build or owner code. | [MDN if()][ref-if] [MDN @function][ref-function] [MDN sibling-index()][ref-sibling-index] [MDN sibling-count()][ref-sibling-count] |
-| custom-highlights | Newly available — verify floor | August 2026 | — | Normal browser selection/find rendering. | [MDN ::highlight()][ref-highlight] [MDN Baseline compatibility][ref-baseline] |
-| custom-properties | Widely available | August 2026 | — | Literal default declarations are available, but semantic custom properties are the preferred interface. | [MDN CSS custom properties][ref-custom-properties] [MDN Baseline compatibility][ref-baseline] |
-| customizable-select | Limited availability — enhancement only | August 2026 | — | Native select. | [MDN appearance][ref-appearance] [MDN ::picker][ref-picker] [MDN Baseline compatibility][ref-baseline] |
-| dynamic-viewport-units | Widely available | August 2026 | — | min-block-size with normal document flow. | [MDN viewport length units][ref-viewport-units] [MDN Baseline compatibility][ref-baseline] |
-| field-sizing | Newly available — verify floor | August 2026 | December 2028 | Explicit logical sizes. | [MDN field-sizing][ref-field-sizing] [MDN Baseline compatibility][ref-baseline] |
-| flexbox | Widely available | August 2026 | — | Block flow. | [MDN flex alignment][ref-flex-align] [MDN Baseline compatibility][ref-baseline] |
-| focus-visible | Widely available | August 2026 | — | :focus indicator. | [MDN :focus-visible][ref-focus-visible] [MDN Baseline compatibility][ref-baseline] |
-| forced-colors | Widely available | August 2026 | — | Permit user-agent color mapping. | [MDN forced-colors][ref-forced-colors] [MDN system colors][ref-system-colors] [MDN Baseline compatibility][ref-baseline] |
-| grid | Widely available | August 2026 | — | Block flow or Flexbox. | [MDN CSS Grid Layout][ref-grid] [MDN Baseline compatibility][ref-baseline] |
-| has | Widely available | August 2026 | — | Owner-managed class or data state. | [MDN :has()][ref-has] [MDN Baseline compatibility][ref-baseline] |
-| interpolate-size | Limited availability — enhancement only | August 2026 | — | Grid-row or immediate disclosure. | [MDN interpolate-size][ref-interpolate-size] [MDN calc-size()][ref-calc-size] [MDN Baseline compatibility][ref-baseline] |
-| light-dark | Newly available — verify floor | August 2026 | November 2026 | prefers-color-scheme token overrides. | [MDN light-dark()][ref-light-dark] [MDN Baseline compatibility][ref-baseline] |
-| line-clamp | Limited availability — enhancement only | August 2026 | — | Show full content or provide an explicit disclosure. | [MDN line-clamp][ref-line-clamp] [MDN Baseline compatibility][ref-baseline] |
-| logical-properties | Widely available | August 2026 | — | Physical properties for a constrained legacy direction policy. | [MDN logical properties][ref-logical] [MDN Baseline compatibility][ref-baseline] |
-| media-state-pseudo-classes | Limited availability — enhancement only | August 2026 | — | Owner-managed state class. | [MDN :playing][ref-playing] [MDN Baseline compatibility][ref-baseline] |
-| name-only-container-queries | Newly available — verify floor | August 2026 | November 2028 | Explicit data or variant class. | [MDN @container][ref-container-at] [web.dev platform updates May 2026][ref-webdev-0526] |
-| native-nesting | Widely available | August 2026 | — | Flat selectors or a preprocessor in an existing project. | [MDN CSS nesting][ref-nesting] [MDN Baseline compatibility][ref-baseline] |
-| oklch | Widely available | August 2026 | — | Precomputed sRGB semantic colors. | [MDN oklch()][ref-oklch] [MDN Baseline compatibility][ref-baseline] |
-| open | Newly available — verify floor | August 2026 | November 2028 | Attribute selector or owner state class. | [MDN :open][ref-open] [web.dev platform updates May 2026][ref-webdev-0526] |
-| popover | Newly available — verify floor | August 2026 | — | Inline content or an accessible dialog. | [MDN :popover-open][ref-popover-open] [MDN Baseline compatibility][ref-baseline] |
-| prefers-contrast | Widely available | August 2026 | — | WCAG-conformant normal theme. | [MDN prefers-contrast][ref-prefers-contrast] [MDN Baseline compatibility][ref-baseline] |
-| property | Widely available | August 2026 | — | Untyped custom property or ordinary property transition. | [MDN @property][ref-property] [MDN Baseline compatibility][ref-baseline] |
-| reduced-motion | Widely available | August 2026 | — | Low-motion default. | [MDN prefers-reduced-motion][ref-reduced-motion] [MDN Baseline compatibility][ref-baseline] |
-| reduced-transparency | Limited availability — enhancement only | August 2026 | — | A solid-surface default. | [MDN prefers-reduced-transparency][ref-reduced-transparency] [MDN Baseline compatibility][ref-baseline] |
-| relative-colors | Limited availability — enhancement only | August 2026 | — | Precomputed semantic color token. | [MDN relative colors][ref-relative-colors] [MDN Baseline compatibility][ref-baseline] |
-| round | Limited availability — enhancement only | August 2026 | — | Ordinary calc or precomputed value. | [MDN round()][ref-round] [MDN Baseline compatibility][ref-baseline] |
-| same-document-view-transitions | Newly available — verify floor | August 2026 | — | Normal state change. | [MDN view-transition-name][ref-view-transition-name] [MDN view-transition-class][ref-view-transition-class] [MDN Baseline compatibility][ref-baseline] |
-| scope | Newly available — verify floor | August 2026 | September 2028 | CSS Modules or a documented component root class. | [MDN @scope][ref-scope] [MDN Baseline compatibility][ref-baseline] |
-| scroll-driven-animations | Limited availability — enhancement only | August 2026 | — | Static content or ordinary transition. | [MDN scroll-driven animations][ref-scroll-driven] [MDN animation-timeline][ref-animation-timeline] [WebKit guide to scroll-driven animations][ref-webkit-sda] |
-| scroll-state-queries | Limited availability — enhancement only | August 2026 | — | Owner-managed state class or no effect. | [MDN scroll-state container queries][ref-scroll-state-queries] [MDN Baseline compatibility][ref-baseline] |
-| shape | Limited availability — enhancement only | August 2026 | — | polygon(), border radius, or a static asset. | [MDN shape()][ref-shape] [MDN Baseline compatibility][ref-baseline] |
-| size-adjust | Widely available | August 2026 | — | Normal fallback font metrics. | [MDN size-adjust][ref-size-adjust] [MDN Baseline compatibility][ref-baseline] |
-| starting-style | Newly available — verify floor | August 2026 | — | Enter without a transition. | [MDN @starting-style][ref-starting-style] [MDN Baseline compatibility][ref-baseline] |
-| subgrid | Widely available | August 2026 | — | Explicit local tracks. | [MDN subgrid][ref-subgrid] [MDN Baseline compatibility][ref-baseline] |
-| text-box | Newly available — verify floor | August 2026 | — | Normal line box metrics. | [MDN text-box][ref-text-box] [MDN Baseline compatibility][ref-baseline] |
-| text-wrap | Newly available — verify floor | August 2026 | — | Normal wrapping. | [MDN text-wrap][ref-text-wrap] [MDN Baseline compatibility][ref-baseline] |
-| transition-behavior | Newly available — verify floor | August 2026 | February 2027 | Immediate discrete state change. | [MDN transition-behavior][ref-transition-behavior] [MDN Baseline compatibility][ref-baseline] |
-| typed-attr | Limited availability — enhancement only | August 2026 | — | A class, custom property, or ordinary attribute interpreted by the owner. | [MDN attr()][ref-attr] [MDN Baseline compatibility][ref-baseline] |
-| user-valid | Widely available | August 2026 | — | Native validity UI and explicit messages. | [MDN :user-valid][ref-user-valid] [MDN :user-invalid][ref-user-invalid] [MDN Baseline compatibility][ref-baseline] |
+| accent-color | Limited availability — enhancement only | September 2026 | — | Native control colors. | [MDN accent-color][ref-accent-color] [MDN Baseline compatibility][ref-baseline] |
+| anchor-positioning | Newly available — verify floor | September 2026 | July 2028 | Conventional positioned layout or Popover API. | [MDN CSS anchor positioning][ref-anchor-module] [MDN Baseline compatibility][ref-baseline] |
+| ascent-override | Limited availability — enhancement only | September 2026 | — | size-adjust or an ordinary fallback stack. | [MDN ascent-override][ref-ascent-override] [MDN Baseline compatibility][ref-baseline] |
+| aspect-ratio | Widely available | September 2026 | — | Explicit dimensions only where content remains usable. | [MDN aspect-ratio][ref-aspect-ratio] [MDN Baseline compatibility][ref-baseline] |
+| cascade-layers | Widely available | September 2026 | — | Intentional source order. | [MDN @layer][ref-layer] [MDN Baseline compatibility][ref-baseline] |
+| clamp | Widely available | September 2026 | — | The min value. | [MDN clamp()][ref-clamp] [MDN Baseline compatibility][ref-baseline] |
+| color-mix | Widely available | September 2026 | — | Precomputed derived color token. | [MDN color-mix()][ref-color-mix] [MDN Baseline compatibility][ref-baseline] |
+| container-queries | Widely available | September 2026 | — | Intrinsic wrapping or a viewport query for page-level behavior. | [MDN container queries][ref-container-queries] [MDN Baseline compatibility][ref-baseline] |
+| container-style-queries | Newly available — verify floor | September 2026 | November 2028 | Explicit data or variant class. | [MDN @container][ref-container-at] [web.dev platform updates May 2026][ref-webdev-0526] |
+| container-units | Widely available | September 2026 | — | rem and clamp values. | [MDN container query length units][ref-container-query-units] [MDN Baseline compatibility][ref-baseline] |
+| content-visibility | Widely available | September 2026 | — | Normal rendering. | [MDN content-visibility][ref-content-visibility] [MDN contain-intrinsic-size][ref-contain-intrinsic-size] [MDN Baseline compatibility][ref-baseline] |
+| contrast-color | Newly available — verify floor | September 2026 | — | A verified authored foreground token. | [MDN contrast-color()][ref-contrast-color] [MDN Baseline compatibility][ref-baseline] |
+| corner-shape | Limited availability — enhancement only | September 2026 | — | border-radius. | [MDN corner-shape][ref-corner-shape] [MDN Baseline compatibility][ref-baseline] |
+| css-functions | Experimental / watchlist | September 2026 | — | Custom property values calculated by the build or owner code. | [MDN if()][ref-if] [MDN @function][ref-function] [MDN sibling-index()][ref-sibling-index] [MDN sibling-count()][ref-sibling-count] |
+| custom-highlights | Newly available — verify floor | September 2026 | — | Normal browser selection/find rendering. | [MDN ::highlight()][ref-highlight] [MDN Baseline compatibility][ref-baseline] |
+| custom-properties | Widely available | September 2026 | — | Literal default declarations are available, but semantic custom properties are the preferred interface. | [MDN CSS custom properties][ref-custom-properties] [MDN Baseline compatibility][ref-baseline] |
+| customizable-select | Limited availability — enhancement only | September 2026 | — | Native select. | [MDN appearance][ref-appearance] [MDN ::picker][ref-picker] [MDN Baseline compatibility][ref-baseline] |
+| dynamic-viewport-units | Widely available | September 2026 | — | min-block-size with normal document flow. | [MDN viewport length units][ref-viewport-units] [MDN Baseline compatibility][ref-baseline] |
+| field-sizing | Newly available — verify floor | September 2026 | December 2028 | Explicit logical sizes. | [MDN field-sizing][ref-field-sizing] [MDN Baseline compatibility][ref-baseline] |
+| flexbox | Widely available | September 2026 | — | Block flow. | [MDN flex alignment][ref-flex-align] [MDN Baseline compatibility][ref-baseline] |
+| focus-visible | Widely available | September 2026 | — | :focus indicator. | [MDN :focus-visible][ref-focus-visible] [MDN Baseline compatibility][ref-baseline] |
+| forced-colors | Widely available | September 2026 | — | Permit user-agent color mapping. | [MDN forced-colors][ref-forced-colors] [MDN system colors][ref-system-colors] [MDN Baseline compatibility][ref-baseline] |
+| grid | Widely available | September 2026 | — | Block flow or Flexbox. | [MDN CSS Grid Layout][ref-grid] [MDN Baseline compatibility][ref-baseline] |
+| has | Widely available | September 2026 | — | Owner-managed class or data state. | [MDN :has()][ref-has] [MDN Baseline compatibility][ref-baseline] |
+| interpolate-size | Limited availability — enhancement only | September 2026 | — | Grid-row or immediate disclosure. | [MDN interpolate-size][ref-interpolate-size] [MDN calc-size()][ref-calc-size] [MDN Baseline compatibility][ref-baseline] |
+| light-dark | Newly available — verify floor | September 2026 | November 2026 | prefers-color-scheme token overrides. | [MDN light-dark()][ref-light-dark] [MDN Baseline compatibility][ref-baseline] |
+| line-clamp | Limited availability — enhancement only | September 2026 | — | Show full content or provide an explicit disclosure. | [MDN line-clamp][ref-line-clamp] [MDN Baseline compatibility][ref-baseline] |
+| logical-properties | Widely available | September 2026 | — | Physical properties for a constrained legacy direction policy. | [MDN logical properties][ref-logical] [MDN Baseline compatibility][ref-baseline] |
+| media-state-pseudo-classes | Limited availability — enhancement only | September 2026 | — | Owner-managed state class. | [MDN :playing][ref-playing] [MDN Baseline compatibility][ref-baseline] |
+| name-only-container-queries | Newly available — verify floor | September 2026 | November 2028 | Explicit data or variant class. | [MDN @container][ref-container-at] [web.dev platform updates May 2026][ref-webdev-0526] |
+| native-nesting | Widely available | September 2026 | — | Flat selectors or a preprocessor in an existing project. | [MDN CSS nesting][ref-nesting] [MDN Baseline compatibility][ref-baseline] |
+| oklch | Widely available | September 2026 | — | Precomputed sRGB semantic colors. | [MDN oklch()][ref-oklch] [MDN Baseline compatibility][ref-baseline] |
+| open | Newly available — verify floor | September 2026 | November 2028 | Attribute selector or owner state class. | [MDN :open][ref-open] [web.dev platform updates May 2026][ref-webdev-0526] |
+| popover | Newly available — verify floor | September 2026 | — | Inline content or an accessible dialog. | [MDN :popover-open][ref-popover-open] [MDN Baseline compatibility][ref-baseline] |
+| prefers-contrast | Widely available | September 2026 | — | WCAG-conformant normal theme. | [MDN prefers-contrast][ref-prefers-contrast] [MDN Baseline compatibility][ref-baseline] |
+| property | Widely available | September 2026 | — | Untyped custom property or ordinary property transition. | [MDN @property][ref-property] [MDN Baseline compatibility][ref-baseline] |
+| reduced-motion | Widely available | September 2026 | — | Low-motion default. | [MDN prefers-reduced-motion][ref-reduced-motion] [MDN Baseline compatibility][ref-baseline] |
+| reduced-transparency | Limited availability — enhancement only | September 2026 | — | A solid-surface default. | [MDN prefers-reduced-transparency][ref-reduced-transparency] [MDN Baseline compatibility][ref-baseline] |
+| relative-colors | Limited availability — enhancement only | September 2026 | — | Precomputed semantic color token. | [MDN relative colors][ref-relative-colors] [MDN Baseline compatibility][ref-baseline] |
+| round | Limited availability — enhancement only | September 2026 | — | Ordinary calc or precomputed value. | [MDN round()][ref-round] [MDN Baseline compatibility][ref-baseline] |
+| same-document-view-transitions | Newly available — verify floor | September 2026 | — | Normal state change. | [MDN view-transition-name][ref-view-transition-name] [MDN view-transition-class][ref-view-transition-class] [MDN Baseline compatibility][ref-baseline] |
+| scope | Newly available — verify floor | September 2026 | November 2028 | CSS Modules or a documented component root class. | [MDN @scope][ref-scope] [MDN Baseline compatibility][ref-baseline] [web.dev Baseline 2026 feature list][ref-baseline-2026] [Interop 2026 focus areas][ref-interop-2026] |
+| scroll-driven-animations | Limited availability — enhancement only | September 2026 | — | Static content or ordinary transition. | [MDN scroll-driven animations][ref-scroll-driven] [MDN animation-timeline][ref-animation-timeline] [WebKit guide to scroll-driven animations][ref-webkit-sda] |
+| scroll-state-queries | Limited availability — enhancement only | September 2026 | — | Owner-managed state class or no effect. | [MDN scroll-state container queries][ref-scroll-state-queries] [MDN Baseline compatibility][ref-baseline] |
+| shape | Newly available — verify floor | September 2026 | — | polygon(), border radius, or a static asset. | [MDN shape()][ref-shape] [MDN Baseline compatibility][ref-baseline] [web.dev Baseline 2026 feature list][ref-baseline-2026] |
+| size-adjust | Widely available | September 2026 | — | Normal fallback font metrics. | [MDN size-adjust][ref-size-adjust] [MDN Baseline compatibility][ref-baseline] |
+| starting-style | Newly available — verify floor | September 2026 | — | Enter without a transition. | [MDN @starting-style][ref-starting-style] [MDN Baseline compatibility][ref-baseline] |
+| subgrid | Widely available | September 2026 | — | Explicit local tracks. | [MDN subgrid][ref-subgrid] [MDN Baseline compatibility][ref-baseline] |
+| text-box | Newly available — verify floor | September 2026 | — | Normal line box metrics. | [MDN text-box][ref-text-box] [MDN Baseline compatibility][ref-baseline] |
+| text-wrap | Newly available — verify floor | September 2026 | — | Normal wrapping. | [MDN text-wrap][ref-text-wrap] [MDN Baseline compatibility][ref-baseline] |
+| transition-behavior | Newly available — verify floor | September 2026 | February 2027 | Immediate discrete state change. | [MDN transition-behavior][ref-transition-behavior] [MDN Baseline compatibility][ref-baseline] |
+| typed-attr | Limited availability — enhancement only | September 2026 | — | A class, custom property, or ordinary attribute interpreted by the owner. | [MDN attr()][ref-attr] [MDN Baseline compatibility][ref-baseline] |
+| user-valid | Widely available | September 2026 | — | Native validity UI and explicit messages. | [MDN :user-valid][ref-user-valid] [MDN :user-invalid][ref-user-invalid] [MDN Baseline compatibility][ref-baseline] |
 
 ## Sources
 
@@ -82,6 +82,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-autoprefixer | Autoprefixer | https://github.com/postcss/autoprefixer |
 | ref-backdrop | MDN ::backdrop | https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop |
 | ref-baseline | MDN Baseline compatibility | https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility |
+| ref-baseline-2026 | web.dev Baseline 2026 feature list | https://web.dev/baseline/2026 |
 | ref-box-sizing | MDN box-sizing | https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing |
 | ref-browserslist | Browserslist | https://browsersl.ist/ |
 | ref-calc-size | MDN calc-size() | https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size |
@@ -96,8 +97,10 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-contrast-color | MDN contrast-color() | https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/contrast-color |
 | ref-corner-shape | MDN corner-shape | https://developer.mozilla.org/en-US/docs/Web/CSS/corner-shape |
 | ref-css-modules | CSS Modules project | https://github.com/css-modules/css-modules |
+| ref-css-snapshot-2026 | W3C CSS Snapshot 2026 | https://www.w3.org/TR/css-2026/ |
 | ref-custom-properties | MDN CSS custom properties | https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties |
 | ref-defined | MDN :defined | https://developer.mozilla.org/en-US/docs/Web/CSS/:defined |
+| ref-dialog-closedby | MDN dialog closedby attribute | https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#closedby |
 | ref-dir | MDN :dir() | https://developer.mozilla.org/en-US/docs/Web/CSS/:dir |
 | ref-disclosure-pattern | WAI disclosure pattern | https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/ |
 | ref-empty | MDN :empty | https://developer.mozilla.org/en-US/docs/Web/CSS/:empty |
@@ -115,6 +118,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-if | MDN if() | https://developer.mozilla.org/en-US/docs/Web/CSS/if |
 | ref-import | MDN @import | https://developer.mozilla.org/en-US/docs/Web/CSS/@import |
 | ref-inert | MDN inert attribute | https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert |
+| ref-interop-2026 | Interop 2026 focus areas | https://github.com/web-platform-tests/interop/blob/main/2026/README.md |
 | ref-interpolate-size | MDN interpolate-size | https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size |
 | ref-is | MDN :is() | https://developer.mozilla.org/en-US/docs/Web/CSS/:is |
 | ref-layer | MDN @layer | https://developer.mozilla.org/en-US/docs/Web/CSS/@layer |
@@ -136,6 +140,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 | ref-picker | MDN ::picker | https://developer.mozilla.org/en-US/docs/Web/CSS/::picker |
 | ref-playing | MDN :playing | https://developer.mozilla.org/en-US/docs/Web/CSS/:playing |
 | ref-pointer-events | MDN pointer-events | https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events |
+| ref-popover-hint | MDN popover hint value | https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover#hint |
 | ref-popover-open | MDN :popover-open | https://developer.mozilla.org/en-US/docs/Web/CSS/:popover-open |
 | ref-postcss | PostCSS documentation | https://postcss.org/ |
 | ref-prefers-contrast | MDN prefers-contrast | https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast |
@@ -195,6 +200,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 [ref-aspect-ratio]: https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio
 [ref-attr]: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
 [ref-baseline]: https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
+[ref-baseline-2026]: https://web.dev/baseline/2026
 [ref-calc-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size
 [ref-clamp]: https://developer.mozilla.org/en-US/docs/Web/CSS/clamp
 [ref-color-mix]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
@@ -215,6 +221,7 @@ Generated from `content/evidence.yml`. Edit canonical content, then run `npm run
 [ref-has]: https://developer.mozilla.org/en-US/docs/Web/CSS/:has
 [ref-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/::highlight
 [ref-if]: https://developer.mozilla.org/en-US/docs/Web/CSS/if
+[ref-interop-2026]: https://github.com/web-platform-tests/interop/blob/main/2026/README.md
 [ref-interpolate-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
 [ref-layer]: https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
 [ref-light-dark]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark

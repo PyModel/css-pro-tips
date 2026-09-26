@@ -32,17 +32,18 @@ Or add the repository through skills.sh:
 npx skills add PyModel/css-pro-tips
 ```
 
-Both paths give you the same installed artifact: one `SKILL.md` file. Copy it into the skill directory used by your agent. For Claude Code:
+Both paths give you the same installed artifact: a `SKILL.md` router plus a `references/` folder the agent reads on demand. Copy both into the skill directory used by your agent. For Claude Code:
 
 ```bash
 mkdir -p ~/.claude/skills/css-protips
-cp node_modules/css-pro-tips/SKILL.md ~/.claude/skills/css-protips/
+cp -R node_modules/css-pro-tips/SKILL.md node_modules/css-pro-tips/references ~/.claude/skills/css-protips/
 ```
 
-To update, run `npm update css-pro-tips` and copy the file again. On macOS or Linux, a symlink keeps the local skill pointed at the installed package:
+To update, run `npm update css-pro-tips` and copy both again. On macOS or Linux, you can instead symlink the skill directory to the installed package so updates apply automatically. Remove any copied `css-protips` directory first, or the link is created inside it:
 
 ```bash
-ln -sf "$(pwd)/node_modules/css-pro-tips/SKILL.md" ~/.claude/skills/css-protips/SKILL.md
+rm -rf ~/.claude/skills/css-protips
+ln -s "$(pwd)/node_modules/css-pro-tips" ~/.claude/skills/css-protips
 ```
 
 ## What your agent gets
@@ -65,7 +66,7 @@ It also includes a generated compatibility quick reference. Widely available fea
 
 ## Use it
 
-1. Install or copy `SKILL.md` into your agent's skill directory.
+1. Install or copy `SKILL.md` and `references/` into your agent's skill directory.
 2. Ask the agent to write, review, refactor, or modernize CSS.
 3. The skill directs it to choose a policy and fallback before it chooses a feature.
 
@@ -90,9 +91,9 @@ The reference was reviewed on September 4, 2026 against the `v4.1.1` source tag.
 ## Compatibility and evidence
 
 - Package version: [`1.3.0`](./package.json)
-- Last validation window: August 2026
+- Last validation window: September 2026 (derived from the most recent claim `reviewed_at` in `content/evidence.yml`)
 - Compatibility model: [MDN Baseline](https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility)
-- Generated [compatibility summary](./docs/compatibility-summary.md)
+- Generated [compatibility summary](./references/compatibility.md)
 - Generated [evidence index](./docs/evidence-index.md)
 - Release history: [`CHANGELOG.md`](./CHANGELOG.md)
 
@@ -108,9 +109,9 @@ npm test
 npm run pack:check
 ```
 
-`npm run build` regenerates `SKILL.md` and the two maintainer projections. `npm test` rejects stale generated output, invalid frontmatter, broken references, source-contract drift, release metadata drift, and unexpected package contents. It also checks the five-part execution contract, optional Animate.css guidance, versioned evidence, reduced-motion safeguards, and top-level vendor imports. GitHub Actions runs these checks with read-only repository permissions. The published npm package still contains only the one-file agent interface plus normal package metadata.
+`npm run build` regenerates the `SKILL.md` router, `references/`, and the evidence index. `npm test` rejects stale generated output, invalid frontmatter, broken references, source-contract drift, release metadata drift, and unexpected package contents. It also checks the five-part execution contract, optional Animate.css guidance, versioned evidence, reduced-motion safeguards, and top-level vendor imports. GitHub Actions runs these checks with read-only repository permissions. The published npm package contains the router, its generated references, and normal package metadata; a word/heading ceiling test keeps the always-loaded router small.
 
-The [September 2026 review](./docs/review-2026-09-04.md) records confirmed findings, verification scope, and remaining limitations. The broader browser-compatibility snapshot above remains August 2026; adding animation references does not revalidate every browser claim.
+The [September 2026 review](./docs/review-2026-09-04.md) records confirmed findings, verification scope, and remaining limitations. Browser-compatibility claims for motion references were refreshed in that review; adding animation references does not revalidate every browser claim.
 
 CSS Pro-Tips is maintained by [elkaix](https://github.com/elkaix) under the [PyModel](https://github.com/PyModel) organization.
 

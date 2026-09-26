@@ -1,5 +1,6 @@
 ---
 id: typography-fonts
+read_when: "Type scale, fluid type, line length, text wrapping, font loading, or font metric overrides."
 type: concept
 title: Typography and fonts
 policy_ids: [tokens-first, intrinsic-layout-first, progressive-enhancement, measured-performance]

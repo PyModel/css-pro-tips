@@ -1,16 +1,4 @@
----
-id: motion-transitions
-read_when: "Any animation or transition, Animate.css, disclosure/top-layer entrances, view transitions, or scroll-driven effects."
-type: concept
-title: Motion and transitions
-policy_ids: [progressive-enhancement, semantic-accessibility, measured-performance]
-capability_ids:
-  - ordinary-transitions
-  - animate-css
-  - disclosure-motion
-  - scroll-driven-animation
-  - view-transitions
----
+<!-- Generated from content/. Edit canonical files and run npm run build. -->
 
 # 6. Motion & transitions
 
@@ -131,3 +119,75 @@ This example enhances entrances only; it does not claim an exit animation. Exits
 Scroll-driven animations remain Limited availability in the recorded snapshot. Never require them for progress, navigation, or content reveal. [MDN scroll-driven animations][ref-scroll-driven] [WebKit scroll-driven animations][ref-webkit-sda]
 
 Same-document View Transitions may enhance complete navigation/state changes. Preserve immediate behavior and honor reduced motion; cross-document `@view-transition` requires its own floor check. [MDN view-transition-name][ref-view-transition-name] [MDN view-transition-class][ref-view-transition-class] [MDN @view-transition][ref-view-transition-at]
+
+## Capability guidance
+
+### Ordinary Transitions
+
+- **Recommendation:** Transition only deliberate visual properties and respect motion preferences.
+- **Use when:** A state change benefits from subtle feedback.
+- **Avoid when:** transition: all, decorative motion without a reduced-motion path, or layout-dependent animation by default.
+- **Fallback:** An immediate state change.
+- **Accessibility checks:** reduced-motion
+- **Performance:** Prefer compositor-friendly properties when practical, then profile.
+
+### Disclosure Motion
+
+- **Recommendation:** Use a semantic native or correctly managed custom disclosure baseline; add grid-row or intrinsic-size interpolation only as a verified enhancement.
+- **Use when:** Content with unknown height expands and collapses.
+- **Avoid when:** Height-only hiding that leaves controls focusable, or max-height guesses that clip content.
+- **Fallback:** Open/close without interpolation.
+- **Accessibility checks:** reduced-motion, keyboard
+- **Performance:** Keep the animated subtree small.
+
+### Scroll Driven Animation
+
+- **Recommendation:** Treat scroll-driven animations as enhancement-only while support remains incomplete.
+- **Use when:** The visual effect is optional and has no interaction or comprehension requirement.
+- **Avoid when:** Progress, navigation, or required content visibility.
+- **Fallback:** Static state or ordinary interaction-driven motion.
+- **Accessibility checks:** reduced-motion
+- **Performance:** Profile real scroll behavior on target devices.
+
+### View Transitions
+
+- **Recommendation:** Use same-document View Transitions as a progressive enhancement over a complete non-animated navigation/state change.
+- **Use when:** Shared visual continuity adds value but is not required.
+- **Avoid when:** Cross-document assumptions where the browser floor is incomplete.
+- **Fallback:** Normal navigation or state update.
+- **Accessibility checks:** reduced-motion
+- **Performance:** Avoid excessive named elements and expensive pseudo-element effects.
+
+### Animate Css
+
+- **Recommendation:** Use Animate.css as an optional reference or explicitly approved preset dependency, not an automatic default.
+- **Use when:** Repeated entrance or emphasis effects justify an existing or authorized dependency.
+- **Avoid when:** Native CSS suffices, dependency/license approval is absent, or correctness would depend on animation completion.
+- **Fallback:** Immediate semantic state with visible content and working focus, without the library.
+- **Accessibility checks:** reduced-motion, keyboard, print, cancellation, missing-css
+- **Performance:** Measure production CSS and runtime cost; do not assume stylesheet tree shaking or compositor acceleration.
+
+# Reference index
+
+[ref-animate-base]: https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/source/_base.css
+[ref-animate-docs]: https://animate.style/
+[ref-animate-license]: https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/LICENSE
+[ref-animate-package]: https://github.com/animate-css/animate.css/blob/4aa415199dd4ed7d877d10343e745e8bbb4b7a0c/package.json
+[ref-animation-cancel]: https://developer.mozilla.org/en-US/docs/Web/API/Element/animationcancel_event
+[ref-animation-end]: https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event
+[ref-animation-performance]: https://web.dev/articles/animations-guide
+[ref-calc-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size
+[ref-disclosure-pattern]: https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/
+[ref-inert]: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert
+[ref-interpolate-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
+[ref-motion-technique]: https://www.w3.org/WAI/WCAG22/Techniques/css/C39
+[ref-property]: https://developer.mozilla.org/en-US/docs/Web/CSS/@property
+[ref-scroll-driven]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations
+[ref-starting-style]: https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style
+[ref-transition-behavior]: https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior
+[ref-view-transition-at]: https://developer.mozilla.org/en-US/docs/Web/CSS/@view-transition
+[ref-view-transition-class]: https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-class
+[ref-view-transition-name]: https://developer.mozilla.org/en-US/docs/Web/CSS/view-transition-name
+[ref-wcag-animation]: https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html
+[ref-wcag-pause]: https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html
+[ref-webkit-sda]: https://webkit.org/blog/17101/a-guide-to-scroll-driven-animations-with-just-css

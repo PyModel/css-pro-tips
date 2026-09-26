@@ -1,13 +1,4 @@
----
-id: color-theming
-read_when: "Semantic color tokens, oklch/color-mix/relative colors, light-dark themes, or theme switching."
-type: concept
-title: Color and theming
-policy_ids: [tokens-first, progressive-enhancement, semantic-accessibility]
-capability_ids:
-  - semantic-colors
-  - modern-colors
----
+<!-- Generated from content/. Edit canonical files and run npm run build. -->
 
 # 4. Color & theming
 
@@ -68,3 +59,32 @@ Use `color-mix()` to derive a token from a semantic base. Precompute the baselin
 ```
 
 Do not depend on `accent-color` for essential brand/control appearance: it remains Limited availability. In forced-colors mode, defer to the user agent or use system color keywords where an authored visual must remain meaningful. [MDN accent-color][ref-accent-color]
+
+## Capability guidance
+
+### Semantic Colors
+
+- **Recommendation:** Map primitive palettes to semantic color tokens, then let components consume semantic roles.
+- **Use when:** Supporting themes, brands, states, or user preferences.
+- **Avoid when:** Component references to --blue-600 or repeated literal colors.
+- **Fallback:** A complete default theme in custom properties.
+- **Accessibility checks:** contrast, forced-colors
+- **Performance:** Static custom properties make theme changes cheap.
+
+### Modern Colors
+
+- **Recommendation:** Prefer oklch() for authored perceptual palettes and color-mix() for derived semantic colors.
+- **Use when:** Creating or deriving design-system colors.
+- **Avoid when:** Relative color syntax without a fallback for the browser floor.
+- **Fallback:** Precomputed semantic token values.
+- **Accessibility checks:** contrast, forced-colors
+- **Performance:** Precompute repeated complex color math in tokens.
+
+# Reference index
+
+[ref-accent-color]: https://developer.mozilla.org/en-US/docs/Web/CSS/accent-color
+[ref-color-mix]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
+[ref-contrast-color]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/contrast-color
+[ref-light-dark]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark
+[ref-oklch]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch
+[ref-relative-colors]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors

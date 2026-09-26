@@ -3,6 +3,11 @@ import { lstatSync, readFileSync } from "node:fs";
 import { dirname, isAbsolute, join, posix, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseDocument } from "yaml";
+import {
+  deriveValidationWindow,
+  isKnownStatus,
+  MONTH_YEAR_PATTERN,
+} from "./claim-contract.mjs";
 import { loadCanonicalContent, renderArtifacts } from "./build-skill.mjs";
 
 const MAX_TEXT_FILE_BYTES = 5 * 1024 * 1024;
@@ -11,14 +16,27 @@ const MAX_ERRORS = 100;
 const PACK_TIMEOUT_MS = 30_000;
 const PACK_MAX_BUFFER_BYTES = 1024 * 1024;
 
-export const APPROVED_PACKAGE_FILES = Object.freeze([
+// Non-generated files in the npm tarball. Agent-facing files (SKILL.md, references/*.md)
+// are derived from renderArtifacts so the allowlist cannot drift from the build.
+export const STATIC_PACKAGE_FILES = Object.freeze([
+  "CHANGELOG.md",
+  "LICENSE",
+  "README.md",
+  "assets/banner.svg",
+  "package.json",
+]);
+
+// Exact package.json "files" entries. "references" is the only directory entry;
+// the tarball check still pins every file inside it.
+export const PACKAGE_FILES_ALLOWLIST = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
   "README.md",
   "SKILL.md",
   "assets/banner.svg",
-  "package.json",
+  "references",
 ]);
+const PACKAGE_DIRECTORIES = Object.freeze(["references"]);
 
 export const EXPECTED_SCRIPTS = Object.freeze({
   build: "node scripts/build-skill.mjs",
@@ -26,9 +44,6 @@ export const EXPECTED_SCRIPTS = Object.freeze({
   validate: "node scripts/validate-skill.mjs",
   "pack:check": "node scripts/validate-skill.mjs --only=tarball",
 });
-
-const MONTH_YEAR_PATTERN =
-  "(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{4}";
 
 const STABLE_CAPABILITIES = Object.freeze([
   {
@@ -225,16 +240,16 @@ function validateFrontmatter(markdown, errors) {
   return frontmatter;
 }
 
-function validateReferenceId(id, lineNumber, errors) {
+function validateReferenceId(id, lineNumber, errors, file = "SKILL.md") {
   if (!/^ref-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) {
     addError(
       errors,
-      `SKILL.md:${lineNumber} reference identifier [${id}] must use lowercase letters, numbers, and internal hyphens.`,
+      `${file}:${lineNumber} reference identifier [${id}] must use lowercase letters, numbers, and internal hyphens.`,
     );
   }
 }
 
-function validateReferences(markdown, errors) {
+function validateReferences(markdown, errors, file = "SKILL.md") {
   const definitions = new Map();
   const usages = new Map();
   const lines = markdown.split(/\r?\n/);
@@ -251,12 +266,12 @@ function validateReferences(markdown, errors) {
       const normalizedId = definitionId.toLowerCase();
       const destination = definitionMatch[2].trim();
 
-      validateReferenceId(definitionId, lineNumber, errors);
+      validateReferenceId(definitionId, lineNumber, errors, file);
 
       if (destination === "") {
         addError(
           errors,
-          `SKILL.md:${lineNumber} reference definition [${definitionId}] has no destination.`,
+          `${file}:${lineNumber} reference definition [${definitionId}] has no destination.`,
         );
       }
 
@@ -265,7 +280,7 @@ function validateReferences(markdown, errors) {
       if (existing) {
         addError(
           errors,
-          `SKILL.md:${lineNumber} duplicate reference definition [${definitionId}] (first defined at line ${existing.lineNumber}).`,
+          `${file}:${lineNumber} duplicate reference definition [${definitionId}] (first defined at line ${existing.lineNumber}).`,
         );
       } else {
         definitions.set(normalizedId, { id: definitionId, lineNumber, destination });
@@ -282,7 +297,7 @@ function validateReferences(markdown, errors) {
 
       const id = usageMatch[1];
       const normalizedId = id.toLowerCase();
-      validateReferenceId(id, lineNumber, errors);
+      validateReferenceId(id, lineNumber, errors, file);
 
       if (!usages.has(normalizedId)) {
         usages.set(normalizedId, { id, lineNumber });
@@ -290,15 +305,15 @@ function validateReferences(markdown, errors) {
     }
   }
 
-  if (definitions.size === 0) {
-    addError(errors, "SKILL.md must define at least one [ref-*] source reference.");
+  if (file === "SKILL.md" && definitions.size === 0) {
+    addError(errors, `${file} must define at least one [ref-*] source reference.`);
   }
 
   for (const [normalizedId, usage] of usages) {
     if (!definitions.has(normalizedId)) {
       addError(
         errors,
-        `SKILL.md:${usage.lineNumber} reference usage [${usage.id}] has no definition.`,
+        `${file}:${usage.lineNumber} reference usage [${usage.id}] has no definition.`,
       );
     }
   }
@@ -307,7 +322,7 @@ function validateReferences(markdown, errors) {
     if (!usages.has(normalizedId)) {
       addError(
         errors,
-        `SKILL.md:${definition.lineNumber} reference definition [${definition.id}] is unused.`,
+        `${file}:${definition.lineNumber} reference definition [${definition.id}] is unused.`,
       );
     }
   }
@@ -324,7 +339,7 @@ function validateStableCapabilities(markdown, errors) {
     if (missing.length > 0) {
       addError(
         errors,
-        `SKILL.md is missing the stable capability "${capability.name}": ${missing.join(
+        `The installed skill is missing the stable capability "${capability.name}": ${missing.join(
           ", ",
         )}.`,
       );
@@ -333,10 +348,15 @@ function validateStableCapabilities(markdown, errors) {
 }
 
 const CANONICAL_ARTIFACT_PATHS = Object.freeze({
-  compatibility_summary: "docs/compatibility-summary.md",
+  compatibility_summary: "references/compatibility.md",
   evidence_index: "docs/evidence-index.md",
+  policies: "references/policies.md",
   skill: "SKILL.md",
 });
+
+export function isAgentFacing(relativePath) {
+  return relativePath === "SKILL.md" || relativePath.startsWith("references/");
+}
 
 const CANONICAL_POLICY_FIELDS = Object.freeze([
   "id",
@@ -356,7 +376,6 @@ const CANONICAL_CAPABILITY_FIELDS = Object.freeze([
   "fallback",
 ]);
 
-const CLAIM_STATUSES = new Set(["widely", "newly", "limited", "watchlist"]);
 const SOURCE_REFERENCE_PATTERN = /\[(ref-[a-z0-9]+(?:-[a-z0-9]+)*)\]/g;
 
 function isRecord(value) {
@@ -403,14 +422,13 @@ function validateCanonicalContent(rootDir, errors) {
     return;
   }
 
-  const { manifest, policies, capabilities, evidence, migration, modules, sources } = content;
+  const { manifest, policies, capabilities, evidence, modules, sources } = content;
 
   for (const [label, document] of Object.entries({
     manifest,
     policies,
     capabilities,
     evidence,
-    migration,
   })) {
     if (!isRecord(document) || document.schema_version !== 1) {
       addError(errors, `content/${label}.yml must declare schema_version: 1.`);
@@ -422,7 +440,6 @@ function validateCanonicalContent(rootDir, errors) {
   } else {
     validateString(manifest.skill.name, "content/manifest.yml skill.name", errors);
     validateString(manifest.skill.description, "content/manifest.yml skill.description", errors);
-    validateString(manifest.skill.validation_window, "content/manifest.yml skill.validation_window", errors);
   }
 
   if (!isRecord(manifest.artifacts)) {
@@ -463,13 +480,20 @@ function validateCanonicalContent(rootDir, errors) {
       );
     }
 
-    if (!["policy", "concept"].includes(module.metadata.type)) {
-      addError(errors, `${module.relativePath} frontmatter type must be policy or concept.`);
+    if (!["policy", "concept", "contract"].includes(module.metadata.type)) {
+      addError(errors, `${module.relativePath} frontmatter type must be policy, concept, or contract.`);
+    }
+
+    if (module.metadata.type !== "policy") {
+      validateString(module.metadata.read_when, `${module.relativePath} read_when`, errors);
     }
 
     validateString(module.metadata.title, `${module.relativePath} frontmatter title`, errors);
     validateStringArray(module.metadata.policy_ids, `${module.relativePath} policy_ids`, errors);
     validateStringArray(module.metadata.capability_ids, `${module.relativePath} capability_ids`, errors);
+    if (module.metadata?.source_ids !== undefined) {
+      validateStringArray(module.metadata.source_ids, `${module.relativePath} source_ids`, errors);
+    }
 
     if (module.body.trim() === "") {
       addError(errors, `${module.relativePath} must contain Markdown guidance.`);
@@ -558,7 +582,7 @@ function validateCanonicalContent(rootDir, errors) {
     validateString(claim.fallback, `Claim ${claim.id || "<unknown>"}.fallback`, errors);
     validateStringArray(claim.source_ids, `Claim ${claim.id || "<unknown>"}.source_ids`, errors);
 
-    if (!CLAIM_STATUSES.has(claim.status)) {
+    if (!isKnownStatus(claim.status)) {
       addError(errors, `Claim ${claim.id || "<unknown>"} has invalid status ${claim.status}.`);
     }
 
@@ -575,7 +599,18 @@ function validateCanonicalContent(rootDir, errors) {
 
     claimIds.add(claim.id);
 
+    const tokens = claim.feature_tokens;
+
+    if (!Array.isArray(tokens) || tokens.length === 0 || tokens.some((token) => typeof token !== "string" || token === "")) {
+      addError(errors, `Claim ${claim.id || "<unknown>"} requires a non-empty feature_tokens array for the cross-module contradiction check.`);
+    }
+
     for (const sourceId of claim.source_ids || []) {
+      if (typeof sourceId !== "string" || !/^ref-(?:[a-z0-9]+)(?:-[a-z0-9]+)*$/.test(sourceId)) {
+        addError(errors, `Claim ${claim.id || "<unknown>"} source id ${JSON.stringify(sourceId)} must match ref-* with lowercase letters, numbers, and internal hyphens.`);
+        continue;
+      }
+
       if (!sourceIds.has(sourceId)) {
         addError(errors, `Claim ${claim.id || "<unknown>"} references unknown source ${sourceId}.`);
       } else {
@@ -597,7 +632,26 @@ function validateCanonicalContent(rootDir, errors) {
       }
     }
 
+
+    for (const sourceId of module.metadata?.source_ids || []) {
+      if (typeof sourceId !== "string" || !/^ref-(?:[a-z0-9]+)(?:-[a-z0-9]+)*$/.test(sourceId)) {
+        addError(errors, `${module.relativePath} frontmatter source id ${JSON.stringify(sourceId)} must match ref-* with lowercase letters, numbers, and internal hyphens.`);
+        continue;
+      }
+
+      if (!sourceIds.has(sourceId)) {
+        addError(errors, `${module.relativePath} references unknown source ${sourceId}.`);
+      } else {
+        sourceUsage.add(sourceId);
+      }
+    }
+
     for (const sourceId of collectCanonicalModuleReferences(module.body)) {
+      if (typeof sourceId !== "string" || !/^ref-(?:[a-z0-9]+)(?:-[a-z0-9]+)*$/.test(sourceId)) {
+        addError(errors, `${module.relativePath} body source id ${JSON.stringify(sourceId)} must match ref-* with lowercase letters, numbers, and internal hyphens.`);
+        continue;
+      }
+
       if (!sourceIds.has(sourceId)) {
         addError(errors, `${module.relativePath} references unknown source ${sourceId}.`);
       } else {
@@ -605,48 +659,9 @@ function validateCanonicalContent(rootDir, errors) {
       }
     }
   }
-
   for (const sourceId of sourceIds) {
     if (!sourceUsage.has(sourceId)) {
       addError(errors, `content/evidence.yml source ${sourceId} is not used by a claim or module.`);
-    }
-  }
-
-  const legacyEntries = Array.isArray(migration.legacy_entries) ? migration.legacy_entries : [];
-
-  if (!Array.isArray(migration.legacy_entries)) {
-    addError(errors, "content/migration.yml legacy_entries must be an array.");
-  }
-
-  if (migration.legacy_entry_count !== legacyEntries.length) {
-    addError(
-      errors,
-      "content/migration.yml legacy_entry_count must equal the number of legacy_entries.",
-    );
-  }
-
-  const legacyIds = new Set();
-
-  for (const legacyEntry of legacyEntries) {
-    if (!isRecord(legacyEntry)) {
-      addError(errors, "content/migration.yml contains a non-mapping legacy entry.");
-      continue;
-    }
-
-    validateString(legacyEntry.id, "Legacy entry id", errors);
-    validateString(legacyEntry.destination, `Legacy entry ${legacyEntry.id || "<unknown>"}.destination`, errors);
-
-    if (legacyIds.has(legacyEntry.id)) {
-      addError(errors, `content/migration.yml duplicates legacy entry ${legacyEntry.id}.`);
-    }
-
-    legacyIds.add(legacyEntry.id);
-
-    if (!moduleIds.has(legacyEntry.destination)) {
-      addError(
-        errors,
-        `Legacy entry ${legacyEntry.id || "<unknown>"} has unknown destination ${legacyEntry.destination}.`,
-      );
     }
   }
 
@@ -726,17 +741,27 @@ function validateVersions(packageJson, readme, changelog, errors) {
     );
   }
 
-  const changelogSection = extractCurrentChangelogSection(changelog, version, errors);
+  // Released sections are history; an unreleased refresh is documented under [Unreleased].
+  const releasedSection = extractCurrentChangelogSection(changelog, version, errors);
+  const unreleasedSection = extractCurrentChangelogSection(changelog, "Unreleased", []) ?? "";
+  const changelogSection = releasedSection === null ? null : `${unreleasedSection}\n${releasedSection}`;
   return { version, changelogSection };
 }
 
-function extractValidationWindow(skill, readme, errors) {
+function extractValidationWindow(rootDir, skill, readme, errors) {
+  const expectedWindow = deriveCanonicalValidationWindow(rootDir, errors);
+
+  if (expectedWindow === null) {
+    return null;
+  }
+
   const skillPattern = new RegExp(
-    `Statuses in this file were verified[\\s\\S]{0,300}?\\*\\*(${MONTH_YEAR_PATTERN})\\*\\*`,
+    `statuses in this skill were verified[\\s\\S]{0,300}?\\*\\*(${MONTH_YEAR_PATTERN})\\*\\*`,
+    "i",
   );
   const skillMatch = skill.match(skillPattern);
   const readmePattern = new RegExp(
-    `^- Last validation window:\\s+(${MONTH_YEAR_PATTERN})\\s*$`,
+    `^- Last validation window: (${MONTH_YEAR_PATTERN})`,
     "m",
   );
   const readmeMatch = readme.match(readmePattern);
@@ -753,18 +778,25 @@ function extractValidationWindow(skill, readme, errors) {
     return null;
   }
 
-  if (skillMatch[1] !== readmeMatch[1]) {
+  if (skillMatch[1] !== expectedWindow) {
     addError(
       errors,
-      `Validation-window drift: SKILL.md says ${skillMatch[1]}, but README.md says ${readmeMatch[1]}.`,
+      `SKILL.md validation window ${skillMatch[1]} does not match derived window ${expectedWindow}.`,
     );
   }
 
-  return skillMatch[1];
+  if (readmeMatch[1] !== expectedWindow) {
+    addError(
+      errors,
+      `README.md validation window ${readmeMatch[1]} does not match derived window ${expectedWindow}.`,
+    );
+  }
+
+  return expectedWindow;
 }
 
-function validateValidationWindow(skill, readme, changelogSection, errors) {
-  const validationWindow = extractValidationWindow(skill, readme, errors);
+function validateValidationWindow(rootDir, skill, readme, changelogSection, errors) {
+  const validationWindow = extractValidationWindow(rootDir, skill, readme, errors);
 
   if (
     validationWindow !== null &&
@@ -778,6 +810,15 @@ function validateValidationWindow(skill, readme, changelogSection, errors) {
   }
 
   return validationWindow;
+}
+
+function deriveCanonicalValidationWindow(rootDir, errors) {
+  try {
+    return deriveValidationWindow(loadCanonicalContent(rootDir).evidence);
+  } catch (error) {
+    addError(errors, `Validation window could not be derived: ${error.message}`);
+    return null;
+  }
 }
 
 function validatePackageScripts(packageJson, errors) {
@@ -813,7 +854,7 @@ function isSafePackagePath(entry) {
 
 function validatePackageAllowlist(rootDir, packageJson, errors) {
   const files = packageJson.files;
-  const approvedAllowlist = APPROVED_PACKAGE_FILES.filter((path) => path !== "package.json");
+  const approvedAllowlist = PACKAGE_FILES_ALLOWLIST;
 
   if (!Array.isArray(files)) {
     addError(errors, "package.json files must be an explicit array.");
@@ -849,8 +890,13 @@ function validatePackageAllowlist(rootDir, packageJson, errors) {
     try {
       const metadata = lstatSync(join(rootDir, entry));
 
-      if (!metadata.isFile() || metadata.isSymbolicLink()) {
-        addError(errors, `Approved package path must be a regular file: ${entry}.`);
+      const expectDirectory = PACKAGE_DIRECTORIES.includes(entry);
+
+      if (metadata.isSymbolicLink() || (expectDirectory ? !metadata.isDirectory() : !metadata.isFile())) {
+        addError(
+          errors,
+          `Approved package path must be a regular ${expectDirectory ? "directory" : "file"}: ${entry}.`,
+        );
       }
     } catch (error) {
       addError(errors, `Approved package path could not be read (${entry}): ${error.message}`);
@@ -858,14 +904,14 @@ function validatePackageAllowlist(rootDir, packageJson, errors) {
   }
 }
 
-export function validateTarballFileSet(actualFiles, errors) {
+export function validateTarballFileSet(actualFiles, errors, expectedFiles) {
   if (!Array.isArray(actualFiles) || actualFiles.some((path) => typeof path !== "string")) {
     addError(errors, "npm tarball file listing must contain only string paths.");
     return;
   }
 
   const actual = [...new Set(actualFiles)].sort();
-  const expected = [...APPROVED_PACKAGE_FILES].sort();
+  const expected = [...new Set(expectedFiles)].sort();
   const missing = expected.filter((path) => !actual.includes(path));
   const unexpected = actual.filter((path) => !expected.includes(path));
 
@@ -906,7 +952,7 @@ function executeNpmPack(rootDir) {
   );
 }
 
-function runTarballValidation(rootDir, errors, packRunner) {
+function runTarballValidation(rootDir, errors, packRunner, expectedFiles) {
   let result;
 
   try {
@@ -959,8 +1005,17 @@ function runTarballValidation(rootDir, errors, packRunner) {
   }
 
   const files = reports[0].files.map((entry) => entry.path);
-  validateTarballFileSet(files, errors);
+  validateTarballFileSet(files, errors, expectedFiles);
   return files;
+}
+
+function renderedAgentFiles(rootDir, errors) {
+  try {
+    return Object.keys(renderArtifacts(rootDir)).filter(isAgentFacing).sort();
+  } catch (error) {
+    addError(errors, `Agent-facing files could not be derived: ${error.message}`);
+    return ["SKILL.md"];
+  }
 }
 
 export function validateRepository(
@@ -976,6 +1031,7 @@ export function validateRepository(
   const details = {};
   const packageText = readTextFile(resolvedRoot, "package.json", errors);
   const packageJson = parsePackageJson(packageText, errors);
+  const agentFiles = renderedAgentFiles(resolvedRoot, errors);
 
   if (packageJson !== null) {
     validatePackageAllowlist(resolvedRoot, packageJson, errors);
@@ -990,8 +1046,19 @@ export function validateRepository(
 
     if (skill !== null) {
       validateFrontmatter(skill, errors);
+      const installed = [skill];
       details.references = validateReferences(skill, errors);
-      validateStableCapabilities(skill, errors);
+
+      for (const path of agentFiles.filter((entry) => entry !== "SKILL.md")) {
+        const reference = readTextFile(resolvedRoot, path, errors);
+
+        if (reference !== null) {
+          installed.push(reference);
+          details.references.definitionCount += validateReferences(reference, errors, path).definitionCount;
+        }
+      }
+
+      validateStableCapabilities(installed.join("\n"), errors);
     }
 
     if (packageJson !== null && readme !== null && changelog !== null) {
@@ -999,6 +1066,7 @@ export function validateRepository(
 
       if (skill !== null && versionState !== null) {
         details.validationWindow = validateValidationWindow(
+          resolvedRoot,
           skill,
           readme,
           versionState.changelogSection,
@@ -1009,7 +1077,10 @@ export function validateRepository(
   }
 
   if (includeTarball && packageJson !== null) {
-    details.tarballFiles = runTarballValidation(resolvedRoot, errors, packRunner);
+    details.tarballFiles = runTarballValidation(resolvedRoot, errors, packRunner, [
+      ...STATIC_PACKAGE_FILES,
+      ...agentFiles,
+    ]);
   }
 
   return { details, errors, ok: errors.length === 0 };

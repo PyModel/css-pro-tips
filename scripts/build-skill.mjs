@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, join, posix, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseDocument } from "yaml";
+import { deriveValidationWindow, statusLabel } from "./claim-contract.mjs";
 
 const CONTENT_DIR = "content";
 const REFERENCE_PATTERN = /\[(ref-[a-z0-9]+(?:-[a-z0-9]+)*)\]/g;
@@ -149,7 +150,6 @@ function normalizeCanonicalContent(rootDir) {
     "capabilities",
   );
   const evidence = requireObject(parseYaml(rootDir, `${CONTENT_DIR}/evidence.yml`), "evidence");
-  const migration = requireObject(parseYaml(rootDir, `${CONTENT_DIR}/migration.yml`), "migration");
   const moduleEntries = requireArray(manifest.modules, "manifest.modules");
   const modules = moduleEntries.map((entry) => {
     requireObject(entry, "manifest.modules entry");
@@ -162,7 +162,6 @@ function normalizeCanonicalContent(rootDir) {
     policies,
     capabilities,
     evidence,
-    migration,
     modules,
     sources: sourceMap(evidence.sources),
   };
@@ -198,21 +197,6 @@ function referenceLinks(sourceIds, sources) {
     .join(" ");
 }
 
-function statusLabel(status) {
-  const labels = {
-    widely: "Widely available",
-    newly: "Newly available — verify floor",
-    limited: "Limited availability — enhancement only",
-    watchlist: "Experimental / watchlist",
-  };
-
-  if (!labels[status]) {
-    fail(`Unknown compatibility status ${status}.`);
-  }
-
-  return labels[status];
-}
-
 function displayName(value) {
   return value
     .replaceAll("-", " ")
@@ -242,11 +226,6 @@ function renderReferenceDefinitions(referenceIds, sources) {
     .join("\n");
 }
 
-function withReferenceIndex(markdown, sources) {
-  const references = renderReferenceDefinitions(collectReferenceIds(markdown), sources);
-
-  return references === "" ? markdown : `${markdown}\n\n# Reference index\n\n${references}`;
-}
 
 function renderCompatibilityQuickReference(content) {
   const claims = requireArray(content.evidence.claims, "evidence.claims");
@@ -312,42 +291,148 @@ function renderEvidenceIndex(content) {
     lines.push(`| ${source.id} | ${markdownCell(source.title)} | ${source.url} |`);
   }
 
-  return withReferenceIndex(lines.join("\n"), content.sources);
+  return withSourceIndex(lines.join("\n"), content.sources);
 }
 
 function renderCompatibilitySummary(content) {
-  return withReferenceIndex(renderCompatibilityQuickReference(content), content.sources);
+  return withSourceIndex(renderCompatibilityQuickReference(content), content.sources);
 }
 
-function renderSkill(content) {
+const GENERATED_NOTICE = "<!-- Generated from content/. Edit canonical files and run npm run build. -->";
+const REFERENCE_DIR = "references";
+
+export function referencePath(moduleId) {
+  return `${REFERENCE_DIR}/${moduleId}.md`;
+}
+
+function renderCapabilityGuidance(content, concept) {
+  const capabilities = requireArray(content.capabilities.capabilities, "capabilities.capabilities").filter(
+    (capability) => capability.concept === concept,
+  );
+
+  if (capabilities.length === 0) {
+    return "";
+  }
+
+  const lines = ["## Capability guidance"];
+
+  for (const capability of capabilities) {
+    lines.push(
+      "",
+      `### ${displayName(capability.id)}`,
+      "",
+      `- **Recommendation:** ${markdownCell(capability.recommendation)}`,
+      `- **Use when:** ${markdownCell(capability.use_when)}`,
+      `- **Avoid when:** ${markdownCell(capability.avoid_when)}`,
+      `- **Fallback:** ${markdownCell(capability.fallback)}`,
+    );
+
+    if (Array.isArray(capability.accessibility_checks) && capability.accessibility_checks.length > 0) {
+      lines.push(`- **Accessibility checks:** ${markdownCell(capability.accessibility_checks.join(", "))}`);
+    }
+
+    if (capability.performance_notes && capability.performance_notes !== "None direct.") {
+      lines.push(`- **Performance:** ${markdownCell(capability.performance_notes)}`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
+function withSourceIndex(markdown, sources) {
+  const references = renderReferenceDefinitions(collectReferenceIds(markdown), sources);
+  return references === "" ? markdown : `${markdown}\n\n# Reference index\n\n${references}`;
+}
+
+function finalize(sections) {
+  return sections.filter((section) => section !== "").join("\n\n").replaceAll("\n\n\n\n", "\n\n") + "\n";
+}
+
+function referenceModules(content) {
+  return content.modules.filter((module) => module.metadata?.type !== "policy");
+}
+
+function renderReference(content, module, validationWindow) {
+  const body = [
+    module.body.replaceAll("{validation_window}", validationWindow),
+    renderCapabilityGuidance(content, module.id),
+  ]
+    .filter((section) => section !== "")
+    .join("\n\n");
+
+  return finalize([GENERATED_NOTICE, withSourceIndex(body, content.sources)]);
+}
+
+function renderLoadOnDemand(content) {
+  const lines = [
+    "## Load on demand",
+    "",
+    "Read only the references the task touches; most tasks need one or two. Paths are relative to this skill's directory.",
+    "",
+    "| Reference | Read when |",
+    "|---|---|",
+  ];
+
+  for (const module of referenceModules(content)) {
+    if (typeof module.metadata.read_when !== "string" || module.metadata.read_when.trim() === "") {
+      fail(`${module.relativePath} requires a read_when string.`);
+    }
+
+    lines.push(`| [\`${referencePath(module.id)}\`](${referencePath(module.id)}) | ${markdownCell(module.metadata.read_when)} |`);
+  }
+
+  const { compatibility_summary: compatibility, policies } = content.manifest.artifacts;
+  lines.push(
+    `| [\`${compatibility}\`](${compatibility}) | Checking a feature's Baseline status, browser floor, or required fallback. |`,
+    `| [\`${policies}\`](${policies}) | Justifying or verifying a standing policy (rule, exceptions, verification). |`,
+  );
+
+  return lines.join("\n");
+}
+
+function renderPolicyCommitments(content) {
+  const lines = [
+    "# Policy commitments",
+    "",
+    "Generated from `content/policies.yml`. A policy is a standing engineering commitment: apply it before implementation and verify it after.",
+  ];
+
+  for (const policy of requireArray(content.policies.policies, "policies.policies")) {
+    lines.push(
+      "",
+      `## ${displayName(policy.id)} (${policy.strength})`,
+      "",
+      `- **Rule:** ${markdownCell(policy.rule)}`,
+      `- **Applies when:** ${markdownCell(policy.applies_when)}`,
+      `- **Exceptions:** ${markdownCell(policy.exceptions)}`,
+      `- **Verification:** ${markdownCell(policy.verification)}`,
+    );
+  }
+
+  return finalize([GENERATED_NOTICE, withSourceIndex(lines.join("\n"), content.sources)]);
+}
+
+function renderSkill(content, validationWindow) {
   const skill = requireObject(content.manifest.skill, "manifest.skill");
 
   if (typeof skill.name !== "string" || typeof skill.description !== "string") {
     fail("manifest.skill requires name and description strings.");
   }
 
-  const moduleBody = content.modules.map((module) => module.body).join("\n\n");
-  const compatibility = renderCompatibilityQuickReference(content);
-  const referenceIds = new Set(collectReferenceIds(`${moduleBody}\n${compatibility}`));
-  const references = renderReferenceDefinitions(referenceIds, content.sources);
+  const routers = content.modules.filter((module) => module.metadata?.type === "policy");
 
-  return [
-    "---",
-    `name: ${yamlString(skill.name)}`,
-    `description: ${yamlString(skill.description)}`,
-    "---",
-    "",
-    "<!-- Generated from content/. Edit canonical files and run npm run build. -->",
-    "",
-    moduleBody,
-    "",
-    compatibility,
-    "",
-    "# Reference index",
-    "",
-    references,
-    "",
-  ].join("\n");
+  if (routers.length !== 1) {
+    fail(`Exactly one policy module must own SKILL.md; found ${routers.length}.`);
+  }
+
+  const body = [routers[0].body.replaceAll("{validation_window}", validationWindow), renderLoadOnDemand(content)].join(
+    "\n\n",
+  );
+
+  return finalize([
+    ["---", `name: ${yamlString(skill.name)}`, `description: ${yamlString(skill.description)}`, "---", "", GENERATED_NOTICE].join("\n"),
+    withSourceIndex(body, content.sources),
+  ]);
 }
 
 export function loadCanonicalContent(rootDir) {
@@ -356,11 +441,20 @@ export function loadCanonicalContent(rootDir) {
 
 export function renderArtifacts(rootDir) {
   const content = loadCanonicalContent(rootDir);
-  return {
-    [content.manifest.artifacts.skill]: renderSkill(content),
-    [content.manifest.artifacts.compatibility_summary]: renderCompatibilitySummary(content),
-    [content.manifest.artifacts.evidence_index]: renderEvidenceIndex(content),
+  const validationWindow = deriveValidationWindow(content.evidence);
+  const { artifacts } = content.manifest;
+  const output = {
+    [artifacts.skill]: renderSkill(content, validationWindow),
+    [artifacts.policies]: renderPolicyCommitments(content),
+    [artifacts.compatibility_summary]: renderCompatibilitySummary(content),
+    [artifacts.evidence_index]: renderEvidenceIndex(content),
   };
+
+  for (const module of referenceModules(content)) {
+    output[referencePath(module.id)] = renderReference(content, module, validationWindow);
+  }
+
+  return output;
 }
 
 export function buildArtifacts(rootDir) {

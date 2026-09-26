@@ -12,6 +12,8 @@ const body = (id) => {
   assert.ok(module, `Missing module: ${id}`);
   return module.body;
 };
+// The execution contract spans the always-loaded router and its on-demand detail.
+const contract = () => `${body("operating-policy")}\n${body("execution-contract")}`;
 const codeBlocks = (markdown, language) => [
   ...markdown.matchAll(new RegExp("```" + language + "\\r?\\n([\\s\\S]*?)\\r?\\n```", "g")),
 ].map((match) => match[1]);
@@ -38,7 +40,7 @@ test("execution contract exposes all five sections in order", () => {
 });
 
 test("execution contract bounds authority and preserves existing work", () => {
-  const policy = body("operating-policy");
+  const policy = contract();
   assert.match(policy, /Negative Triggers/);
   assert.match(policy, /\| `mode` \|[^\n]*`review`/);
   assert.match(policy, /\| `allow_dependency_changes` \|[^\n]*`false`/);
@@ -49,7 +51,7 @@ test("execution contract bounds authority and preserves existing work", () => {
 });
 
 test("failure output is parseable and distinguishes blocked work from success", () => {
-  const policy = body("operating-policy");
+  const policy = contract();
   const reports = codeBlocks(policy, "json").map((block) => JSON.parse(block));
   assert.equal(reports.length, 1, "Keep one canonical result payload");
   const report = reports[0];
@@ -124,18 +126,28 @@ test("vendor import is top-level before blocks and cascade caveats survive", () 
   assert.match(architecture, /!important/);
 });
 
-test("new guidance remains in the generated single-file installation", () => {
+test("router links every reference and each module lands in exactly its reference", () => {
   const artifacts = renderArtifacts(ROOT);
   const skill = artifacts["SKILL.md"];
-  for (const id of ["operating-policy", "architecture", "motion-transitions"]) {
-    assert.ok(skill.includes(body(id)), `Module omitted from installed artifact: ${id}`);
+  assert.ok(skill.includes(body("operating-policy").replaceAll("{validation_window}", "September 2026")));
+  const references = Object.keys(artifacts).filter((path) => path.startsWith("references/"));
+  assert.ok(references.length > 0);
+  for (const path of references) {
+    assert.ok(skill.includes(`](${path})`), `SKILL.md does not link ${path}`);
   }
-  assert.equal(readFileSync(resolve(ROOT, "SKILL.md"), "utf8"), skill);
+  for (const module of content.modules.filter((entry) => entry.metadata.type === "concept")) {
+    const path = `references/${module.id}.md`;
+    assert.ok(artifacts[path]?.includes(module.body), `Module missing from ${path}`);
+    assert.ok(!skill.includes(module.body), `Module ${module.id} leaked into SKILL.md`);
+  }
+  for (const [path, output] of Object.entries(artifacts)) {
+    assert.equal(readFileSync(resolve(ROOT, path), "utf8"), output, `${path} is stale`);
+  }
   assert.deepEqual(renderArtifacts(ROOT), artifacts, "Rendering must be deterministic");
 });
 
 test("target validation separates workspace paths from supplied snippets", () => {
-  const policy = body("operating-policy");
+  const policy = contract();
   const targets = policy.split("\n").find((line) => line.startsWith("| `targets` |"));
   assert.ok(targets, "Missing targets schema row");
   assert.match(targets, /Path targets:/);
@@ -171,4 +183,66 @@ test("normal-motion feedback preserves Animate.css delay and repetition helpers"
   assert.match(css, /@media print, \(prefers-reduced-motion: reduce\)/);
   assert.match(css, /animation: none !important/);
   assert.match(css, /animation-delay: 0s !important/);
+});
+
+test("module prose does not contradict claim support levels", () => {
+  const contradictions = [];
+  const downgradePhrase = /\b(?:watchlist\s+only|enhancement\s+only|cosmetic|decorative\s+geometry\s+is\s+optional|Use\s+only\s+when|treat\s+as\s+optional|is\s+cosmetic)\b/i;
+  const downgradingLines = new Map();
+
+  for (const module of content.modules) {
+    for (const line of module.body.split("\n")) {
+      if (downgradePhrase.test(line)) {
+        downgradingLines.set(module.relativePath + ":" + line.trim(), line);
+      }
+    }
+  }
+
+  for (const claim of content.evidence.claims) {
+    const tokens = claim.feature_tokens;
+    if (!Array.isArray(tokens) || !["widely", "newly"].includes(claim.status)) {
+      continue;
+    }
+
+    for (const line of downgradingLines.values()) {
+      if (tokens.some((token) => line.includes(token))) {
+        contradictions.push(`${claim.id} is ${claim.status}, but a module names it on a downgrading line: ${line.trim()}`);
+      }
+    }
+  }
+
+  assert.deepEqual(contradictions, []);
+});
+
+test("each agent-facing file ships at most one reference index", () => {
+  for (const [path, output] of Object.entries(renderArtifacts(ROOT))) {
+    const matches = output.match(/^# Reference index$/gm) || [];
+    assert.ok(matches.length <= 1, `${path} has ${matches.length} reference indexes`);
+  }
+});
+
+test("contract detail lives only in its on-demand reference", () => {
+  const artifacts = renderArtifacts(ROOT);
+  const skill = artifacts["SKILL.md"];
+  const detail = artifacts["references/execution-contract.md"];
+  assert.ok(skill.includes("](references/execution-contract.md)"), "Router must link the contract detail");
+  assert.doesNotMatch(skill, /^\| `mode` \|/m, "Input schema table leaked into SKILL.md");
+  assert.doesNotMatch(skill, /^\| Trigger \|/m, "Triage table leaked into SKILL.md");
+  assert.equal(codeBlocks(skill, "json").length, 0, "Escalation JSON leaked into SKILL.md");
+  assert.equal(codeBlocks(detail, "json").length, 1);
+  const rollbackOwners = Object.entries(artifacts).filter(([, output]) => output.includes("For uncommitted edits"));
+  assert.deepEqual(rollbackOwners.map(([path]) => path), ["SKILL.md"], "Rollback rules must have one owner");
+});
+
+// SKILL.md loads on every activation; references load on demand. The ceilings track
+// the Skill Grader corpus (p90 body ~2,200 words) so the router cannot regrow into a monolith.
+test("router stays within the per-activation budget", () => {
+  const MAX_ROUTER_WORDS = 1600;
+  const MAX_ROUTER_HEADINGS = 15;
+  const skill = renderArtifacts(ROOT)["SKILL.md"];
+  const prose = skill.replace(/```[\s\S]*?```/g, "");
+  const words = prose.split(/\s+/).filter(Boolean).length;
+  const headings = (prose.match(/^#{1,6} /gm) || []).length;
+  assert.ok(words <= MAX_ROUTER_WORDS, `SKILL.md has ${words} words; move detail into references/.`);
+  assert.ok(headings <= MAX_ROUTER_HEADINGS, `SKILL.md has ${headings} headings; move sections into references/.`);
 });

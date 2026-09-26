@@ -1,11 +1,4 @@
----
-id: experimental-watchlist
-read_when: "Considering limited-availability or experimental features, or modernizing legacy CSS by intent."
-type: concept
-title: Experimental watchlist
-policy_ids: [progressive-enhancement, measured-performance]
-capability_ids: [experimental-css]
----
+<!-- Generated from content/. Edit canonical files and run npm run build. -->
 
 # 10. Experimental / watchlist
 
@@ -40,3 +33,31 @@ These features carry distinct support stories; do not collapse them into a vague
 | JavaScript class for local parent state | Scoped `:has()` | Less state synchronization when support fits |
 
 Keep the generated compatibility projection current. Promotion from Newly available to Widely available does not remove the need for accessibility, performance, and product-floor testing.
+
+## Capability guidance
+
+### Experimental Css
+
+- **Recommendation:** Keep limited and experimental capabilities out of load-bearing paths until the product browser floor and a viable fallback are proven.
+- **Use when:** An optional visual or authoring improvement has clear isolated value.
+- **Avoid when:** Navigation, semantics, core layout, validation, or required content depends on it.
+- **Fallback:** A complete static/native baseline or owner-managed state.
+- **Accessibility checks:** keyboard, reduced-motion, zoom-reflow
+- **Performance:** Profile actual browser behavior before broad use.
+
+# Reference index
+
+[ref-attr]: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
+[ref-corner-shape]: https://developer.mozilla.org/en-US/docs/Web/CSS/corner-shape
+[ref-defined]: https://developer.mozilla.org/en-US/docs/Web/CSS/:defined
+[ref-function]: https://developer.mozilla.org/en-US/docs/Web/CSS/@function
+[ref-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/::highlight
+[ref-if]: https://developer.mozilla.org/en-US/docs/Web/CSS/if
+[ref-playing]: https://developer.mozilla.org/en-US/docs/Web/CSS/:playing
+[ref-round]: https://developer.mozilla.org/en-US/docs/Web/CSS/round
+[ref-scripting]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting
+[ref-scroll-state-queries]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_conditional_rules/Container_scroll-state_queries
+[ref-shape]: https://developer.mozilla.org/en-US/docs/Web/CSS/basic-shape/shape
+[ref-sibling-count]: https://developer.mozilla.org/en-US/docs/Web/CSS/sibling-count
+[ref-sibling-index]: https://developer.mozilla.org/en-US/docs/Web/CSS/sibling-index
+[ref-state]: https://developer.mozilla.org/en-US/docs/Web/CSS/:state

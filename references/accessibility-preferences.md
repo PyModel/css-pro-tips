@@ -1,14 +1,4 @@
----
-id: accessibility-preferences
-read_when: "Contrast, visible focus, reduced motion/transparency, forced colors, zoom, and reflow checks."
-type: concept
-title: Accessibility and preferences
-policy_ids: [semantic-accessibility, progressive-enhancement]
-capability_ids:
-  - focus-visible
-  - forced-colors
-  - preference-media
----
+<!-- Generated from content/. Edit canonical files and run npm run build. -->
 
 # 7. Accessibility & preferences
 
@@ -61,3 +51,32 @@ Start with readable, low-motion defaults. Then respond to user preference withou
 Use `rem`, logical properties, flexible tracks, and bounded `clamp()` type. Test normal content at 400% zoom / a narrow CSS viewport; do not disable browser zoom, clip required content, or depend on hover-only state. [WCAG reflow][ref-wcag-reflow]
 
 For media, autoplaying, unmuted, or decorative content, make the project policy explicit and keep a user-controlled, semantic alternative. Never hide essential video/audio solely with a broad CSS rule.
+
+## Capability guidance
+
+### Forced Colors
+
+- **Recommendation:** Test forced-colors and use system colors where author colors must remain meaningful.
+- **Use when:** Controls, focus rings, borders, and status colors are custom styled.
+- **Avoid when:** forced-color-adjust: none except when the result remains demonstrably usable.
+- **Fallback:** Allow the user agent color mapping to work.
+- **Accessibility checks:** forced-colors, contrast
+
+### Preference Media
+
+- **Recommendation:** Honor reduced motion, contrast, transparency, and color scheme without making preferences a hidden source of essential content.
+- **Use when:** Animation, translucent surfaces, contrast, or themes change the UI.
+- **Avoid when:** Making a preference query the only way to reach needed information.
+- **Fallback:** A readable, low-motion default.
+- **Accessibility checks:** reduced-motion, contrast, forced-colors
+
+# Reference index
+
+[ref-forced-color-adjust]: https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust
+[ref-forced-colors]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors
+[ref-prefers-contrast]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast
+[ref-reduced-transparency]: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency
+[ref-system-colors]: https://developer.mozilla.org/en-US/docs/Web/CSS/system-color
+[ref-wcag-contrast]: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+[ref-wcag-focus]: https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html
+[ref-wcag-reflow]: https://www.w3.org/WAI/WCAG22/Understanding/reflow.html

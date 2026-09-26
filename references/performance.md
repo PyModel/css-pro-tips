@@ -1,15 +1,4 @@
----
-id: performance
-read_when: "CSS delivery, render cost, runtime styling cost, containment, or content-visibility."
-type: concept
-title: Performance
-policy_ids: [static-css-first, measured-performance]
-capability_ids:
-  - css-delivery
-  - critical-css
-  - content-visibility
-  - font-loading
----
+<!-- Generated from content/. Edit canonical files and run npm run build. -->
 
 # 8. Performance
 
@@ -52,3 +41,36 @@ The concern is invalidation in the real DOM, not a universal ban on `:has()`. Pr
 ```
 
 Do not turn it on globally. Font loading, animations, and critical CSS should each be measured against LCP/CLS and the actual waterfall, not assumed to be wins.
+
+## Capability guidance
+
+### Css Delivery
+
+- **Recommendation:** Minify, compress, fingerprint/cache, and split CSS by actual route/use boundaries.
+- **Use when:** Shipping production CSS.
+- **Avoid when:** Combining or splitting files solely because of HTTP-era folklore.
+- **Fallback:** A single cacheable stylesheet is acceptable for a small application.
+- **Performance:** Measure bytes, waterfall, LCP, CLS, and unused CSS.
+
+### Critical Css
+
+- **Recommendation:** Inline only genuinely critical, stable above-the-fold CSS after measuring a delivery problem.
+- **Use when:** Render blocking CSS materially delays LCP and a bounded route-specific extraction exists.
+- **Avoid when:** Large duplicated inline styles that reduce caching or complicate CSP.
+- **Fallback:** Normal cacheable stylesheet delivery.
+- **Performance:** Evaluate LCP and cache trade-offs per route.
+
+### Content Visibility
+
+- **Recommendation:** Use content-visibility: auto for large, offscreen, self-contained sections with an intrinsic-size estimate.
+- **Use when:** Long feeds, documentation, or dashboards have expensive offscreen subtrees.
+- **Avoid when:** Content needed for find-in-page, anchor navigation, or immediate measurement without testing behavior.
+- **Fallback:** Normal rendering.
+- **Accessibility checks:** find-in-page
+- **Performance:** Can reduce offscreen layout/paint work; validate actual interaction behavior.
+
+# Reference index
+
+[ref-contain-intrinsic-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/contain-intrinsic-size
+[ref-content-visibility]: https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility
+[ref-webdev-css-performance]: https://web.dev/articles/optimize-css

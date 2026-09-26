@@ -10,6 +10,14 @@ All notable changes to this project are documented here. Format follows
 - Optional, version-pinned Animate.css reference covering integration, accessibility, cancellation, bundle delivery, license differences, migration, and rollback. No Animate.css dependency or vendored library source.
 - Eleven content regression tests and read-only CI for validation, reproducible generation, and the six-file package contract.
 
+### Changed
+- **Breaking install layout:** `SKILL.md` is now a ~1,600-word router (execution contract + load-on-demand table) and detailed guidance ships as generated `references/*.md`, following the Agent Skills `references/` layout. Per-activation load drops from ~16k to ~3.2k tokens. The input schema, failure-triage table, and escalation JSON moved to `references/execution-contract.md`. Copying `SKILL.md` alone is no longer a complete install; copy `references/` too (next release should be a major version).
+- Capability guidance is co-located with its concept reference instead of a trailing monolith section; policy commitments and the compatibility summary moved to `references/`.
+- The npm package allowlist is derived from the build output, and a router word/heading ceiling test replaces the 200 KB size check.
+
+### Removed
+- `content/migration.yml` and its validator checks; the v1 migration map is archived at `docs/archive/migration-v1.yml`.
+
 ### Fixed
 - Invalid nested vendor `@import` example and incomplete cascade-layer precedence explanation.
 - Global near-zero reduced-motion reset that left delays and override conflicts unaddressed.
@@ -18,7 +26,7 @@ All notable changes to this project are documented here. Format follows
 - Normal-motion feedback defaults overriding Animate.css delay/repeat/infinite helpers and inherited timing variables.
 
 ### Evidence
-- New motion references reviewed September 4, 2026. The broader compatibility snapshot remains August 2026; no release version or npm publication is implied.
+- Motion references reviewed September 4, 2026; the broader compatibility snapshot was refreshed to September 2026 on September 20, 2026 (Baseline 2026 grads, Interop 2026 focus-area annotations, `popover="hint"` / `<dialog closedby>` guidance). No release version or npm publication is implied.
 
 ## [1.3.0] - 2026-08-26
 

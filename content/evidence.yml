@@ -3,6 +3,15 @@ sources:
   - id: ref-baseline
     title: MDN Baseline compatibility
     url: https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
+  - id: ref-baseline-2026
+    title: "web.dev Baseline 2026 feature list"
+    url: https://web.dev/baseline/2026
+  - id: ref-interop-2026
+    title: "Interop 2026 focus areas"
+    url: https://github.com/web-platform-tests/interop/blob/main/2026/README.md
+  - id: ref-css-snapshot-2026
+    title: "W3C CSS Snapshot 2026"
+    url: https://www.w3.org/TR/css-2026/
   - id: ref-supports
     title: MDN @supports
     url: https://developer.mozilla.org/en-US/docs/Web/CSS/@supports
@@ -186,6 +195,12 @@ sources:
   - id: ref-backdrop
     title: MDN ::backdrop
     url: https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop
+  - id: ref-dialog-closedby
+    title: MDN dialog closedby attribute
+    url: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#closedby
+  - id: ref-popover-hint
+    title: MDN popover hint value
+    url: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/popover#hint
   - id: ref-appearance
     title: MDN appearance
     url: https://developer.mozilla.org/en-US/docs/Web/CSS/appearance
@@ -365,326 +380,379 @@ claims:
   - id: custom-properties
     capability_id: design-tokens
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-custom-properties, ref-baseline]
+    feature_tokens: ["CSS custom properties"]
     fallback: Literal default declarations are available, but semantic custom properties are the preferred interface.
   - id: cascade-layers
     capability_id: cascade-layers
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-layer, ref-baseline]
+    feature_tokens: ["@layer"]
     fallback: Intentional source order.
   - id: native-nesting
     capability_id: cascade-layers
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-nesting, ref-baseline]
+    feature_tokens: ["CSS nesting"]
     fallback: Flat selectors or a preprocessor in an existing project.
   - id: scope
     capability_id: component-scope
     status: newly
-    reviewed_at: August 2026
-    next_review_at: September 2028
-    source_ids: [ref-scope, ref-baseline]
+    reviewed_at: September 2026
+    next_review_at: November 2028
+    source_ids: [ref-scope, ref-baseline, ref-baseline-2026, ref-interop-2026]
+    feature_tokens: ["@scope"]
     fallback: CSS Modules or a documented component root class.
   - id: grid
     capability_id: grid-layout
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-grid, ref-baseline]
+    feature_tokens: ["CSS Grid Layout"]
     fallback: Block flow or Flexbox.
   - id: subgrid
     capability_id: grid-layout
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-subgrid, ref-baseline]
+    feature_tokens: ["subgrid"]
     fallback: Explicit local tracks.
   - id: flexbox
     capability_id: flex-layout
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-flex-align, ref-baseline]
+    feature_tokens: ["Flexbox"]
     fallback: Block flow.
   - id: aspect-ratio
     capability_id: intrinsic-layout
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-aspect-ratio, ref-baseline]
+    feature_tokens: ["aspect-ratio"]
     fallback: Explicit dimensions only where content remains usable.
   - id: logical-properties
     capability_id: intrinsic-layout
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-logical, ref-baseline]
+    feature_tokens: ["logical properties"]
     fallback: Physical properties for a constrained legacy direction policy.
   - id: dynamic-viewport-units
     capability_id: intrinsic-layout
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-viewport-units, ref-baseline]
+    feature_tokens: ["dynamic viewport"]
     fallback: min-block-size with normal document flow.
   - id: container-queries
     capability_id: container-queries
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-container-queries, ref-baseline]
+    feature_tokens: ["container queries"]
     fallback: Intrinsic wrapping or a viewport query for page-level behavior.
   - id: container-units
     capability_id: container-units
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-container-query-units, ref-baseline]
+    feature_tokens: ["container query length units"]
     fallback: rem and clamp values.
   - id: container-style-queries
     capability_id: style-queries
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: November 2028
     source_ids: [ref-container-at, ref-webdev-0526]
+    feature_tokens: ["container style queries"]
     fallback: Explicit data or variant class.
   - id: name-only-container-queries
     capability_id: style-queries
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: November 2028
     source_ids: [ref-container-at, ref-webdev-0526]
+    feature_tokens: ["container style queries"]
     fallback: Explicit data or variant class.
   - id: clamp
     capability_id: fluid-type
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-clamp, ref-baseline]
+    feature_tokens: ["clamp()"]
     fallback: The min value.
   - id: text-wrap
     capability_id: text-wrapping
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-text-wrap, ref-baseline]
+    feature_tokens: ["text-wrap"]
     fallback: Normal wrapping.
   - id: text-box
     capability_id: text-box
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-text-box, ref-baseline]
+    feature_tokens: ["text-box"]
     fallback: Normal line box metrics.
   - id: size-adjust
     capability_id: font-metrics
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-size-adjust, ref-baseline]
+    feature_tokens: ["size-adjust"]
     fallback: Normal fallback font metrics.
   - id: ascent-override
     capability_id: font-metrics
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-ascent-override, ref-baseline]
+    feature_tokens: ["ascent-override"]
     fallback: size-adjust or an ordinary fallback stack.
   - id: oklch
     capability_id: modern-colors
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-oklch, ref-baseline]
+    feature_tokens: ["oklch()"]
     fallback: Precomputed sRGB semantic colors.
   - id: color-mix
     capability_id: modern-colors
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-color-mix, ref-baseline]
+    feature_tokens: ["color-mix()"]
     fallback: Precomputed derived color token.
   - id: light-dark
     capability_id: semantic-colors
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: November 2026
     source_ids: [ref-light-dark, ref-baseline]
+    feature_tokens: ["light-dark()"]
     fallback: prefers-color-scheme token overrides.
   - id: relative-colors
     capability_id: modern-colors
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-relative-colors, ref-baseline]
+    feature_tokens: ["relative color"]
     fallback: Precomputed semantic color token.
   - id: contrast-color
     capability_id: modern-colors
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-contrast-color, ref-baseline]
+    feature_tokens: ["contrast-color()"]
     fallback: A verified authored foreground token.
   - id: accent-color
     capability_id: customizable-select
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-accent-color, ref-baseline]
+    feature_tokens: ["accent-color"]
     fallback: Native control colors.
   - id: focus-visible
     capability_id: focus-visible
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-focus-visible, ref-baseline]
+    feature_tokens: [":focus-visible"]
     fallback: :focus indicator.
   - id: has
     capability_id: relational-state
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-has, ref-baseline]
+    feature_tokens: [":has()"]
     fallback: Owner-managed class or data state.
   - id: user-valid
     capability_id: form-state
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-user-valid, ref-user-invalid, ref-baseline]
+    feature_tokens: [":user-valid", ":user-invalid"]
     fallback: Native validity UI and explicit messages.
   - id: open
     capability_id: native-disclosures
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: November 2028
     source_ids: [ref-open, ref-webdev-0526]
+    feature_tokens: [":open", "details:open"]
     fallback: Attribute selector or owner state class.
   - id: popover
     capability_id: popover
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-popover-open, ref-baseline]
+    feature_tokens: ["popover"]
     fallback: Inline content or an accessible dialog.
   - id: customizable-select
     capability_id: customizable-select
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-appearance, ref-picker, ref-baseline]
+    feature_tokens: ["customizable select", "::picker"]
     fallback: Native select.
   - id: property
     capability_id: ordinary-transitions
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-property, ref-baseline]
+    feature_tokens: ["@property"]
     fallback: Untyped custom property or ordinary property transition.
   - id: starting-style
     capability_id: ordinary-transitions
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-starting-style, ref-baseline]
+    feature_tokens: ["@starting-style"]
     fallback: Enter without a transition.
   - id: transition-behavior
     capability_id: ordinary-transitions
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: February 2027
     source_ids: [ref-transition-behavior, ref-baseline]
+    feature_tokens: ["transition-behavior"]
     fallback: Immediate discrete state change.
   - id: interpolate-size
     capability_id: disclosure-motion
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-interpolate-size, ref-calc-size, ref-baseline]
+    feature_tokens: ["interpolate-size"]
     fallback: Grid-row or immediate disclosure.
   - id: scroll-driven-animations
     capability_id: scroll-driven-animation
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-scroll-driven, ref-animation-timeline, ref-webkit-sda]
+    feature_tokens: ["scroll-driven animation", "scroll-timeline"]
     fallback: Static content or ordinary transition.
   - id: same-document-view-transitions
     capability_id: view-transitions
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-view-transition-name, ref-view-transition-class, ref-baseline]
+    feature_tokens: ["view transitions"]
     fallback: Normal state change.
   - id: reduced-motion
     capability_id: preference-media
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-reduced-motion, ref-baseline]
+    feature_tokens: ["prefers-reduced-motion"]
     fallback: Low-motion default.
   - id: forced-colors
     capability_id: forced-colors
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-forced-colors, ref-system-colors, ref-baseline]
+    feature_tokens: ["forced-colors"]
     fallback: Permit user-agent color mapping.
   - id: prefers-contrast
     capability_id: preference-media
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-prefers-contrast, ref-baseline]
+    feature_tokens: ["prefers-contrast"]
     fallback: WCAG-conformant normal theme.
   - id: reduced-transparency
     capability_id: preference-media
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-reduced-transparency, ref-baseline]
+    feature_tokens: ["prefers-reduced-transparency"]
     fallback: A solid-surface default.
   - id: content-visibility
     capability_id: content-visibility
     status: widely
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-content-visibility, ref-contain-intrinsic-size, ref-baseline]
+    feature_tokens: ["content-visibility"]
     fallback: Normal rendering.
   - id: field-sizing
     capability_id: intrinsic-layout
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: December 2028
     source_ids: [ref-field-sizing, ref-baseline]
+    feature_tokens: ["field-sizing"]
     fallback: Explicit logical sizes.
   - id: anchor-positioning
     capability_id: native-disclosures
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     next_review_at: July 2028
     source_ids: [ref-anchor-module, ref-baseline]
+    feature_tokens: ["CSS anchor positioning"]
     fallback: Conventional positioned layout or Popover API.
   - id: typed-attr
     capability_id: style-queries
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-attr, ref-baseline]
+    feature_tokens: ["typed attr()", "attr(data-"]
     fallback: A class, custom property, or ordinary attribute interpreted by the owner.
   - id: shape
     capability_id: experimental-css
-    status: limited
-    reviewed_at: August 2026
-    source_ids: [ref-shape, ref-baseline]
+    status: newly
+    reviewed_at: September 2026
+    source_ids: [ref-shape, ref-baseline, ref-baseline-2026]
+    feature_tokens: ["shape()"]
     fallback: polygon(), border radius, or a static asset.
   - id: corner-shape
     capability_id: experimental-css
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-corner-shape, ref-baseline]
+    feature_tokens: ["corner-shape"]
     fallback: border-radius.
   - id: media-state-pseudo-classes
     capability_id: experimental-css
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-playing, ref-baseline]
+    feature_tokens: [":playing", ":paused", ":muted"]
     fallback: Owner-managed state class.
   - id: custom-highlights
     capability_id: experimental-css
     status: newly
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-highlight, ref-baseline]
+    feature_tokens: ["::highlight()"]
     fallback: Normal browser selection/find rendering.
   - id: scroll-state-queries
     capability_id: experimental-css
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-scroll-state-queries, ref-baseline]
+    feature_tokens: ["scroll-state"]
     fallback: Owner-managed state class or no effect.
   - id: line-clamp
     capability_id: text-wrapping
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-line-clamp, ref-baseline]
+    feature_tokens: ["line-clamp"]
     fallback: Show full content or provide an explicit disclosure.
   - id: round
     capability_id: fluid-type
     status: limited
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-round, ref-baseline]
+    feature_tokens: ["round()"]
     fallback: Ordinary calc or precomputed value.
   - id: css-functions
     capability_id: experimental-css
     status: watchlist
-    reviewed_at: August 2026
+    reviewed_at: September 2026
     source_ids: [ref-if, ref-function, ref-sibling-index, ref-sibling-count]
+    feature_tokens: ["@function", "if()", "sibling-index()", "sibling-count()"]
     fallback: Custom property values calculated by the build or owner code.

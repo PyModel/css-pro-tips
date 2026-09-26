@@ -10,13 +10,16 @@ import { buildArtifacts } from "./build-skill.mjs";
 import { validateRepository, validateTarballFileSet } from "./validate-skill.mjs";
 
 const ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const APPROVED_FILES = Object.freeze([
+const PACKAGE_FILES = Object.freeze(["CHANGELOG.md", "LICENSE", "README.md", "SKILL.md", "assets/banner.svg", "references"]);
+const TARBALL_FILES = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
   "README.md",
   "SKILL.md",
   "assets/banner.svg",
   "package.json",
+  "references/compatibility.md",
+  "references/policies.md",
 ]);
 const PACKAGE_SCRIPTS = Object.freeze({
   build: "node scripts/build-skill.mjs",
@@ -32,7 +35,7 @@ description: Use when writing or reviewing source-validated CSS guidance.
 
 # CSS Protips
 
-Statuses in this file were verified against sources in **August 2026**.
+Compatibility statuses in this skill were verified against sources in **August 2026**.
 
 Compatibility follows MDN Baseline. Widely available features may ship normally;
 Limited availability features require progressive enhancement.
@@ -78,8 +81,9 @@ skill:
   validation_window: August 2026
 artifacts:
   skill: SKILL.md
-  compatibility_summary: docs/compatibility-summary.md
+  compatibility_summary: references/compatibility.md
   evidence_index: docs/evidence-index.md
+  policies: references/policies.md
 modules:
   - id: operating-policy
     path: modules/00-operating-policy.md
@@ -116,13 +120,8 @@ claims:
     status: widely
     reviewed_at: August 2026
     source_ids: [ref-mdn]
+    feature_tokens: ["static CSS"]
     fallback: Static class variants.
-`,
-    "content/migration.yml": `schema_version: 1
-legacy_entry_count: 1
-legacy_entries:
-  - id: legacy-policy
-    destination: operating-policy
 `,
     "content/modules/00-operating-policy.md": `---
 id: operating-policy
@@ -134,7 +133,7 @@ capability_ids: [static-css]
 
 # CSS Protips
 
-Statuses in this file were verified against sources in **August 2026**.
+Compatibility statuses in this skill were verified against sources in **{validation_window}**.
 
 Compatibility follows MDN Baseline. Widely available features may ship normally;
 Limited availability features require progressive enhancement.
@@ -168,7 +167,7 @@ function createFixture(overrides = {}) {
   const packageJson = {
     name: "css-pro-tips",
     version: "1.2.0",
-    files: APPROVED_FILES.filter((path) => path !== "package.json"),
+    files: [...PACKAGE_FILES],
     scripts: PACKAGE_SCRIPTS,
     ...overrides.packageJson,
   };
@@ -203,7 +202,8 @@ test("accepts a valid generated skill without freezing its headings", (t) => {
   const report = validateRepository(rootDir, { includeTarball: false });
 
   assert.equal(report.ok, true, messages(report));
-  assert.equal(report.details.references.definitionCount, 1);
+  // SKILL.md and references/compatibility.md each define ref-mdn.
+  assert.equal(report.details.references.definitionCount, 2);
   assert.equal(report.details.validationWindow, "August 2026");
 });
 
@@ -304,22 +304,22 @@ test("reports metadata drift and missing stable capabilities", (t) => {
     files: {
       "CHANGELOG.md": VALID_CHANGELOG.replace("August 2026", "July 2026"),
       "README.md": VALID_README.replace("August 2026", "July 2026"),
-      "SKILL.md": VALID_SKILL.replace(" and `@utility`", ""),
+      "SKILL.md": VALID_SKILL.replace("August 2026", "October 2026").replace(" and `@utility`", ""),
     },
   });
   const report = validateRepository(rootDir, { includeTarball: false });
   const output = messages(report);
 
   assert.equal(report.ok, false);
-  assert.match(output, /Validation-window drift/);
+  assert.match(output, /SKILL\.md is stale/);
+  assert.match(output, /README\.md validation window July 2026 does not match derived window August 2026\./);
   assert.match(output, /current release does not mention validation window August 2026/);
   assert.match(output, /stable capability "Tailwind mapping": @utility/);
 });
 
 test("rejects package allowlist drift", (t) => {
-  const approved = APPROVED_FILES.filter((path) => path !== "package.json");
   const rootDir = withFixture(t, {
-    packageJson: { files: [...approved, "scripts/release.mjs"] },
+    packageJson: { files: [...PACKAGE_FILES, "scripts/release.mjs"] },
   });
   const report = validateRepository(rootDir, { includeTarball: false });
   const output = messages(report);
@@ -330,13 +330,68 @@ test("rejects package allowlist drift", (t) => {
 
 test("rejects missing and unexpected tarball files", () => {
   const errors = [];
-  const actualFiles = APPROVED_FILES.filter((path) => path !== "LICENSE");
+  const actualFiles = TARBALL_FILES.filter((path) => path !== "LICENSE");
   actualFiles.push("scripts/release.mjs");
 
-  validateTarballFileSet(actualFiles, errors);
+  validateTarballFileSet(actualFiles, errors, TARBALL_FILES);
 
   assert.match(errors.join("\n"), /missing approved files: LICENSE/);
   assert.match(errors.join("\n"), /contains unapproved files: scripts\/release\.mjs/);
+});
+
+test("validates references per file and derives the tarball from the build", async (t) => {
+  await t.test("broken reference inside a references/ file names that file", (t) => {
+    const rootDir = withFixture(t, {
+      files: { "references/policies.md": "# Policy commitments\n\nSee [gone][ref-missing].\n" },
+    });
+    const output = messages(validateRepository(rootDir, { includeTarball: false }));
+
+    assert.match(output, /references\/policies\.md:3 reference usage \[ref-missing\] has no definition/);
+    assert.match(output, /references\/policies\.md is stale/);
+  });
+
+  await t.test("tarball missing a rendered reference is rejected", (t) => {
+    const rootDir = withFixture(t);
+    const packed = TARBALL_FILES.filter((path) => path !== "references/compatibility.md");
+    const report = validateRepository(rootDir, {
+      packRunner: () => ({ status: 0, stdout: JSON.stringify([{ files: packed.map((path) => ({ path })) }]) }),
+    });
+
+    assert.match(messages(report), /missing approved files: references\/compatibility\.md/);
+  });
+
+  await t.test("references must be a directory entry", (t) => {
+    const rootDir = withFixture(t);
+    rmSync(join(rootDir, "references"), { force: true, recursive: true });
+    writeFileSync(join(rootDir, "references"), "not a directory\n");
+    const report = validateRepository(rootDir, { includeTarball: false });
+
+    assert.match(messages(report), /must be a regular directory: references/);
+  });
+});
+
+test("reference modules must declare read_when", (t) => {
+  const canonical = canonicalFixture();
+  const rootDir = withFixture(t, {
+    files: {
+      "content/manifest.yml": canonical["content/manifest.yml"] + "  - id: layout\n    path: modules/01-layout.md\n",
+      "content/modules/01-layout.md": "---\nid: layout\ntype: concept\ntitle: Layout\npolicy_ids: []\ncapability_ids: []\n---\n\n# Layout\n",
+    },
+  });
+  const output = messages(validateRepository(rootDir, { includeTarball: false }));
+
+  assert.match(output, /01-layout\.md read_when must be a non-empty string/);
+});
+
+test("validation window may be documented under [Unreleased] without rewriting releases", (t) => {
+  const rootDir = withFixture(t, {
+    files: {
+      "CHANGELOG.md": "# Changelog\n\n## [Unreleased]\n\nStatuses refreshed in August 2026.\n\n## [1.2.0] - 2026-08-21\n\nStatuses reverified in July 2026.\n",
+    },
+  });
+  const report = validateRepository(rootDir, { includeTarball: false });
+
+  assert.equal(report.ok, true, messages(report));
 });
 
 test("reports npm pack subprocess failures", (t) => {
@@ -382,7 +437,7 @@ test(
     assert.equal(result.status, 0, result.stderr || result.stdout);
     assert.match(
       result.stdout,
-      /Skill validation passed \(\d+ references, 6 package files, [A-Z][a-z]+ \d{4}\)\./,
+      /Skill validation passed \(\d+ references, \d+ package files, [A-Z][a-z]+ \d{4}\)\./,
     );
   },
 );

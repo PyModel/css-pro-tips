@@ -1,5 +1,6 @@
 ---
 id: state-forms-interaction
+read_when: "Focus styles, :has() or native state, form validation styling, details/dialog/popover, or selector specificity."
 type: concept
 title: State, forms, and interaction
 policy_ids: [semantic-accessibility, progressive-enhancement, measured-performance]
@@ -52,6 +53,8 @@ Use semantic controls and native state first. CSS may reflect `aria-expanded`, `
 ## Prefer native interaction primitives
 
 Use `<details>` for a disclosure when it fits, `<dialog>` for modal semantics, and Popover API for transient non-modal top-layer UI. Style `:open` and `:popover-open` rather than manually duplicating open-state classes. Keep an inline/dialog fallback where the product floor needs it. [MDN :open][ref-open] [MDN :popover-open][ref-popover-open] [MDN ::backdrop][ref-backdrop]
+
+`<dialog closedby="any">` declares outside-click dismissal declaratively, and `popover="hint"` creates a tooltip-style popover that does not dismiss an open auto popover. Both are HTML attributes, not CSS capabilities: prefer them over a synthetic close-management class, and keep an owner-managed fallback where the product floor needs it. [MDN dialog closedby][ref-dialog-closedby] [MDN popover hint][ref-popover-hint]
 
 ```css
 details:open > summary { font-weight: 700; }

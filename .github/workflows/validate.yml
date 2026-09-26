@@ -25,5 +25,6 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm test
       - run: npm run build
-      - run: git diff --exit-code -- SKILL.md docs/compatibility-summary.md docs/evidence-index.md
+      - run: git diff --exit-code -- SKILL.md references docs/evidence-index.md
+      - run: test -z "$(git status --porcelain -- SKILL.md references docs)"
       - run: npm run pack:check

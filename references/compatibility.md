@@ -44,7 +44,8 @@ This is a generated navigation projection. Choose the relevant decision module f
 | Open | Attribute selector or owner state class. | [MDN :open][ref-open] [web.dev platform updates May 2026][ref-webdev-0526] |
 | Popover | Inline content or an accessible dialog. | [MDN :popover-open][ref-popover-open] [MDN Baseline compatibility][ref-baseline] |
 | Same Document View Transitions | Normal state change. | [MDN view-transition-name][ref-view-transition-name] [MDN view-transition-class][ref-view-transition-class] [MDN Baseline compatibility][ref-baseline] |
-| Scope | CSS Modules or a documented component root class. | [MDN @scope][ref-scope] [MDN Baseline compatibility][ref-baseline] |
+| Scope | CSS Modules or a documented component root class. | [MDN @scope][ref-scope] [MDN Baseline compatibility][ref-baseline] [web.dev Baseline 2026 feature list][ref-baseline-2026] [Interop 2026 focus areas][ref-interop-2026] |
+| Shape | polygon(), border radius, or a static asset. | [MDN shape()][ref-shape] [MDN Baseline compatibility][ref-baseline] [web.dev Baseline 2026 feature list][ref-baseline-2026] |
 | Starting Style | Enter without a transition. | [MDN @starting-style][ref-starting-style] [MDN Baseline compatibility][ref-baseline] |
 | Text Box | Normal line box metrics. | [MDN text-box][ref-text-box] [MDN Baseline compatibility][ref-baseline] |
 | Text Wrap | Normal wrapping. | [MDN text-wrap][ref-text-wrap] [MDN Baseline compatibility][ref-baseline] |
@@ -66,7 +67,6 @@ This is a generated navigation projection. Choose the relevant decision module f
 | Round | Ordinary calc or precomputed value. | [MDN round()][ref-round] [MDN Baseline compatibility][ref-baseline] |
 | Scroll Driven Animations | Static content or ordinary transition. | [MDN scroll-driven animations][ref-scroll-driven] [MDN animation-timeline][ref-animation-timeline] [WebKit guide to scroll-driven animations][ref-webkit-sda] |
 | Scroll State Queries | Owner-managed state class or no effect. | [MDN scroll-state container queries][ref-scroll-state-queries] [MDN Baseline compatibility][ref-baseline] |
-| Shape | polygon(), border radius, or a static asset. | [MDN shape()][ref-shape] [MDN Baseline compatibility][ref-baseline] |
 | Typed Attr | A class, custom property, or ordinary attribute interpreted by the owner. | [MDN attr()][ref-attr] [MDN Baseline compatibility][ref-baseline] |
 
 ## Experimental / watchlist
@@ -85,6 +85,7 @@ This is a generated navigation projection. Choose the relevant decision module f
 [ref-aspect-ratio]: https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio
 [ref-attr]: https://developer.mozilla.org/en-US/docs/Web/CSS/attr
 [ref-baseline]: https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility
+[ref-baseline-2026]: https://web.dev/baseline/2026
 [ref-calc-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size
 [ref-clamp]: https://developer.mozilla.org/en-US/docs/Web/CSS/clamp
 [ref-color-mix]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix
@@ -105,6 +106,7 @@ This is a generated navigation projection. Choose the relevant decision module f
 [ref-has]: https://developer.mozilla.org/en-US/docs/Web/CSS/:has
 [ref-highlight]: https://developer.mozilla.org/en-US/docs/Web/CSS/::highlight
 [ref-if]: https://developer.mozilla.org/en-US/docs/Web/CSS/if
+[ref-interop-2026]: https://github.com/web-platform-tests/interop/blob/main/2026/README.md
 [ref-interpolate-size]: https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size
 [ref-layer]: https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
 [ref-light-dark]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark

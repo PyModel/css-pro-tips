@@ -1,5 +1,6 @@
 ---
 id: tooling
+read_when: "Stylelint, CSS Modules, Tailwind v4 @theme/@utility, preprocessors, or CI gates."
 type: concept
 title: Tooling and workflow
 policy_ids: [static-css-first, explicit-cascade, measured-performance]
@@ -52,4 +53,4 @@ Sass and Less are still reasonable for established codebases or genuine compile-
 
 Run Stylelint in CI for source correctness and the team's deliberate policies. Let the formatter own formatting; keep Stylelint focused on correctness, forbidden patterns, and architecture rules that review repeatedly misses. [Stylelint][ref-stylelint]
 
-For this skill itself, run the generated-output/content-contract validator before publishing. The npm package ships only `SKILL.md`; the canonical multi-file source stays in the repository for maintainers.
+For this skill itself, run the generated-output/content-contract validator before publishing. The npm package ships `SKILL.md` plus generated `references/`; the canonical `content/` source stays in the repository for maintainers.
