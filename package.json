@@ -1,7 +1,7 @@
 {
   "name": "css-pro-tips",
   "version": "2.0.0",
-  "description": "A source-validated, policy-driven CSS engineering skill for AI coding agents.",
+  "description": "A source-validated, policy-driven CSS Agent Skill for Claude Code, Codex, Cursor, Copilot, Gemini CLI, OpenCode, Pi, Kiro, Pythinker Code, Aider, and 70+ coding agents.",
   "keywords": [
     "css",
     "agent-skill",
@@ -15,7 +15,16 @@
     "container-queries",
     "modern-css",
     "css-tips",
-    "ai-agents"
+    "ai-agents",
+    "agent-skills",
+    "github-copilot",
+    "gemini-cli",
+    "aider",
+    "pythinker",
+    "windsurf",
+    "kiro",
+    "pi",
+    "antigravity"
   ],
   "author": "elkaix",
   "license": "MIT",

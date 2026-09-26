@@ -10,6 +10,7 @@ CSS Pro-Tips gives your agent the CSS superpowers it needs: a clear policy for t
   <a href="https://www.npmjs.com/package/css-pro-tips"><img alt="npm version" src="https://img.shields.io/npm/v/css-pro-tips?style=flat&color=14b8a6&labelColor=0f172a"></a>
   <a href="https://www.npmjs.com/package/css-pro-tips"><img alt="npm downloads" src="https://img.shields.io/npm/dt/css-pro-tips?style=flat-square"></a>
   <a href="https://github.com/PyModel/css-pro-tips"><img alt="visitors" src="https://komarev.com/ghpvc/?username=PyModel-css-pro-tips&label=visitors&color=4f46e5&style=flat-square"></a>
+  <a href="https://seoagent.com/skill-grader/PyModel/css-pro-tips"><img alt="Skill Grader" src="https://seoagent.com/skill-grader/badge/PyModel/css-pro-tips.svg" height="20"></a>
   <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-f59e0b?style=flat&labelColor=0f172a"></a>
 </p>
 
@@ -22,29 +23,73 @@ CSS Pro-Tips gives your agent the CSS superpowers it needs: a clear policy for t
 
 ## Install
 
+The fastest path works for 75+ coding agents. [`skills`](https://github.com/vercel-labs/skills) detects the agents you have installed and copies the skill into each one:
+
+```bash
+npx skills add PyModel/css-pro-tips            # this project
+npx skills add PyModel/css-pro-tips -g         # every project (global)
+npx skills add PyModel/css-pro-tips -g -a claude-code -a codex   # specific agents
+```
+
+Or install from npm and copy it yourself:
+
 ```bash
 npm install css-pro-tips
+SKILL_DIR=~/.claude/skills/css-protips          # pick your agent's path below
+mkdir -p "$SKILL_DIR"
+cp -R node_modules/css-pro-tips/SKILL.md node_modules/css-pro-tips/references "$SKILL_DIR"/
 ```
 
-Or add the repository through skills.sh:
+Always copy **both** `SKILL.md` and `references/`. `SKILL.md` is a small router that is loaded on every activation; it links to `references/*.md`, which the agent reads only when a task needs them. To pick up updates automatically, symlink the package instead of copying it. Remove any copied directory first, or the link is created inside it:
 
 ```bash
-npx skills add PyModel/css-pro-tips
+rm -rf "$SKILL_DIR" && ln -s "$(pwd)/node_modules/css-pro-tips" "$SKILL_DIR"
 ```
 
-Both paths give you the same installed artifact: a `SKILL.md` router plus a `references/` folder the agent reads on demand. Copy both into the skill directory used by your agent. For Claude Code:
+### Where each agent looks
+
+Install into a `css-protips/` folder under one of these directories. Project paths can be committed so your team shares the skill.
+
+| Agent | `npx skills -a` | Project | Global |
+|---|---|---|---|
+| Claude Code | `claude-code` | `.claude/skills/` | `~/.claude/skills/` |
+| OpenAI Codex | `codex` | `.agents/skills/` | `~/.codex/skills/` |
+| Cursor | `cursor` | `.agents/skills/` | `~/.cursor/skills/` |
+| GitHub Copilot | `github-copilot` | `.agents/skills/` | `~/.copilot/skills/` |
+| Gemini CLI | `gemini-cli` | `.agents/skills/` | `~/.gemini/skills/` |
+| Google Antigravity | `antigravity` | `.agents/skills/` | `~/.gemini/antigravity/skills/` |
+| OpenCode | `opencode` | `.agents/skills/` | `~/.config/opencode/skills/` |
+| Pi | `pi` | `.pi/skills/` | `~/.pi/agent/skills/` |
+| Pythinker Code | — | `.pythinker-code/skills/` or `.agents/skills/` | `~/.pythinker-code/skills/` or `~/.agents/skills/` |
+| Kiro CLI | `kiro-cli` | `.kiro/skills/` | `~/.kiro/skills/` |
+| Windsurf | `windsurf` | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
+| Cline, Warp, Zed, Kimi Code CLI | `cline`, `warp`, `zed`, `kimi-code-cli` | `.agents/skills/` | `~/.agents/skills/` |
+| Amp, Replit | `amp`, `replit` | `.agents/skills/` | `~/.config/agents/skills/` |
+| Roo Code | `roo` | `.roo/skills/` | `~/.roo/skills/` |
+| Kilo Code | `kilo` | `.agents/skills/` | `~/.kilo/skills/` |
+| Continue | `continue` | `.continue/skills/` | `~/.continue/skills/` |
+| Goose | `goose` | `.goose/skills/` | `~/.config/goose/skills/` |
+| Factory Droid | `droid` | `.agents/skills/` | `~/.factory/skills/` |
+| Qwen Code | `qwen-code` | `.qwen/skills/` | `~/.qwen/skills/` |
+| Grok Build | `grok` | `.grok/skills/` | `~/.grok/skills/` |
+| Devin for Terminal | `devin` | `.devin/skills/` | `~/.config/devin/skills/` |
+| JetBrains Junie | `junie` | `.junie/skills/` | `~/.junie/skills/` |
+| Augment | `augment` | `.augment/skills/` | `~/.augment/skills/` |
+| OpenHands | `openhands` | `.openhands/skills/` | `~/.openhands/skills/` |
+| Trae | `trae` | `.trae/skills/` | `~/.trae/skills/` |
+| Crush | `crush` | `.crush/skills/` | `~/.config/crush/skills/` |
+| AiderDesk | `aider-desk` | `.aider-desk/skills/` | `~/.aider-desk/skills/` |
+
+Paths come from the [`skills` supported-agents table](https://github.com/vercel-labs/skills#supported-agents), which lists the rest of the 75+ agents. Pythinker Code's paths come from its skill loader. Kiro custom agents also need `"resources": ["skill://.kiro/skills/**/SKILL.md"]` in `.kiro/agents/<agent>.json`.
+
+**Aider** has no skill discovery. Load the router as a read-only conventions file, and add the reference files a task needs:
 
 ```bash
-mkdir -p ~/.claude/skills/css-protips
-cp -R node_modules/css-pro-tips/SKILL.md node_modules/css-pro-tips/references ~/.claude/skills/css-protips/
+aider --read node_modules/css-pro-tips/SKILL.md \
+      --read node_modules/css-pro-tips/references/layout-containers.md
 ```
 
-To update, run `npm update css-pro-tips` and copy both again. On macOS or Linux, you can instead symlink the skill directory to the installed package so updates apply automatically. Remove any copied `css-protips` directory first, or the link is created inside it:
-
-```bash
-rm -rf ~/.claude/skills/css-protips
-ln -s "$(pwd)/node_modules/css-pro-tips" ~/.claude/skills/css-protips
-```
+To load it every session, add `read: [node_modules/css-pro-tips/SKILL.md]` to `.aider.conf.yml`.
 
 ## What your agent gets
 
@@ -66,21 +111,11 @@ It also includes a generated compatibility quick reference. Widely available fea
 
 ## Use it
 
-1. Install or copy `SKILL.md` and `references/` into your agent's skill directory.
+1. Install the skill with `npx skills add` or copy `SKILL.md` and `references/` into your agent's skill directory.
 2. Ask the agent to write, review, refactor, or modernize CSS.
-3. The skill directs it to choose a policy and fallback before it chooses a feature.
+3. The skill directs it to choose a policy and fallback before it chooses a feature, and to load only the references the task needs.
 
-It works with Claude Code, Codex CLI, Cursor, OpenCode, Pi, Kiro, and other tools that can read a `SKILL.md` file.
-
-| Agent | Destination |
-|---|---|
-| Claude Code | `~/.claude/skills/css-protips/SKILL.md`, or `.claude/skills/...` for one project |
-| Codex CLI | `~/.codex/skills/css-protips/SKILL.md`, or `.agents/skills/...` to commit it to a repository |
-| OpenCode | `.opencode/skills/css-protips/SKILL.md`, plus `.claude/skills/` and `.agents/skills/` |
-| Pi | `~/.pi/skills/css-protips/SKILL.md` |
-| Kiro | `.kiro/steering/css-protips.md`, or `~/.kiro/steering/` |
-
-Cursor uses `.mdc` rules. Copy the file to `.cursor/rules/css-protips.mdc`, then add Cursor frontmatter for the CSS and component file types you want it to match.
+It follows the [Agent Skills specification](https://agentskills.io/specification), so any client that reads a `SKILL.md` directory can use it.
 
 ## Animate.css reference
 
